@@ -157,7 +157,6 @@
   function bindUI(state) {
     const contactsBtn = $('#contactsBtn');
     const resumeBtn = $('#resumeBtn');
-    const contactsNavLink = $('#contactsNavLink');
     const contactMenu = $('#contactMenu');
     const resumeMenu = $('#resumeMenu');
 
@@ -168,7 +167,6 @@
 
     contactsBtn?.addEventListener('click', () => toggleMenu(contactsBtn, contactMenu));
     resumeBtn?.addEventListener('click', () => toggleMenu(resumeBtn, resumeMenu));
-    contactsNavLink?.addEventListener('click', () => toggleMenu(contactsBtn, contactMenu));
 
     document.addEventListener('keydown', (e) => {
       if (e.key !== 'Escape') return;
@@ -180,7 +178,7 @@
       const t = e.target;
       if (!(t instanceof HTMLElement)) return;
 
-      if (t.closest('#contactsBtn') || t.closest('#resumeBtn') || t.closest('#contactsNavLink')) return;
+      if (t.closest('#contactsBtn') || t.closest('#resumeBtn')) return;
 
       if (t.id === 'copyEmailBtn') {
         const ok = await copyToClipboard(state.email || '');
