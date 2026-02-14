@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Константин — Junior QA Engineer (Manual)</title>
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <div class="brand__avatar" aria-hidden="true">QA</div>
+        <div class="brand__text">
+          <div class="brand__name" id="nameTop">Константин</div>
+          <div class="brand__role" id="roleTop">Junior QA Engineer (Manual)</div>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Навигация">
+        <a class="nav__link" href="#projects">Проекты</a>
+        <a class="nav__link" href="#artifacts">Артефакты</a>
+        <a class="nav__link" href="#skills">Навыки</a>
+        <button class="nav__link nav__link--btn" id="contactsNavLink" type="button">Контакты</button>
+      </nav>
+
+      <div class="menuStack">
+        <div class="menuWrap">
+          <button class="btn" id="contactsBtn" type="button"
+                  aria-haspopup="menu" aria-expanded="false" aria-controls="contactMenu">
+            Связаться
+          </button>
+          <div id="contactMenu" class="menu" hidden role="menu" aria-label="Контакты и действия"></div>
+        </div>
+
+        <div class="menuWrap">
+          <button class="btn btn--subtle" id="resumeBtn" type="button"
+                  aria-haspopup="menu" aria-expanded="false" aria-controls="resumeMenu">
+            Моё резюме
+          </button>
+          <div id="resumeMenu" class="menu" hidden role="menu" aria-label="Ссылки на резюме"></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" role="main">
+    <section class="hero">
+      <h1 class="hero__title">
+        <span id="nameHero">Константин</span>
+        <span class="dot" aria-hidden="true">•</span>
+        <span id="roleHero">Junior QA Engineer (Manual)</span>
+      </h1>
+
+      <p class="hero__subtitle" id="pitch">
+        Я делаю понятные тестовые артефакты и нахожу дефекты так, чтобы разработчикам было легко воспроизвести и исправить.
+      </p>
+
+      <div class="callout" id="dataStatus" hidden></div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="section__head">
+        <h2>Проекты</h2>
+        <p class="muted">Шаблон. Дальше ты добавишь карточки проектов как тебе нужно.</p>
+      </div>
+      <div class="card">
+        <p class="muted">Контакты и ссылки на резюме берутся из <code>data/profile.json</code>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="artifacts">
+      <div class="section__head">
+        <h2>Артефакты</h2>
+        <p class="muted">Тест-кейсы, баг-репорты, коллекции Postman, примеры SQL.</p>
+      </div>
+      <div class="card"></div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="section__head">
+        <h2>Навыки</h2>
+        <p class="muted">Тест-дизайн, документация, DevTools, API, SQL, Jira, Git.</p>
+      </div>
+      <div class="card"></div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="wrap footer__inner">
+      <div>© <span id="year"></span> <span id="nameFooter">Константин</span></div>
+      <div class="muted">v.1.0.0 — базовый шаблон</div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" hidden role="status" aria-live="polite">Готово</div>
+
+  <script src="assets/app.js" defer></script>
+</body>
+</html>

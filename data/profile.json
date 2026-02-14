@@ -1,0 +1,14 @@
+{
+  "name": "Константин",
+  "roleShort": "Junior QA Engineer (Manual)",
+  "roleLong": "Junior QA Engineer (Manual) / Младший QA-инженер (ручное тестирование)",
+  "pitch": "Я делаю понятные тестовые артефакты и нахожу дефекты так, чтобы разработчикам было легко воспроизвести и исправить.",
+  "contacts": {
+    "telegram": "https://t.me/KezerioQA",
+    "email": "wampirkost@gmail.com"
+  },
+  "links": {
+    "github": "https://github.com/Kezerio",
+    "hh": "https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841"
+  }
+}
