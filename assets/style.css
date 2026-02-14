@@ -59,8 +59,7 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
 .nav__link--btn{font:inherit}
 
 .menuStack{display:flex; flex-direction:column; align-items:flex-end; gap:8px; min-width:170px}
-.menuWrap{position:relative; z-index:1}
-.menuWrap:focus-within{z-index:120}
+.menuWrap{position:relative}
 
 .btn{
   display:inline-flex; align-items:center; justify-content:center;
@@ -118,7 +117,6 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
   border:1px solid var(--line);
   background: color-mix(in oklab, var(--panel-solid), transparent 0%);
   box-shadow:var(--shadow);
-  z-index:130;
 }
 .menu__item{
   width:100%;
