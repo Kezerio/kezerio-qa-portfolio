@@ -124,6 +124,114 @@
     `;
   }
 
+
+  function appendCaseLine(root, label, value) {
+    const text = safeText(value);
+    if (!text) return;
+    const p = document.createElement('p');
+    p.className = 'case__line';
+    const b = document.createElement('b');
+    b.textContent = `${label}: `;
+    p.append(b, text);
+    root.appendChild(p);
+  }
+
+  function renderCases(profile) {
+    const list = $('#casesList');
+    if (!list) return;
+
+    list.innerHTML = '';
+    const cases = Array.isArray(profile?.cases) ? profile.cases : [];
+
+    if (!cases.length) {
+      const empty = document.createElement('div');
+      empty.className = 'card';
+      empty.textContent = 'Кейсы пока не добавлены.';
+      list.appendChild(empty);
+      return;
+    }
+
+    cases.forEach((caseData) => {
+      const caseDetails = document.createElement('details');
+      caseDetails.className = 'case';
+
+      const caseSummary = document.createElement('summary');
+      caseSummary.className = 'case__summary';
+
+      const caseTitle = document.createElement('span');
+      caseTitle.className = 'case__title';
+      caseTitle.textContent = safeText(caseData?.title) || 'Без названия';
+
+      const caseDesc = document.createElement('span');
+      caseDesc.className = 'case__desc';
+      caseDesc.textContent = safeText(caseData?.desc || caseData?.subtitle);
+
+      caseSummary.appendChild(caseTitle);
+      if (caseDesc.textContent) caseSummary.appendChild(caseDesc);
+      caseDetails.appendChild(caseSummary);
+
+      const caseBody = document.createElement('div');
+      caseBody.className = 'case__body';
+
+      const items = Array.isArray(caseData?.items) ? caseData.items : [];
+      items.forEach((item) => {
+        const itemDetails = document.createElement('details');
+        itemDetails.className = 'case__item';
+
+        const itemSummary = document.createElement('summary');
+        itemSummary.className = 'case__itemSummary';
+
+        const id = document.createElement('span');
+        id.className = 'case__itemId';
+        id.textContent = safeText(item?.id);
+
+        const title = document.createElement('span');
+        title.className = 'case__itemTitle';
+        title.textContent = safeText(item?.title) || 'Подпункт';
+
+        if (id.textContent) itemSummary.appendChild(id);
+        itemSummary.appendChild(title);
+        itemDetails.appendChild(itemSummary);
+
+        const itemBody = document.createElement('div');
+        itemBody.className = 'case__itemBody';
+
+        appendCaseLine(itemBody, 'Окружение', item?.env);
+        appendCaseLine(itemBody, 'Шаги', item?.steps);
+        appendCaseLine(itemBody, 'Факт', item?.actual);
+        appendCaseLine(itemBody, 'Ожидание', item?.expected);
+        appendCaseLine(itemBody, 'Severity', item?.severity);
+        appendCaseLine(itemBody, 'Priority', item?.priority);
+        appendCaseLine(itemBody, 'Примечание', item?.note);
+
+        const links = Array.isArray(item?.links) ? item.links : [];
+        const validLinks = links.filter((link) => safeText(link?.url));
+        if (validLinks.length) {
+          const linksWrap = document.createElement('div');
+          linksWrap.className = 'case__links';
+
+          validLinks.forEach((link) => {
+            const a = document.createElement('a');
+            a.className = 'case__link';
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.href = safeText(link.url);
+            a.textContent = safeText(link?.label) || 'Ссылка';
+            linksWrap.appendChild(a);
+          });
+
+          itemBody.appendChild(linksWrap);
+        }
+
+        itemDetails.appendChild(itemBody);
+        caseBody.appendChild(itemDetails);
+      });
+
+      caseDetails.appendChild(caseBody);
+      list.appendChild(caseDetails);
+    });
+  }
+
   async function loadProfile(path = 'data/profile.json') {
     const res = await fetch(path, { cache: 'no-store' });
     if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
@@ -152,6 +260,7 @@
 
     renderContactMenu(profile);
     renderResumeMenu(profile);
+    renderCases(profile);
   }
 
   function bindUI(state) {
