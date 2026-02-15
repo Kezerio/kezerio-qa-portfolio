@@ -19,10 +19,7 @@
       </div>
 
       <nav class="nav" aria-label="Навигация">
-        <a class="nav__link" href="#projects">Проекты</a>
-        <a class="nav__link" href="#artifacts">Артефакты</a>
-        <a class="nav__link" href="#skills">Навыки</a>
-        <button class="nav__link nav__link--btn" id="contactsNavLink" type="button">Контакты</button>
+        <a class="nav__link" href="#cases">Кейсы тестирования</a>
       </nav>
 
       <div class="menuStack">
@@ -60,22 +57,13 @@
       <div class="callout" id="dataStatus" hidden></div>
     </section>
 
-    <section class="section" id="projects">
-      <div class="section__head">
-        <h2>Проекты</h2>
-        <p class="muted">Шаблон. Дальше ты добавишь карточки проектов как тебе нужно.</p>
-      </div>
-      <div class="card">
-        <p class="muted">Контакты и ссылки на резюме берутся из <code>data/profile.json</code>.</p>
-      </div>
-    </section>
 
-    <section class="section" id="artifacts">
+    <section class="section" id="cases">
       <div class="section__head">
-        <h2>Артефакты</h2>
-        <p class="muted">Тест-кейсы, баг-репорты, коллекции Postman, примеры SQL.</p>
+        <h2>Кейсы тестирования</h2>
+        <p class="muted">Практические кейсы и баг-репорты из реальных и тестовых сценариев.</p>
       </div>
-      <div class="card"></div>
+      <div class="cases" id="casesList"></div>
     </section>
 
     <section class="section" id="skills">
@@ -85,12 +73,13 @@
       </div>
       <div class="card"></div>
     </section>
+
   </main>
 
   <footer class="footer" role="contentinfo">
     <div class="wrap footer__inner">
       <div>© <span id="year"></span> <span id="nameFooter">Константин</span></div>
-      <div class="muted">v.1.0.0 — базовый шаблон</div>
+      <div class="muted">v.1.0.1</div>
     </div>
   </footer>
 
