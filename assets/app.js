@@ -6,10 +6,13 @@
 
   const escapeHtml = (s) =>
     String(s).replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
     }[c]));
 
-  /* ===== Toast ===== */
   const showToast = (message) => {
     const toast = $('#toast');
     if (!toast) return;
@@ -19,16 +22,17 @@
     showToast._t = setTimeout(() => (toast.hidden = true), 1400);
   };
 
-  /* ===== Clipboard ===== */
   async function copyToClipboard(text) {
     const value = safeText(text);
     if (!value) return false;
+
     try {
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(value);
         return true;
       }
     } catch (_) {}
+
     try {
       const ta = document.createElement('textarea');
       ta.value = value;
@@ -45,7 +49,6 @@
     }
   }
 
-  /* ===== Menus ===== */
   function setExpanded(btn, expanded) {
     if (!btn) return;
     btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
@@ -56,10 +59,13 @@
     const resumeBtn = $('#resumeBtn');
     const contactMenu = $('#contactMenu');
     const resumeMenu = $('#resumeMenu');
+
     if (contactMenu) contactMenu.hidden = true;
     if (resumeMenu) resumeMenu.hidden = true;
+
     setExpanded(contactsBtn, false);
     setExpanded(resumeBtn, false);
+
     if (focusBtn) focusBtn.focus();
   }
 
@@ -77,23 +83,24 @@
     openMenu(btn, menu);
   }
 
-  /* ===== Render menus from profile ===== */
   function renderContactMenu(profile) {
     const menu = $('#contactMenu');
     if (!menu) return;
+
     const telegram = safeText(profile?.contacts?.telegram);
     const email = safeText(profile?.contacts?.email);
+
     menu.innerHTML = `
       <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
          href="${escapeHtml(telegram || '#')}">
-        Telegram <span class="menu__meta">\u2197</span>
+        Telegram <span class="menu__meta">↗</span>
       </a>
       <a class="menu__item" role="menuitem"
-         href="${escapeHtml(email ? 'mailto:' + email : '#')}">
+         href="${escapeHtml(email ? `mailto:${email}` : '#')}">
         Email <span class="menu__meta">${escapeHtml(email || '')}</span>
       </a>
       <button class="menu__item" role="menuitem" type="button" id="copyEmailBtn">
-        Скопировать email <span class="menu__meta">\u29C9</span>
+        Скопировать email <span class="menu__meta">⧉</span>
       </button>
     `;
   }
@@ -101,86 +108,90 @@
   function renderResumeMenu(profile) {
     const menu = $('#resumeMenu');
     if (!menu) return;
+
     const hh = safeText(profile?.links?.hh);
     const github = safeText(profile?.links?.github);
+
     menu.innerHTML = `
       <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
          href="${escapeHtml(hh || '#')}">
-        HH <span class="menu__meta">\u2197</span>
+        HH <span class="menu__meta">↗</span>
       </a>
       <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
          href="${escapeHtml(github || '#')}">
-        GitHub <span class="menu__meta">\u2197</span>
+        GitHub <span class="menu__meta">↗</span>
       </a>
     `;
   }
 
-  /* ===== Cases rendering ===== */
+
   function appendCaseLine(root, label, value) {
     const text = safeText(value);
     if (!text) return;
     const p = document.createElement('p');
     p.className = 'case__line';
     const b = document.createElement('b');
-    b.textContent = label + ': ';
+    b.textContent = `${label}: `;
     p.append(b, text);
     root.appendChild(p);
   }
 
-  function renderCases(cases) {
+  function renderCases(profile) {
     const list = $('#casesList');
     if (!list) return;
+
     list.innerHTML = '';
+    const cases = Array.isArray(profile?.cases) ? profile.cases : [];
 
     if (!cases.length) {
       const empty = document.createElement('div');
-      empty.className = 'callout';
+      empty.className = 'card';
       empty.textContent = 'Кейсы пока не добавлены.';
       list.appendChild(empty);
       return;
     }
 
     cases.forEach((caseData) => {
-      const det = document.createElement('details');
-      det.className = 'case';
+      const caseDetails = document.createElement('details');
+      caseDetails.className = 'case';
 
-      const sum = document.createElement('summary');
-      sum.className = 'case__summary';
+      const caseSummary = document.createElement('summary');
+      caseSummary.className = 'case__summary';
 
-      const title = document.createElement('span');
-      title.className = 'case__title';
-      title.textContent = safeText(caseData?.title) || 'Без названия';
+      const caseTitle = document.createElement('span');
+      caseTitle.className = 'case__title';
+      caseTitle.textContent = safeText(caseData?.title) || 'Без названия';
 
-      const desc = document.createElement('span');
-      desc.className = 'case__desc';
-      desc.textContent = safeText(caseData?.desc);
+      const caseDesc = document.createElement('span');
+      caseDesc.className = 'case__desc';
+      caseDesc.textContent = safeText(caseData?.desc || caseData?.subtitle);
 
-      sum.appendChild(title);
-      if (desc.textContent) sum.appendChild(desc);
-      det.appendChild(sum);
+      caseSummary.appendChild(caseTitle);
+      if (caseDesc.textContent) caseSummary.appendChild(caseDesc);
+      caseDetails.appendChild(caseSummary);
 
-      const body = document.createElement('div');
-      body.className = 'case__body';
+      const caseBody = document.createElement('div');
+      caseBody.className = 'case__body';
 
       const items = Array.isArray(caseData?.items) ? caseData.items : [];
       items.forEach((item) => {
-        const itemDet = document.createElement('details');
-        itemDet.className = 'case__item';
+        const itemDetails = document.createElement('details');
+        itemDetails.className = 'case__item';
 
-        const itemSum = document.createElement('summary');
-        itemSum.className = 'case__itemSummary';
+        const itemSummary = document.createElement('summary');
+        itemSummary.className = 'case__itemSummary';
 
         const id = document.createElement('span');
         id.className = 'case__itemId';
         id.textContent = safeText(item?.id);
 
-        const itemTitle = document.createElement('span');
-        itemTitle.className = 'case__itemTitle';
-        itemTitle.textContent = safeText(item?.title) || 'Подпункт';
+        const title = document.createElement('span');
+        title.className = 'case__itemTitle';
+        title.textContent = safeText(item?.title) || 'Подпункт';
 
-        if (id.textContent) itemSum.appendChild(id);
-        itemSum.appendChild(itemTitle);
-        itemDet.appendChild(itemSum);
+        if (id.textContent) itemSummary.appendChild(id);
+        itemSummary.appendChild(title);
+        itemDetails.appendChild(itemSummary);
 
         const itemBody = document.createElement('div');
         itemBody.className = 'case__itemBody';
@@ -194,10 +205,11 @@
         appendCaseLine(itemBody, 'Примечание', item?.note);
 
         const links = Array.isArray(item?.links) ? item.links : [];
-        const validLinks = links.filter((l) => safeText(l?.url));
+        const validLinks = links.filter((link) => safeText(link?.url));
         if (validLinks.length) {
-          const wrap = document.createElement('div');
-          wrap.className = 'case__links';
+          const linksWrap = document.createElement('div');
+          linksWrap.className = 'case__links';
+
           validLinks.forEach((link) => {
             const a = document.createElement('a');
             a.className = 'case__link';
@@ -205,50 +217,52 @@
             a.rel = 'noopener noreferrer';
             a.href = safeText(link.url);
             a.textContent = safeText(link?.label) || 'Ссылка';
-            wrap.appendChild(a);
+            linksWrap.appendChild(a);
           });
-          itemBody.appendChild(wrap);
+
+          itemBody.appendChild(linksWrap);
         }
 
-        itemDet.appendChild(itemBody);
-        body.appendChild(itemDet);
+        itemDetails.appendChild(itemBody);
+        caseBody.appendChild(itemDetails);
       });
 
-      det.appendChild(body);
-      list.appendChild(det);
+      caseDetails.appendChild(caseBody);
+      list.appendChild(caseDetails);
     });
   }
 
-  /* ===== iOS press effect for active tiles ===== */
-  function bindTilePress() {
-    document.querySelectorAll('.tile--active').forEach((tile) => {
-      const addPress = () => tile.classList.add('pressing');
-      const removePress = () => tile.classList.remove('pressing');
-
-      tile.addEventListener('pointerdown', addPress);
-      tile.addEventListener('pointerup', removePress);
-      tile.addEventListener('pointerleave', removePress);
-      tile.addEventListener('pointercancel', removePress);
-    });
-  }
-
-  /* ===== Data loading ===== */
-  async function loadJSON(path) {
+  async function loadProfile(path = 'data/profile.json') {
     const res = await fetch(path, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) throw new Error(`Failed to load ${path}: ${res.status}`);
     return res.json();
   }
 
-  /* ===== Detect page type ===== */
-  function isCasesPage() {
-    return !!$('#casesList');
+  function applyProfile(profile) {
+    const name = safeText(profile?.name) || 'Константин';
+    const roleShort = safeText(profile?.roleShort) || 'Junior QA Engineer (Manual)';
+    const roleLong = safeText(profile?.roleLong) || roleShort;
+    const pitch = safeText(profile?.pitch);
+
+    const nameTop = $('#nameTop');
+    const roleTop = $('#roleTop');
+    const nameHero = $('#nameHero');
+    const roleHero = $('#roleHero');
+    const nameFooter = $('#nameFooter');
+    const pitchEl = $('#pitch');
+
+    if (nameTop) nameTop.textContent = name;
+    if (roleTop) roleTop.textContent = roleShort;
+    if (nameHero) nameHero.textContent = name;
+    if (roleHero) roleHero.textContent = roleLong;
+    if (nameFooter) nameFooter.textContent = name;
+    if (pitchEl && pitch) pitchEl.textContent = pitch;
+
+    renderContactMenu(profile);
+    renderResumeMenu(profile);
+    renderCases(profile);
   }
 
-  function basePath() {
-    return isCasesPage() ? '../' : '';
-  }
-
-  /* ===== UI binding ===== */
   function bindUI(state) {
     const contactsBtn = $('#contactsBtn');
     const resumeBtn = $('#resumeBtn');
@@ -272,6 +286,7 @@
     document.addEventListener('click', async (e) => {
       const t = e.target;
       if (!(t instanceof HTMLElement)) return;
+
       if (t.closest('#contactsBtn') || t.closest('#resumeBtn')) return;
 
       if (t.id === 'copyEmailBtn') {
@@ -283,82 +298,31 @@
 
       if (t.closest('#contactMenu')) return closeMenus(contactsBtn);
       if (t.closest('#resumeMenu')) return closeMenus(resumeBtn);
+
       closeMenus();
     });
   }
 
-  /* ===== Main ===== */
   async function main() {
-    const yearEl = $('#year');
-    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+    $('#year') && ($('#year').textContent = String(new Date().getFullYear()));
 
     const state = { email: '' };
-    const base = basePath();
 
-    // Load profile for header/menus
     try {
-      const profile = await loadJSON(base + 'data/profile.json');
+      const profile = await loadProfile('data/profile.json');
       state.email = safeText(profile?.contacts?.email) || '';
-
-      const name = safeText(profile?.name) || 'Константин';
-      const roleShort = safeText(profile?.roleShort) || 'Junior QA Engineer (Manual)';
-
-      const nameTop = $('#nameTop');
-      const roleTop = $('#roleTop');
-      const nameFooter = $('#nameFooter');
-
-      if (nameTop) nameTop.textContent = name;
-      if (roleTop) roleTop.textContent = roleShort;
-      if (nameFooter) nameFooter.textContent = name;
-
-      renderContactMenu(profile);
-      renderResumeMenu(profile);
+      applyProfile(profile);
     } catch (_) {
-      // Profile didn't load — menus stay empty, static text stays
-    }
-
-    // Cases page: load and render cases
-    if (isCasesPage()) {
-      try {
-        const cases = await loadJSON(base + 'data/cases.json');
-        const arr = Array.isArray(cases) ? cases : [];
-        renderCases(arr);
-      } catch (_) {
-        const box = $('#dataStatus');
-        if (box) {
-          box.hidden = false;
-          box.textContent = 'Не удалось загрузить данные кейсов. Попробуйте обновить страницу.';
-        }
-        renderCases([]);
+      const box = $('#dataStatus');
+      if (box) {
+        box.hidden = false;
+        box.textContent =
+          'Не удалось загрузить data/profile.json. На GitHub Pages всё ок, а при file:// fetch блокируется.';
       }
-    }
-
-    // Main page: show cases count on tile
-    if (!isCasesPage()) {
-      try {
-        const cases = await loadJSON(base + 'data/cases.json');
-        const arr = Array.isArray(cases) ? cases : [];
-        const total = arr.reduce((n, c) => n + (Array.isArray(c.items) ? c.items.length : 0), 0);
-        const countEl = $('#casesCount');
-        if (countEl && total > 0) {
-          countEl.textContent = total + ' ' + pluralize(total, 'кейс', 'кейса', 'кейсов');
-        }
-      } catch (_) {
-        // Silently skip count
-      }
-      bindTilePress();
+      applyProfile({});
     }
 
     bindUI(state);
-  }
-
-  function pluralize(n, one, few, many) {
-    const abs = Math.abs(n) % 100;
-    const last = abs % 10;
-    if (abs > 10 && abs < 20) return many;
-    if (last > 1 && last < 5) return few;
-    if (last === 1) return one;
-    return many;
   }
 
   main();
