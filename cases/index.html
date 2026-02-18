@@ -42,15 +42,46 @@
     </div>
   </header>
 
-  <main class="wrap main" role="main">
+  <main class="wrap main main--cases" role="main">
     <section class="section">
       <div class="section__head">
         <a class="back-link" href="../">&larr; На главную</a>
         <h1>Кейсы тестирования</h1>
-        <p class="muted">Практические кейсы и баг-репорты из реальных и тестовых сценариев.</p>
+        <p class="muted">Выберите категорию, чтобы посмотреть кейсы и баг-репорты.</p>
+      </div>
+
+      <div class="catTiles" id="catTiles">
+        <button class="catTile catTile--active" data-category="ios" type="button">
+          <span class="catTile__icon"></span>
+          <span class="catTile__label">iOS</span>
+        </button>
+        <button class="catTile catTile--active" data-category="sites" type="button">
+          <span class="catTile__icon">🌐</span>
+          <span class="catTile__label">Сайты</span>
+        </button>
+        <button class="catTile catTile--active" data-category="games" type="button">
+          <span class="catTile__icon">🎮</span>
+          <span class="catTile__label">Игры</span>
+        </button>
+        <button class="catTile catTile--disabled" disabled type="button">
+          <span class="catTile__icon">🔗</span>
+          <span class="catTile__label">API</span>
+          <span class="catTile__badge">В разработке</span>
+        </button>
+        <button class="catTile catTile--disabled" disabled type="button">
+          <span class="catTile__icon">🤖</span>
+          <span class="catTile__label">Автотесты</span>
+          <span class="catTile__badge">В разработке</span>
+        </button>
+        <button class="catTile catTile--disabled" disabled type="button">
+          <span class="catTile__icon">📂</span>
+          <span class="catTile__label">Прочее</span>
+          <span class="catTile__badge">В разработке</span>
+        </button>
       </div>
 
       <div class="callout" id="dataStatus" hidden></div>
+      <div class="casesEmpty callout" id="casesEmpty" hidden>В этой категории пока нет кейсов.</div>
       <div class="cases" id="casesList"></div>
     </section>
   </main>
@@ -58,7 +89,7 @@
   <footer class="footer" role="contentinfo">
     <div class="wrap footer__inner">
       <div>&copy; <span id="year"></span> <span id="nameFooter">Константин</span></div>
-      <div class="muted">v.2.0.0</div>
+      <div class="muted">v.2.1.0</div>
     </div>
   </footer>
 

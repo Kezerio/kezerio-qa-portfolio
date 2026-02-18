@@ -2,6 +2,7 @@
   'use strict';
 
   const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const safeText = (s) => (s == null ? '' : String(s).trim());
 
   const escapeHtml = (s) =>
@@ -133,12 +134,22 @@
     list.innerHTML = '';
 
     if (!cases.length) {
-      const empty = document.createElement('div');
-      empty.className = 'callout';
-      empty.textContent = 'Кейсы пока не добавлены.';
-      list.appendChild(empty);
+      // Show empty message via #casesEmpty if it exists, otherwise inline
+      const emptyEl = $('#casesEmpty');
+      if (emptyEl) {
+        emptyEl.hidden = false;
+      } else {
+        const empty = document.createElement('div');
+        empty.className = 'callout';
+        empty.textContent = 'Кейсы пока не добавлены.';
+        list.appendChild(empty);
+      }
       return;
     }
+
+    // Hide the empty message if visible
+    const emptyEl = $('#casesEmpty');
+    if (emptyEl) emptyEl.hidden = true;
 
     cases.forEach((caseData) => {
       const det = document.createElement('details');
@@ -219,17 +230,49 @@
     });
   }
 
-  /* ===== iOS press effect for active tiles ===== */
-  function bindTilePress() {
-    document.querySelectorAll('.tile--active').forEach((tile) => {
-      const addPress = () => tile.classList.add('pressing');
-      const removePress = () => tile.classList.remove('pressing');
-
-      tile.addEventListener('pointerdown', addPress);
-      tile.addEventListener('pointerup', removePress);
-      tile.addEventListener('pointerleave', removePress);
-      tile.addEventListener('pointercancel', removePress);
+  /* ===== iOS press effect ===== */
+  function bindPressEffect(selector) {
+    document.querySelectorAll(selector).forEach((el) => {
+      const add = () => el.classList.add('pressing');
+      const remove = () => el.classList.remove('pressing');
+      el.addEventListener('pointerdown', add);
+      el.addEventListener('pointerup', remove);
+      el.addEventListener('pointerleave', remove);
+      el.addEventListener('pointercancel', remove);
     });
+  }
+
+  /* ===== Category filter logic ===== */
+  function bindCategoryFilter(allCases) {
+    const catTilesContainer = $('#catTiles');
+    if (!catTilesContainer) return;
+
+    const activeTiles = $$('.catTile--active', catTilesContainer);
+    if (!activeTiles.length) return;
+
+    // Select first active category by default
+    let selectedCategory = activeTiles[0].dataset.category;
+    activeTiles[0].classList.add('catTile--selected');
+    renderCases(allCases.filter((c) => c.category === selectedCategory));
+
+    activeTiles.forEach((tile) => {
+      tile.addEventListener('click', () => {
+        const cat = tile.dataset.category;
+        if (cat === selectedCategory) return;
+
+        // Update selection
+        selectedCategory = cat;
+        activeTiles.forEach((t) => t.classList.remove('catTile--selected'));
+        tile.classList.add('catTile--selected');
+
+        // Filter and render
+        const filtered = allCases.filter((c) => c.category === cat);
+        renderCases(filtered);
+      });
+    });
+
+    // iOS press on category tiles
+    bindPressEffect('.catTile--active');
   }
 
   /* ===== Data loading ===== */
@@ -317,12 +360,12 @@
       // Profile didn't load — menus stay empty, static text stays
     }
 
-    // Cases page: load and render cases
+    // Cases page: load cases and bind category filter
     if (isCasesPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
         const arr = Array.isArray(cases) ? cases : [];
-        renderCases(arr);
+        bindCategoryFilter(arr);
       } catch (_) {
         const box = $('#dataStatus');
         if (box) {
@@ -346,7 +389,7 @@
       } catch (_) {
         // Silently skip count
       }
-      bindTilePress();
+      bindPressEffect('.tile--active');
     }
 
     bindUI(state);
