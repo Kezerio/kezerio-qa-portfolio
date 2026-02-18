@@ -18,9 +18,9 @@
         </div>
       </div>
 
-      <div class="topbar__center">
-        <span class="topbar__title">Портфолио</span>
-      </div>
+      <nav class="nav" aria-label="Навигация">
+        <a class="nav__link" href="#cases">Кейсы тестирования</a>
+      </nav>
 
       <div class="menuStack">
         <div class="menuWrap">
@@ -42,52 +42,37 @@
     </div>
   </header>
 
-  <main class="wrap main" role="main">
-    <div class="callout" id="dataStatus" hidden></div>
+  <main class="wrap" role="main">
+    <section class="hero">
+      <h1 class="hero__title">
+        <span id="nameHero">Константин</span>
+        <span class="dot" aria-hidden="true">•</span>
+        <span id="roleHero">Junior QA Engineer (Manual)</span>
+      </h1>
 
-    <div class="tiles" id="tilesGrid">
-      <a class="tile tile--disabled" aria-disabled="true">
-        <span class="tile__icon">👤</span>
-        <span class="tile__label">Обо мне</span>
-        <span class="tile__badge">В разработке</span>
-      </a>
+      <p class="hero__subtitle" id="pitch">
+        Я делаю понятные тестовые артефакты и нахожу дефекты так, чтобы разработчикам было легко воспроизвести и исправить.
+      </p>
 
-      <a class="tile tile--active" href="cases/" id="tilesCases">
-        <span class="tile__icon">🔍</span>
-        <span class="tile__label">Кейсы тестирования</span>
-        <span class="tile__count" id="casesCount"></span>
-      </a>
+      <div class="callout" id="dataStatus" hidden></div>
+    </section>
 
-      <a class="tile tile--disabled" aria-disabled="true">
-        <span class="tile__icon">🛠</span>
-        <span class="tile__label">Инструменты</span>
-        <span class="tile__badge">В разработке</span>
-      </a>
 
-      <a class="tile tile--disabled" aria-disabled="true">
-        <span class="tile__icon">✅</span>
-        <span class="tile__label">Чек-листы</span>
-        <span class="tile__badge">В разработке</span>
-      </a>
+    <section class="section" id="cases">
+      <div class="section__head">
+        <h2>Кейсы тестирования</h2>
+        <p class="muted">Практические кейсы и баг-репорты из реальных и тестовых сценариев.</p>
+      </div>
+      <div class="cases" id="casesList"></div>
+    </section>
 
-      <a class="tile tile--disabled" aria-disabled="true">
-        <span class="tile__icon">📋</span>
-        <span class="tile__label">Тест-планы</span>
-        <span class="tile__badge">В разработке</span>
-      </a>
 
-      <a class="tile tile--disabled" aria-disabled="true">
-        <span class="tile__icon">📬</span>
-        <span class="tile__label">Контакты</span>
-        <span class="tile__badge">В разработке</span>
-      </a>
-    </div>
   </main>
 
   <footer class="footer" role="contentinfo">
     <div class="wrap footer__inner">
-      <div>&copy; <span id="year"></span> <span id="nameFooter">Константин</span></div>
-      <div class="muted">v.2.0.0</div>
+      <div>© <span id="year"></span> <span id="nameFooter">Константин</span></div>
+      <div class="muted">v.1.0.1</div>
     </div>
   </footer>
 
