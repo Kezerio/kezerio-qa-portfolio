@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Stopwatch body -->
+  <circle cx="32" cy="36" r="22" stroke="#a96d3a" stroke-width="3" fill="rgba(169,109,58,.08)"/>
+  <!-- Stopwatch top button -->
+  <rect x="29" y="10" width="6" height="6" rx="2" fill="#a96d3a"/>
+  <!-- Stopwatch ring -->
+  <circle cx="32" cy="36" r="22" stroke="#a96d3a" stroke-width="3" stroke-dasharray="6 4" opacity=".25"/>
+  <!-- Clock hand (minute) -->
+  <line x1="32" y1="36" x2="32" y2="22" stroke="#a96d3a" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Lightning bolt (speed) -->
+  <polygon points="40,28 34,35 38,35 33,46 44,33 39,33" fill="#a96d3a" opacity=".85"/>
+  <!-- Small clipboard hint bottom-right -->
+  <rect x="46" y="44" width="12" height="14" rx="2" stroke="#a96d3a" stroke-width="1.5" fill="rgba(169,109,58,.06)"/>
+  <rect x="49" y="42" width="6" height="3" rx="1" fill="#a96d3a" opacity=".5"/>
+  <line x1="49" y1="50" x2="55" y2="50" stroke="#a96d3a" stroke-width="1" opacity=".4"/>
+  <line x1="49" y1="53" x2="54" y2="53" stroke="#a96d3a" stroke-width="1" opacity=".4"/>
+</svg>
