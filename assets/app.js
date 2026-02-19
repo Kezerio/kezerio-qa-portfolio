@@ -275,14 +275,6 @@
     const container = $('#toolDetail');
     if (!container) return;
 
-    const iconWrap = $('#toolDetailIcon');
-    if (iconWrap && tool.icon) {
-      const img = document.createElement('img');
-      img.src = base + tool.icon;
-      img.alt = safeText(tool.title);
-      iconWrap.appendChild(img);
-    }
-
     const titleEl = $('#toolDetailTitle');
     if (titleEl) titleEl.textContent = safeText(tool.title);
     const subtitleEl = $('#toolDetailSubtitle');
