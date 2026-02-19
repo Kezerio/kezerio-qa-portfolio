@@ -287,12 +287,8 @@
     return !!$('#casesList');
   }
 
-  function isSubPage() {
-    return !!document.querySelector('link[href^="../assets/"]');
-  }
-
   function basePath() {
-    return isSubPage() ? '../' : '';
+    return isCasesPage() ? '../' : '';
   }
 
   /* ===== UI binding ===== */
