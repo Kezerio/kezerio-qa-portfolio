@@ -17,7 +17,7 @@
     toast.textContent = message;
     toast.hidden = false;
     clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => (toast.hidden = true), 1400);
+    showToast._t = setTimeout(() => (toast.hidden = true), 1800);
   };
 
   /* ===== Clipboard ===== */
@@ -46,76 +46,6 @@
     }
   }
 
-  /* ===== Menus ===== */
-  function setExpanded(btn, expanded) {
-    if (!btn) return;
-    btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
-  }
-
-  function closeMenus(focusBtn = null) {
-    const contactsBtn = $('#contactsBtn');
-    const resumeBtn = $('#resumeBtn');
-    const contactMenu = $('#contactMenu');
-    const resumeMenu = $('#resumeMenu');
-    if (contactMenu) contactMenu.hidden = true;
-    if (resumeMenu) resumeMenu.hidden = true;
-    setExpanded(contactsBtn, false);
-    setExpanded(resumeBtn, false);
-    if (focusBtn) focusBtn.focus();
-  }
-
-  function openMenu(btn, menu) {
-    if (!btn || !menu) return;
-    closeMenus();
-    menu.hidden = false;
-    setExpanded(btn, true);
-    menu.querySelector('.menu__item')?.focus();
-  }
-
-  function toggleMenu(btn, menu) {
-    if (!btn || !menu) return;
-    if (!menu.hidden) return closeMenus(btn);
-    openMenu(btn, menu);
-  }
-
-  /* ===== Render menus from profile ===== */
-  function renderContactMenu(profile) {
-    const menu = $('#contactMenu');
-    if (!menu) return;
-    const telegram = safeText(profile?.contacts?.telegram);
-    const email = safeText(profile?.contacts?.email);
-    menu.innerHTML = `
-      <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
-         href="${escapeHtml(telegram || '#')}">
-        Telegram <span class="menu__meta">\u2197</span>
-      </a>
-      <a class="menu__item" role="menuitem"
-         href="${escapeHtml(email ? 'mailto:' + email : '#')}">
-        Email <span class="menu__meta">${escapeHtml(email || '')}</span>
-      </a>
-      <button class="menu__item" role="menuitem" type="button" id="copyEmailBtn">
-        Скопировать email <span class="menu__meta">\u29C9</span>
-      </button>
-    `;
-  }
-
-  function renderResumeMenu(profile) {
-    const menu = $('#resumeMenu');
-    if (!menu) return;
-    const hh = safeText(profile?.links?.hh);
-    const github = safeText(profile?.links?.github);
-    menu.innerHTML = `
-      <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
-         href="${escapeHtml(hh || '#')}">
-        HH <span class="menu__meta">\u2197</span>
-      </a>
-      <a class="menu__item" role="menuitem" target="_blank" rel="noreferrer"
-         href="${escapeHtml(github || '#')}">
-        GitHub <span class="menu__meta">\u2197</span>
-      </a>
-    `;
-  }
-
   /* ===== Cases rendering ===== */
   function appendCaseLine(root, label, value) {
     const text = safeText(value);
@@ -134,7 +64,6 @@
     list.innerHTML = '';
 
     if (!cases.length) {
-      // Show empty message via #casesEmpty if it exists, otherwise inline
       const emptyEl = $('#casesEmpty');
       if (emptyEl) {
         emptyEl.hidden = false;
@@ -147,7 +76,6 @@
       return;
     }
 
-    // Hide the empty message if visible
     const emptyEl = $('#casesEmpty');
     if (emptyEl) emptyEl.hidden = true;
 
@@ -250,7 +178,6 @@
     const activeTiles = $$('.catTile--active', catTilesContainer);
     if (!activeTiles.length) return;
 
-    // Select first active category by default
     let selectedCategory = activeTiles[0].dataset.category;
     activeTiles[0].classList.add('catTile--selected');
     renderCases(allCases.filter((c) => c.category === selectedCategory));
@@ -260,19 +187,69 @@
         const cat = tile.dataset.category;
         if (cat === selectedCategory) return;
 
-        // Update selection
         selectedCategory = cat;
         activeTiles.forEach((t) => t.classList.remove('catTile--selected'));
         tile.classList.add('catTile--selected');
 
-        // Filter and render
         const filtered = allCases.filter((c) => c.category === cat);
         renderCases(filtered);
       });
     });
 
-    // iOS press on category tiles
     bindPressEffect('.catTile--active');
+  }
+
+  /* ===== Contacts page rendering ===== */
+  function renderContacts(profile) {
+    const email = safeText(profile?.contacts?.email);
+    const telegram = safeText(profile?.contacts?.telegram);
+    const github = safeText(profile?.links?.github);
+    const hh = safeText(profile?.links?.hh);
+
+    const emailEl = $('#contactEmail');
+    if (emailEl && email) {
+      emailEl.textContent = email;
+      emailEl.href = 'mailto:' + escapeHtml(email);
+    }
+
+    const tgEl = $('#contactTelegram');
+    if (tgEl && telegram) {
+      tgEl.textContent = '@KezerioQA';
+      tgEl.href = telegram;
+    }
+
+    const ghEl = $('#contactGitHub');
+    if (ghEl && github) {
+      ghEl.textContent = 'Kezerio';
+      ghEl.href = github;
+    }
+
+    const hhRow = $('#contactHhRow');
+    const hhEl = $('#contactHh');
+    if (hhEl && hhRow && hh) {
+      hhEl.href = hh;
+      hhRow.hidden = false;
+    }
+
+    // Copy email button
+    const copyBtn = $('#copyEmailBtn');
+    if (copyBtn && email) {
+      copyBtn.addEventListener('click', async () => {
+        const ok = await copyToClipboard(email);
+        showToast(ok ? 'Скопировано' : 'Не удалось скопировать');
+      });
+    }
+  }
+
+  /* ===== Resume links on /about/ ===== */
+  function renderResumeLinks(profile) {
+    const hh = safeText(profile?.links?.hh);
+    if (!hh) return;
+
+    const link = $('#resumeLink');
+    const linkBottom = $('#resumeLinkBottom');
+    if (link) link.href = hh;
+    if (linkBottom) linkBottom.href = hh;
   }
 
   /* ===== Data loading ===== */
@@ -287,6 +264,14 @@
     return !!$('#casesList');
   }
 
+  function isContactsPage() {
+    return !!$('#contactList');
+  }
+
+  function isAboutPage() {
+    return !!$('#resumeSidebar');
+  }
+
   function isSubPage() {
     return !!document.querySelector('link[href^="../assets/"]');
   }
@@ -295,60 +280,19 @@
     return isSubPage() ? '../' : '';
   }
 
-  /* ===== UI binding ===== */
-  function bindUI(state) {
-    const contactsBtn = $('#contactsBtn');
-    const resumeBtn = $('#resumeBtn');
-    const contactMenu = $('#contactMenu');
-    const resumeMenu = $('#resumeMenu');
-
-    if (contactMenu) contactMenu.hidden = true;
-    if (resumeMenu) resumeMenu.hidden = true;
-    setExpanded(contactsBtn, false);
-    setExpanded(resumeBtn, false);
-
-    contactsBtn?.addEventListener('click', () => toggleMenu(contactsBtn, contactMenu));
-    resumeBtn?.addEventListener('click', () => toggleMenu(resumeBtn, resumeMenu));
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key !== 'Escape') return;
-      if (contactMenu && !contactMenu.hidden) return closeMenus(contactsBtn);
-      if (resumeMenu && !resumeMenu.hidden) return closeMenus(resumeBtn);
-    });
-
-    document.addEventListener('click', async (e) => {
-      const t = e.target;
-      if (!(t instanceof HTMLElement)) return;
-      if (t.closest('#contactsBtn') || t.closest('#resumeBtn')) return;
-
-      if (t.id === 'copyEmailBtn') {
-        const ok = await copyToClipboard(state.email || '');
-        showToast(ok ? 'Email скопирован' : 'Не удалось скопировать');
-        closeMenus(contactsBtn);
-        return;
-      }
-
-      if (t.closest('#contactMenu')) return closeMenus(contactsBtn);
-      if (t.closest('#resumeMenu')) return closeMenus(resumeBtn);
-      closeMenus();
-    });
-  }
-
   /* ===== Main ===== */
   async function main() {
     const yearEl = $('#year');
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-    const state = { email: '' };
     const base = basePath();
 
-    // Load profile for header/menus
+    // Load profile
     try {
       const profile = await loadJSON(base + 'data/profile.json');
-      state.email = safeText(profile?.contacts?.email) || '';
 
       const name = safeText(profile?.name) || 'Константин';
-      const roleShort = safeText(profile?.roleShort) || 'Junior QA Engineer (Manual)';
+      const roleShort = safeText(profile?.roleShort) || 'Junior IT (QA / Backend / Web)';
 
       const nameTop = $('#nameTop');
       const roleTop = $('#roleTop');
@@ -358,10 +302,17 @@
       if (roleTop) roleTop.textContent = roleShort;
       if (nameFooter) nameFooter.textContent = name;
 
-      renderContactMenu(profile);
-      renderResumeMenu(profile);
+      // Contacts page
+      if (isContactsPage()) {
+        renderContacts(profile);
+      }
+
+      // About page — resume links
+      if (isAboutPage()) {
+        renderResumeLinks(profile);
+      }
     } catch (_) {
-      // Profile didn't load — menus stay empty, static text stays
+      // Profile didn't load — static text stays
     }
 
     // Cases page: load cases and bind category filter
@@ -381,7 +332,7 @@
     }
 
     // Main page: show cases count on tile
-    if (!isCasesPage()) {
+    if (!isCasesPage() && !isContactsPage() && !isAboutPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
         const arr = Array.isArray(cases) ? cases : [];
@@ -393,10 +344,10 @@
       } catch (_) {
         // Silently skip count
       }
-      bindPressEffect('.tile--active');
     }
 
-    bindUI(state);
+    // iOS press on active tiles (main page)
+    bindPressEffect('.tile--active');
   }
 
   function pluralize(n, one, few, many) {

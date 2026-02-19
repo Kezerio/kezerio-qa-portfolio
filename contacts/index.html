@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Контакты — Константин</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <div class="brand">
+        <a class="brand__avatar brand__avatar--link" href="../" aria-label="На главную">IT</a>
+        <div class="brand__text">
+          <div class="brand__name" id="nameTop">Константин</div>
+          <div class="brand__role" id="roleTop">Junior IT (QA / Backend / Web)</div>
+        </div>
+      </div>
+
+      <div class="topbar__center">
+        <span class="topbar__title">Контакты</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap main main--cases" role="main">
+    <section class="section">
+      <div class="section__head">
+        <a class="back-link" href="../">&larr; На главную</a>
+        <h1>Контакты</h1>
+        <p class="muted">Свяжитесь со мной удобным способом</p>
+      </div>
+
+      <div class="contact-list" id="contactList">
+        <div class="contact-row">
+          <span class="contact-row__label">Email</span>
+          <span class="contact-row__value">
+            <a class="contact-row__link" id="contactEmail" href="#">—</a>
+            <button class="contact-row__copy" id="copyEmailBtn" type="button" aria-label="Скопировать email" title="Скопировать">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <rect x="5" y="5" width="9" height="9" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M11 5V3.5A1.5 1.5 0 0 0 9.5 2h-6A1.5 1.5 0 0 0 2 3.5v6A1.5 1.5 0 0 0 3.5 11H5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </button>
+          </span>
+        </div>
+
+        <div class="contact-row">
+          <span class="contact-row__label">Telegram</span>
+          <span class="contact-row__value">
+            <a class="contact-row__link" id="contactTelegram" href="#" target="_blank" rel="noopener noreferrer">—</a>
+          </span>
+        </div>
+
+        <div class="contact-row">
+          <span class="contact-row__label">GitHub</span>
+          <span class="contact-row__value">
+            <a class="contact-row__link" id="contactGitHub" href="#" target="_blank" rel="noopener noreferrer">—</a>
+          </span>
+        </div>
+
+        <div class="contact-row" id="contactHhRow" hidden>
+          <span class="contact-row__label">HH Резюме</span>
+          <span class="contact-row__value">
+            <a class="contact-row__link" id="contactHh" href="#" target="_blank" rel="noopener noreferrer">Открыть</a>
+          </span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="wrap footer__inner">
+      <div>&copy; <span id="year"></span> <span id="nameFooter">Константин</span></div>
+      <div class="muted">v.2.1.0</div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast" hidden role="status" aria-live="polite">Готово</div>
+
+  <script src="../assets/app.js" defer></script>
+</body>
+</html>
