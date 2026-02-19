@@ -624,6 +624,62 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
 }
 .timeline__step:last-child .timeline__line{display:none}
 
+/* ===== DLT QA cross-navigation panel ===== */
+.dltNav{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:8px;
+  padding:14px 16px;
+  border-radius:var(--radius);
+  border:1px solid var(--glass-border);
+  background:var(--glass);
+  backdrop-filter:saturate(120%) blur(14px);
+  -webkit-backdrop-filter:saturate(120%) blur(14px);
+  box-shadow:var(--glass-shadow);
+  margin-bottom:20px;
+}
+.dltNav__label{
+  font-size:11px;font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;
+  margin-right:2px;
+  white-space:nowrap;
+  opacity:.7;
+}
+.dltNav__btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 14px;
+  border-radius:var(--radius-sm);
+  border:1px solid rgba(169,109,58,.15);
+  background:rgba(255,252,247,.5);
+  font:inherit;font-weight:700;font-size:13px;
+  color:var(--muted);
+  text-decoration:none;
+  cursor:pointer;
+  will-change:transform;
+  transition:background .2s,box-shadow .2s,transform .18s,color .15s,border-color .15s;
+  -webkit-user-select:none;user-select:none;
+}
+.dltNav__btn:hover{
+  background:rgba(255,252,247,.82);
+  color:var(--text);
+  border-color:rgba(169,109,58,.22);
+  box-shadow:0 2px 8px rgba(70,35,14,.07);
+}
+.dltNav__btn:active,
+.dltNav__btn.pressing{
+  transform:scale(.96);
+  box-shadow:none;
+}
+.dltNav__btn--active{
+  border-color:rgba(169,109,58,.32);
+  background:rgba(169,109,58,.1);
+  color:var(--accent);
+  cursor:default;
+  pointer-events:none;
+}
+
 /* ===== Checklist cards ===== */
 .checkCards{display:grid;gap:14px}
 
@@ -676,12 +732,28 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
   display:flex;align-items:flex-start;gap:10px;
   font-size:14px;line-height:1.5;
 }
+/* Read-only markers — no interactive checkboxes */
 .checkCard__item::before{
-  content:"☐";
   flex-shrink:0;
-  font-size:16px;
-  color:var(--accent);
-  margin-top:1px;
+  margin-top:2px;
+  font-size:14px;
+  font-weight:700;
+  line-height:1;
+  /* default: pending ○ */
+  content:"○";
+  color:var(--muted);
+  opacity:.5;
+}
+.checkCard__list--done .checkCard__item::before{
+  content:"✓";
+  color:#388e3c;
+  opacity:1;
+  font-size:15px;
+}
+.checkCard__list--pending .checkCard__item::before{
+  content:"○";
+  color:var(--muted);
+  opacity:.5;
 }
 
 /* ===== Test plan cards ===== */
@@ -726,20 +798,39 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
   color:var(--muted);font-size:14px;line-height:1.6;
   margin-bottom:14px;
 }
+/* Document-style numbered section list */
 .planCard__sections{
+  counter-reset:planSection;
   list-style:none;
-  display:grid;gap:6px;
+  display:grid;gap:0;
+  border-radius:var(--radius-sm);
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.07);
 }
 .planCard__section{
-  display:flex;align-items:center;gap:10px;
+  counter-increment:planSection;
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 14px;
   font-size:14px;line-height:1.5;
+  border-bottom:1px solid rgba(0,0,0,.05);
+  background:rgba(255,255,255,.22);
+  transition:background .12s;
+}
+.planCard__section:nth-child(even){
+  background:rgba(255,255,255,.36);
+}
+.planCard__section:last-child{
+  border-bottom:none;
 }
 .planCard__section::before{
-  content:"§";
+  content:counter(planSection);
   flex-shrink:0;
-  font-weight:800;
+  font-size:11px;font-weight:800;
   color:var(--accent);
-  opacity:.6;
+  opacity:.75;
+  min-width:16px;
+  margin-top:2px;
+  text-align:center;
 }
 
 /* ===== Callout ===== */
@@ -857,4 +948,8 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
 
   .toolCards{grid-template-columns:1fr}
   .toolCard__badge{font-size:9px;padding:2px 6px;top:8px;right:8px}
+
+  .dltNav{padding:10px 12px;gap:6px}
+  .dltNav__label{display:none}
+  .dltNav__btn{padding:6px 10px;font-size:12px}
 }
