@@ -287,8 +287,12 @@
     return !!$('#casesList');
   }
 
+  function isSubPage() {
+    return !!document.querySelector('link[href^="../assets/"]');
+  }
+
   function basePath() {
-    return isCasesPage() ? '../' : '';
+    return isSubPage() ? '../' : '';
   }
 
   /* ===== UI binding ===== */
