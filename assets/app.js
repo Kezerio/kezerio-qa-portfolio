@@ -5,11 +5,6 @@
   const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
   const safeText = (s) => (s == null ? '' : String(s).trim());
 
-  const escapeHtml = (s) =>
-    String(s).replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-    }[c]));
-
   /* ===== Toast ===== */
   const showToast = (message) => {
     const toast = $('#toast');
@@ -44,6 +39,18 @@
     } catch (_) {
       return false;
     }
+  }
+
+  /* ===== iOS press effect ===== */
+  function bindPressEffect(selector) {
+    document.querySelectorAll(selector).forEach((el) => {
+      const add = () => el.classList.add('pressing');
+      const remove = () => el.classList.remove('pressing');
+      el.addEventListener('pointerdown', add);
+      el.addEventListener('pointerup', remove);
+      el.addEventListener('pointerleave', remove);
+      el.addEventListener('pointercancel', remove);
+    });
   }
 
   /* ===== Cases rendering ===== */
@@ -158,18 +165,6 @@
     });
   }
 
-  /* ===== iOS press effect ===== */
-  function bindPressEffect(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      const add = () => el.classList.add('pressing');
-      const remove = () => el.classList.remove('pressing');
-      el.addEventListener('pointerdown', add);
-      el.addEventListener('pointerup', remove);
-      el.addEventListener('pointerleave', remove);
-      el.addEventListener('pointercancel', remove);
-    });
-  }
-
   /* ===== Category filter logic ===== */
   function bindCategoryFilter(allCases) {
     const catTilesContainer = $('#catTiles');
@@ -186,70 +181,70 @@
       tile.addEventListener('click', () => {
         const cat = tile.dataset.category;
         if (cat === selectedCategory) return;
-
         selectedCategory = cat;
         activeTiles.forEach((t) => t.classList.remove('catTile--selected'));
         tile.classList.add('catTile--selected');
-
-        const filtered = allCases.filter((c) => c.category === cat);
-        renderCases(filtered);
+        renderCases(allCases.filter((c) => c.category === cat));
       });
     });
 
     bindPressEffect('.catTile--active');
   }
 
-  /* ===== Contacts page rendering ===== */
-  function renderContacts(profile) {
-    const email = safeText(profile?.contacts?.email);
+  /* ===== Contacts page ===== */
+  function initContacts(profile) {
+    const email    = safeText(profile?.contacts?.email);
     const telegram = safeText(profile?.contacts?.telegram);
-    const github = safeText(profile?.links?.github);
-    const hh = safeText(profile?.links?.hh);
+    const github   = safeText(profile?.links?.github);
+    const hh       = safeText(profile?.links?.hh);
 
-    const emailEl = $('#contactEmail');
-    if (emailEl && email) {
-      emailEl.textContent = email;
-      emailEl.href = 'mailto:' + escapeHtml(email);
+    // Update email value from profile
+    const emailValEl = $('#contactEmail');
+    if (emailValEl && email) emailValEl.textContent = email;
+
+    // Update telegram href from profile (handle is static in HTML)
+    const tgTile = $('#contactTileTelegram');
+    if (tgTile && telegram) tgTile.href = telegram;
+
+    // Update github href from profile
+    const ghTile = $('#contactTileGitHub');
+    if (ghTile && github) ghTile.href = github;
+
+    // Show & populate HH tile
+    const hhTile = $('#contactTileHh');
+    if (hhTile && hh) {
+      hhTile.href = hh;
+      hhTile.hidden = false;
     }
 
-    const tgEl = $('#contactTelegram');
-    if (tgEl && telegram) {
-      tgEl.textContent = '@KezerioQA';
-      tgEl.href = telegram;
-    }
-
-    const ghEl = $('#contactGitHub');
-    if (ghEl && github) {
-      ghEl.textContent = 'Kezerio';
-      ghEl.href = github;
-    }
-
-    const hhRow = $('#contactHhRow');
-    const hhEl = $('#contactHh');
-    if (hhEl && hhRow && hh) {
-      hhEl.href = hh;
-      hhRow.hidden = false;
-    }
-
-    // Copy email button
-    const copyBtn = $('#copyEmailBtn');
-    if (copyBtn && email) {
-      copyBtn.addEventListener('click', async () => {
-        const ok = await copyToClipboard(email);
-        showToast(ok ? 'Скопировано' : 'Не удалось скопировать');
+    // Email tile: click = copy
+    const emailTile = $('#contactTileEmail');
+    if (emailTile && email) {
+      // Keyboard: Enter/Space triggers copy
+      emailTile.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          doCopy(email);
+        }
       });
+      emailTile.addEventListener('click', () => doCopy(email));
     }
+
+    // iOS press on all contact tiles
+    bindPressEffect('.contactTile');
+  }
+
+  async function doCopy(email) {
+    const ok = await copyToClipboard(email);
+    showToast(ok ? 'Email скопирован' : 'Не удалось скопировать');
   }
 
   /* ===== Resume links on /about/ ===== */
-  function renderResumeLinks(profile) {
+  function initAbout(profile) {
     const hh = safeText(profile?.links?.hh);
     if (!hh) return;
-
-    const link = $('#resumeLink');
-    const linkBottom = $('#resumeLinkBottom');
-    if (link) link.href = hh;
-    if (linkBottom) linkBottom.href = hh;
+    const btn = $('#resumeLinkBottom');
+    if (btn) btn.href = hh;
   }
 
   /* ===== Data loading ===== */
@@ -259,23 +254,14 @@
     return res.json();
   }
 
-  /* ===== Detect page type ===== */
-  function isCasesPage() {
-    return !!$('#casesList');
-  }
-
-  function isContactsPage() {
-    return !!$('#contactList');
-  }
-
-  function isAboutPage() {
-    return !!$('#resumeSidebar');
-  }
+  /* ===== Page detection ===== */
+  const isCasesPage    = () => !!$('#casesList');
+  const isContactsPage = () => !!$('#contactTiles');
+  const isAboutPage    = () => !!$('#resumeCta');
 
   function isSubPage() {
     return !!document.querySelector('link[href^="../assets/"]');
   }
-
   function basePath() {
     return isSubPage() ? '../' : '';
   }
@@ -291,70 +277,56 @@
     try {
       const profile = await loadJSON(base + 'data/profile.json');
 
-      const name = safeText(profile?.name) || 'Константин';
+      const name      = safeText(profile?.name)      || 'Константин';
       const roleShort = safeText(profile?.roleShort) || 'Junior IT (QA / Backend / Web)';
 
-      const nameTop = $('#nameTop');
-      const roleTop = $('#roleTop');
+      const nameTop    = $('#nameTop');
+      const roleTop    = $('#roleTop');
       const nameFooter = $('#nameFooter');
-
-      if (nameTop) nameTop.textContent = name;
-      if (roleTop) roleTop.textContent = roleShort;
+      if (nameTop)    nameTop.textContent    = name;
+      if (roleTop)    roleTop.textContent    = roleShort;
       if (nameFooter) nameFooter.textContent = name;
 
-      // Contacts page
-      if (isContactsPage()) {
-        renderContacts(profile);
-      }
-
-      // About page — resume links
-      if (isAboutPage()) {
-        renderResumeLinks(profile);
-      }
+      if (isContactsPage()) initContacts(profile);
+      if (isAboutPage())    initAbout(profile);
     } catch (_) {
-      // Profile didn't load — static text stays
+      // Profile didn't load — static fallback text stays
     }
 
-    // Cases page: load cases and bind category filter
+    // Cases page
     if (isCasesPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
-        const arr = Array.isArray(cases) ? cases : [];
-        bindCategoryFilter(arr);
+        bindCategoryFilter(Array.isArray(cases) ? cases : []);
       } catch (_) {
         const box = $('#dataStatus');
-        if (box) {
-          box.hidden = false;
-          box.textContent = 'Не удалось загрузить данные кейсов. Попробуйте обновить страницу.';
-        }
+        if (box) { box.hidden = false; box.textContent = 'Не удалось загрузить кейсы. Обновите страницу.'; }
         renderCases([]);
       }
     }
 
-    // Main page: show cases count on tile
+    // Main page: cases count badge
     if (!isCasesPage() && !isContactsPage() && !isAboutPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
-        const arr = Array.isArray(cases) ? cases : [];
+        const arr   = Array.isArray(cases) ? cases : [];
         const total = arr.reduce((n, c) => n + (Array.isArray(c.items) ? c.items.length : 0), 0);
         const countEl = $('#casesCount');
         if (countEl && total > 0) {
           countEl.textContent = total + ' ' + pluralize(total, 'кейс', 'кейса', 'кейсов');
         }
-      } catch (_) {
-        // Silently skip count
-      }
+      } catch (_) {}
     }
 
-    // iOS press on active tiles (main page)
+    // iOS press on main tiles
     bindPressEffect('.tile--active');
   }
 
   function pluralize(n, one, few, many) {
-    const abs = Math.abs(n) % 100;
+    const abs  = Math.abs(n) % 100;
     const last = abs % 10;
     if (abs > 10 && abs < 20) return many;
-    if (last > 1 && last < 5) return few;
+    if (last > 1  && last < 5) return few;
     if (last === 1) return one;
     return many;
   }
