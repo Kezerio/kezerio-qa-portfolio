@@ -365,6 +365,23 @@ code{background:rgba(0,0,0,.04);padding:2px 6px;border-radius:8px;border:1px sol
 }
 .case__link:hover{background:rgba(255,255,255,.7)}
 
+/* ===== About card ===== */
+.about-card{
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius);
+  background:var(--glass);
+  backdrop-filter:saturate(120%) blur(14px);
+  -webkit-backdrop-filter:saturate(120%) blur(14px);
+  box-shadow:var(--glass-shadow);
+  padding:28px 32px;
+}
+.about-card p{
+  margin:0 0 18px;
+  line-height:1.7;
+  font-size:15px;
+}
+.about-card p:last-child{margin-bottom:0}
+
 /* ===== Callout ===== */
 .callout[hidden]{display:none}
 .callout{
