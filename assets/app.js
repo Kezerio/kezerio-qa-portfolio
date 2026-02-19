@@ -191,6 +191,294 @@
     bindPressEffect('.catTile--active');
   }
 
+  /* ===== Tools page rendering ===== */
+  function renderTools(tools, base) {
+    const list = $('#toolsList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    tools.forEach((tool) => {
+      const isActive = !!tool.active;
+
+      if (isActive && tool.href) {
+        const a = document.createElement('a');
+        a.className = 'toolCard toolCard--active';
+        a.href = tool.href.replace(/^tools\//, '');
+        buildToolCardContent(a, tool, base);
+        list.appendChild(a);
+      } else {
+        const div = document.createElement('div');
+        div.className = 'toolCard toolCard--disabled';
+        const badge = document.createElement('span');
+        badge.className = 'toolCard__badge';
+        badge.textContent = 'Скоро';
+        div.appendChild(badge);
+
+        const iconWrap = document.createElement('div');
+        iconWrap.className = 'toolCard__icon';
+        const emoji = document.createElement('span');
+        emoji.className = 'toolCard__emoji';
+        emoji.textContent = '🔧';
+        iconWrap.appendChild(emoji);
+        div.appendChild(iconWrap);
+
+        const title = document.createElement('div');
+        title.className = 'toolCard__title';
+        title.textContent = safeText(tool.title) || 'Инструмент';
+        div.appendChild(title);
+
+        list.appendChild(div);
+      }
+    });
+
+    bindPressEffect('.toolCard--active');
+  }
+
+  function buildToolCardContent(el, tool, base) {
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'toolCard__icon';
+    if (tool.icon) {
+      const img = document.createElement('img');
+      img.src = base + tool.icon;
+      img.alt = safeText(tool.title);
+      iconWrap.appendChild(img);
+    } else {
+      const emoji = document.createElement('span');
+      emoji.className = 'toolCard__emoji';
+      emoji.textContent = '🛠';
+      iconWrap.appendChild(emoji);
+    }
+    el.appendChild(iconWrap);
+
+    const title = document.createElement('div');
+    title.className = 'toolCard__title';
+    title.textContent = safeText(tool.title);
+    el.appendChild(title);
+
+    if (tool.subtitle) {
+      const sub = document.createElement('div');
+      sub.className = 'toolCard__subtitle';
+      sub.textContent = safeText(tool.subtitle);
+      el.appendChild(sub);
+    }
+
+    if (tool.desc) {
+      const desc = document.createElement('div');
+      desc.className = 'toolCard__desc';
+      desc.textContent = safeText(tool.desc);
+      el.appendChild(desc);
+    }
+  }
+
+  /* ===== Tool detail page ===== */
+  function renderToolDetail(tool, base) {
+    const container = $('#toolDetail');
+    if (!container) return;
+
+    // Icon
+    const iconWrap = $('#toolDetailIcon');
+    if (iconWrap && tool.icon) {
+      const img = document.createElement('img');
+      img.src = base + tool.icon;
+      img.alt = safeText(tool.title);
+      iconWrap.appendChild(img);
+    }
+
+    // Title & subtitle
+    const titleEl = $('#toolDetailTitle');
+    if (titleEl) titleEl.textContent = safeText(tool.title);
+    const subtitleEl = $('#toolDetailSubtitle');
+    if (subtitleEl) subtitleEl.textContent = safeText(tool.subtitle);
+
+    // Description
+    const descEl = $('#toolDetailDesc');
+    if (descEl) {
+      const p = document.createElement('p');
+      p.textContent = safeText(tool.desc);
+      descEl.appendChild(p);
+    }
+
+    // Timeline
+    const timelineEl = $('#toolDetailTimeline');
+    if (timelineEl && Array.isArray(tool.timeline) && tool.timeline.length) {
+      const wrap = document.createElement('div');
+      wrap.className = 'timeline';
+
+      tool.timeline.forEach((step) => {
+        const stepEl = document.createElement('div');
+        stepEl.className = 'timeline__step timeline__step--' + (step.status || 'planned');
+
+        const dot = document.createElement('div');
+        dot.className = 'timeline__dot';
+        stepEl.appendChild(dot);
+
+        const label = document.createElement('div');
+        label.className = 'timeline__label';
+        label.textContent = safeText(step.label);
+        stepEl.appendChild(label);
+
+        const line = document.createElement('div');
+        line.className = 'timeline__line';
+        stepEl.appendChild(line);
+
+        wrap.appendChild(stepEl);
+      });
+
+      timelineEl.appendChild(wrap);
+    }
+  }
+
+  /* ===== Checklists page rendering ===== */
+  function renderChecklists(data) {
+    const list = $('#checklistsList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    // Update section header from data
+    const titleEl = $('#checklistsTitle');
+    if (titleEl && data.sectionTitle) titleEl.textContent = safeText(data.sectionTitle);
+    const descEl = $('#checklistsDesc');
+    if (descEl && data.sectionDesc) descEl.textContent = safeText(data.sectionDesc);
+
+    const items = Array.isArray(data.items) ? data.items : [];
+    if (!items.length) {
+      const empty = document.createElement('div');
+      empty.className = 'callout';
+      empty.textContent = 'Чек-листы пока не добавлены.';
+      list.appendChild(empty);
+      return;
+    }
+
+    items.forEach((item) => {
+      const det = document.createElement('details');
+      det.className = 'checkCard';
+
+      const sum = document.createElement('summary');
+      sum.className = 'checkCard__head';
+
+      // Status badge
+      const status = document.createElement('span');
+      status.className = 'checkCard__status checkCard__status--' + (item.status || 'in-progress');
+      status.textContent = statusLabel(item.status);
+      sum.appendChild(status);
+
+      const info = document.createElement('div');
+      info.className = 'checkCard__info';
+
+      const title = document.createElement('span');
+      title.className = 'checkCard__title';
+      title.textContent = safeText(item.title);
+      info.appendChild(title);
+
+      sum.appendChild(info);
+      det.appendChild(sum);
+
+      // Body
+      const body = document.createElement('div');
+      body.className = 'checkCard__body';
+
+      if (item.summary) {
+        const desc = document.createElement('p');
+        desc.className = 'checkCard__desc';
+        desc.textContent = safeText(item.summary);
+        body.appendChild(desc);
+      }
+
+      const checks = Array.isArray(item.checks) ? item.checks : [];
+      if (checks.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'checkCard__list';
+        checks.forEach((check) => {
+          const li = document.createElement('li');
+          li.className = 'checkCard__item';
+          li.textContent = safeText(check);
+          ul.appendChild(li);
+        });
+        body.appendChild(ul);
+      }
+
+      det.appendChild(body);
+      list.appendChild(det);
+    });
+  }
+
+  /* ===== Test plans page rendering ===== */
+  function renderTestPlans(plans) {
+    const list = $('#testPlansList');
+    if (!list) return;
+    list.innerHTML = '';
+
+    if (!plans.length) {
+      const empty = document.createElement('div');
+      empty.className = 'callout';
+      empty.textContent = 'Тест-планы пока не добавлены.';
+      list.appendChild(empty);
+      return;
+    }
+
+    plans.forEach((plan) => {
+      const det = document.createElement('details');
+      det.className = 'planCard';
+
+      const sum = document.createElement('summary');
+      sum.className = 'planCard__head';
+
+      const status = document.createElement('span');
+      status.className = 'planCard__status planCard__status--' + (plan.status || 'in-progress');
+      status.textContent = statusLabel(plan.status);
+      sum.appendChild(status);
+
+      const info = document.createElement('div');
+      info.className = 'planCard__info';
+
+      const title = document.createElement('span');
+      title.className = 'planCard__title';
+      title.textContent = safeText(plan.title);
+      info.appendChild(title);
+
+      sum.appendChild(info);
+      det.appendChild(sum);
+
+      // Body
+      const body = document.createElement('div');
+      body.className = 'planCard__body';
+
+      if (plan.summary) {
+        const desc = document.createElement('p');
+        desc.className = 'planCard__desc';
+        desc.textContent = safeText(plan.summary);
+        body.appendChild(desc);
+      }
+
+      const sections = Array.isArray(plan.sections) ? plan.sections : [];
+      if (sections.length) {
+        const ul = document.createElement('ul');
+        ul.className = 'planCard__sections';
+        sections.forEach((sec) => {
+          const li = document.createElement('li');
+          li.className = 'planCard__section';
+          li.textContent = safeText(sec);
+          ul.appendChild(li);
+        });
+        body.appendChild(ul);
+      }
+
+      det.appendChild(body);
+      list.appendChild(det);
+    });
+  }
+
+  /* ===== Status label helper ===== */
+  function statusLabel(status) {
+    switch (status) {
+      case 'done': return 'Готово';
+      case 'in-progress': return 'В работе';
+      case 'in-review': return 'На ревью';
+      case 'planned': return 'Запланировано';
+      default: return 'В работе';
+    }
+  }
+
   /* ===== Contacts page ===== */
   function initContacts(profile) {
     const email    = safeText(profile?.contacts?.email);
@@ -198,29 +486,23 @@
     const github   = safeText(profile?.links?.github);
     const hh       = safeText(profile?.links?.hh);
 
-    // Update email value from profile
     const emailValEl = $('#contactEmail');
     if (emailValEl && email) emailValEl.textContent = email;
 
-    // Update telegram href from profile (handle is static in HTML)
     const tgTile = $('#contactTileTelegram');
     if (tgTile && telegram) tgTile.href = telegram;
 
-    // Update github href from profile
     const ghTile = $('#contactTileGitHub');
     if (ghTile && github) ghTile.href = github;
 
-    // Show & populate HH tile
     const hhTile = $('#contactTileHh');
     if (hhTile && hh) {
       hhTile.href = hh;
       hhTile.hidden = false;
     }
 
-    // Email tile: click = copy
     const emailTile = $('#contactTileEmail');
     if (emailTile && email) {
-      // Keyboard: Enter/Space triggers copy
       emailTile.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -230,7 +512,6 @@
       emailTile.addEventListener('click', () => doCopy(email));
     }
 
-    // iOS press on all contact tiles
     bindPressEffect('.contactTile');
   }
 
@@ -255,15 +536,22 @@
   }
 
   /* ===== Page detection ===== */
-  const isCasesPage    = () => !!$('#casesList');
-  const isContactsPage = () => !!$('#contactTiles');
-  const isAboutPage    = () => !!$('#resumeCta');
+  const isCasesPage      = () => !!$('#casesList');
+  const isContactsPage   = () => !!$('#contactTiles');
+  const isAboutPage      = () => !!$('#resumeCta');
+  const isToolsPage      = () => !!$('#toolsList');
+  const isToolDetailPage = () => !!$('#toolDetail');
+  const isChecklistsPage = () => !!$('#checklistsList');
+  const isTestPlansPage  = () => !!$('#testPlansList');
+  const isMainPage       = () => !!$('#tilesGrid');
 
-  function isSubPage() {
-    return !!document.querySelector('link[href^="../assets/"]');
-  }
   function basePath() {
-    return isSubPage() ? '../' : '';
+    // Detect depth: check stylesheet link href prefix
+    const link = document.querySelector('link[href^="../../assets/"]');
+    if (link) return '../../';
+    const link1 = document.querySelector('link[href^="../assets/"]');
+    if (link1) return '../';
+    return '';
   }
 
   /* ===== Main ===== */
@@ -305,8 +593,45 @@
       }
     }
 
-    // Main page: cases count badge
-    if (!isCasesPage() && !isContactsPage() && !isAboutPage()) {
+    // Tools page
+    if (isToolsPage()) {
+      try {
+        const tools = await loadJSON(base + 'data/tools.json');
+        renderTools(Array.isArray(tools) ? tools : [], base);
+      } catch (_) {}
+    }
+
+    // Tool detail page
+    if (isToolDetailPage()) {
+      try {
+        const tools = await loadJSON(base + 'data/tools.json');
+        const arr = Array.isArray(tools) ? tools : [];
+        // Detect which tool by URL path segment
+        const pathParts = window.location.pathname.replace(/\/+$/, '').split('/');
+        const slug = pathParts[pathParts.length - 1];
+        const tool = arr.find((t) => t.id === slug) || arr[0];
+        if (tool) renderToolDetail(tool, base);
+      } catch (_) {}
+    }
+
+    // Checklists page
+    if (isChecklistsPage()) {
+      try {
+        const data = await loadJSON(base + 'data/checklists.json');
+        renderChecklists(data && typeof data === 'object' ? data : { items: [] });
+      } catch (_) {}
+    }
+
+    // Test plans page
+    if (isTestPlansPage()) {
+      try {
+        const plans = await loadJSON(base + 'data/testplans.json');
+        renderTestPlans(Array.isArray(plans) ? plans : []);
+      } catch (_) {}
+    }
+
+    // Main page: count badges
+    if (isMainPage() && !isCasesPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
         const arr   = Array.isArray(cases) ? cases : [];
@@ -314,6 +639,33 @@
         const countEl = $('#casesCount');
         if (countEl && total > 0) {
           countEl.textContent = total + ' ' + pluralize(total, 'кейс', 'кейса', 'кейсов');
+        }
+      } catch (_) {}
+
+      try {
+        const tools = await loadJSON(base + 'data/tools.json');
+        const active = (Array.isArray(tools) ? tools : []).filter((t) => t.active).length;
+        const countEl = $('#toolsCount');
+        if (countEl && active > 0) {
+          countEl.textContent = active + ' ' + pluralize(active, 'инструмент', 'инструмента', 'инструментов');
+        }
+      } catch (_) {}
+
+      try {
+        const data = await loadJSON(base + 'data/checklists.json');
+        const items = Array.isArray(data?.items) ? data.items : [];
+        const countEl = $('#checklistsCount');
+        if (countEl && items.length > 0) {
+          countEl.textContent = items.length + ' ' + pluralize(items.length, 'чек-лист', 'чек-листа', 'чек-листов');
+        }
+      } catch (_) {}
+
+      try {
+        const plans = await loadJSON(base + 'data/testplans.json');
+        const arr = Array.isArray(plans) ? plans : [];
+        const countEl = $('#testPlansCount');
+        if (countEl && arr.length > 0) {
+          countEl.textContent = arr.length + ' ' + pluralize(arr.length, 'план', 'плана', 'планов');
         }
       } catch (_) {}
     }

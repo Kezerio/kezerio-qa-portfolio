@@ -1,0 +1,53 @@
+[
+  {
+    "id": "dlt-qa",
+    "title": "DLT QA",
+    "subtitle": "Ускорение оформления баг-репортов",
+    "desc": "Браузерный инструмент, который сокращает создание баг-репорта с ~20\u201330 минут до ~5\u201310 минут. Автоматически собирает окружение, ведёт по шагам и сохраняет структуру отчёта \u2014 разработчику не нужно уточнять детали.",
+    "icon": "assets/icons/dlt-qa.svg",
+    "href": "tools/dlt-qa/",
+    "active": true,
+    "timeline": [
+      { "label": "Идея придумана", "status": "done" },
+      { "label": "MVP в разработке", "status": "in-progress" },
+      { "label": "Тестовый запуск", "status": "planned" },
+      { "label": "Пилот / обкатка", "status": "planned" },
+      { "label": "Публичная версия", "status": "planned" }
+    ]
+  },
+  {
+    "id": "placeholder-2",
+    "title": "Инструмент #2",
+    "subtitle": "",
+    "desc": "",
+    "active": false
+  },
+  {
+    "id": "placeholder-3",
+    "title": "Инструмент #3",
+    "subtitle": "",
+    "desc": "",
+    "active": false
+  },
+  {
+    "id": "placeholder-4",
+    "title": "Инструмент #4",
+    "subtitle": "",
+    "desc": "",
+    "active": false
+  },
+  {
+    "id": "placeholder-5",
+    "title": "Инструмент #5",
+    "subtitle": "",
+    "desc": "",
+    "active": false
+  },
+  {
+    "id": "placeholder-6",
+    "title": "Инструмент #6",
+    "subtitle": "",
+    "desc": "",
+    "active": false
+  }
+]
