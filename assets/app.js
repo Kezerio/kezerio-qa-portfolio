@@ -275,7 +275,6 @@
     const container = $('#toolDetail');
     if (!container) return;
 
-    // Icon
     const iconWrap = $('#toolDetailIcon');
     if (iconWrap && tool.icon) {
       const img = document.createElement('img');
@@ -284,13 +283,11 @@
       iconWrap.appendChild(img);
     }
 
-    // Title & subtitle
     const titleEl = $('#toolDetailTitle');
     if (titleEl) titleEl.textContent = safeText(tool.title);
     const subtitleEl = $('#toolDetailSubtitle');
     if (subtitleEl) subtitleEl.textContent = safeText(tool.subtitle);
 
-    // Description
     const descEl = $('#toolDetailDesc');
     if (descEl) {
       const p = document.createElement('p');
@@ -298,7 +295,6 @@
       descEl.appendChild(p);
     }
 
-    // Timeline
     const timelineEl = $('#toolDetailTimeline');
     if (timelineEl && Array.isArray(tool.timeline) && tool.timeline.length) {
       const wrap = document.createElement('div');
@@ -328,19 +324,12 @@
     }
   }
 
-  /* ===== Checklists page rendering ===== */
-  function renderChecklists(data) {
-    const list = $('#checklistsList');
+  /* ===== DLT QA Checklists page (checklists/dlt-qa/) ===== */
+  function renderDltChecklists(items) {
+    const list = $('#dltChecklistsList');
     if (!list) return;
     list.innerHTML = '';
 
-    // Update section header from data
-    const titleEl = $('#checklistsTitle');
-    if (titleEl && data.sectionTitle) titleEl.textContent = safeText(data.sectionTitle);
-    const descEl = $('#checklistsDesc');
-    if (descEl && data.sectionDesc) descEl.textContent = safeText(data.sectionDesc);
-
-    const items = Array.isArray(data.items) ? data.items : [];
     if (!items.length) {
       const empty = document.createElement('div');
       empty.className = 'callout';
@@ -356,7 +345,6 @@
       const sum = document.createElement('summary');
       sum.className = 'checkCard__head';
 
-      // Status badge
       const status = document.createElement('span');
       status.className = 'checkCard__status checkCard__status--' + (item.status || 'in-progress');
       status.textContent = statusLabel(item.status);
@@ -373,7 +361,6 @@
       sum.appendChild(info);
       det.appendChild(sum);
 
-      // Body
       const body = document.createElement('div');
       body.className = 'checkCard__body';
 
@@ -387,7 +374,9 @@
       const checks = Array.isArray(item.checks) ? item.checks : [];
       if (checks.length) {
         const ul = document.createElement('ul');
-        ul.className = 'checkCard__list';
+        // Read-only markers: ✓ for done, ○ for in-progress
+        const listMod = item.status === 'done' ? 'checkCard__list--done' : 'checkCard__list--pending';
+        ul.className = 'checkCard__list ' + listMod;
         checks.forEach((check) => {
           const li = document.createElement('li');
           li.className = 'checkCard__item';
@@ -402,9 +391,9 @@
     });
   }
 
-  /* ===== Test plans page rendering ===== */
-  function renderTestPlans(plans) {
-    const list = $('#testPlansList');
+  /* ===== DLT QA Test Plans page (test-plans/dlt-qa/) ===== */
+  function renderDltTestPlans(plans) {
+    const list = $('#dltTestPlansList');
     if (!list) return;
     list.innerHTML = '';
 
@@ -439,7 +428,6 @@
       sum.appendChild(info);
       det.appendChild(sum);
 
-      // Body
       const body = document.createElement('div');
       body.className = 'planCard__body';
 
@@ -536,21 +524,20 @@
   }
 
   /* ===== Page detection ===== */
-  const isCasesPage      = () => !!$('#casesList');
-  const isContactsPage   = () => !!$('#contactTiles');
-  const isAboutPage      = () => !!$('#resumeCta');
-  const isToolsPage      = () => !!$('#toolsList');
-  const isToolDetailPage = () => !!$('#toolDetail');
-  const isChecklistsPage = () => !!$('#checklistsList');
-  const isTestPlansPage  = () => !!$('#testPlansList');
-  const isMainPage       = () => !!$('#tilesGrid');
+  const isCasesPage         = () => !!$('#casesList');
+  const isContactsPage      = () => !!$('#contactTiles');
+  const isAboutPage         = () => !!$('#resumeCta');
+  const isToolsPage         = () => !!$('#toolsList');
+  const isToolDetailPage    = () => !!$('#toolDetail');
+  const isDltChecklistsPage = () => !!$('#dltChecklistsList');
+  const isDltTestPlansPage  = () => !!$('#dltTestPlansList');
+  const isMainPage          = () => !!$('#tilesGrid');
 
   function basePath() {
-    // Detect depth: check stylesheet link href prefix
-    const link = document.querySelector('link[href^="../../assets/"]');
-    if (link) return '../../';
-    const link1 = document.querySelector('link[href^="../assets/"]');
-    if (link1) return '../';
+    // 2-level deep (tools/dlt-qa, checklists/dlt-qa, test-plans/dlt-qa)
+    if (document.querySelector('link[href^="../../assets/"]')) return '../../';
+    // 1-level deep (cases, about, contacts, tools, checklists, test-plans)
+    if (document.querySelector('link[href^="../assets/"]')) return '../';
     return '';
   }
 
@@ -593,7 +580,7 @@
       }
     }
 
-    // Tools page
+    // Tools list page
     if (isToolsPage()) {
       try {
         const tools = await loadJSON(base + 'data/tools.json');
@@ -601,12 +588,11 @@
       } catch (_) {}
     }
 
-    // Tool detail page
+    // Tool detail page (tools/dlt-qa/)
     if (isToolDetailPage()) {
       try {
         const tools = await loadJSON(base + 'data/tools.json');
         const arr = Array.isArray(tools) ? tools : [];
-        // Detect which tool by URL path segment
         const pathParts = window.location.pathname.replace(/\/+$/, '').split('/');
         const slug = pathParts[pathParts.length - 1];
         const tool = arr.find((t) => t.id === slug) || arr[0];
@@ -614,24 +600,25 @@
       } catch (_) {}
     }
 
-    // Checklists page
-    if (isChecklistsPage()) {
+    // DLT QA Checklists page (checklists/dlt-qa/)
+    if (isDltChecklistsPage()) {
       try {
         const data = await loadJSON(base + 'data/checklists.json');
-        renderChecklists(data && typeof data === 'object' ? data : { items: [] });
+        const items = Array.isArray(data?.items) ? data.items : [];
+        renderDltChecklists(items);
       } catch (_) {}
     }
 
-    // Test plans page
-    if (isTestPlansPage()) {
+    // DLT QA Test Plans page (test-plans/dlt-qa/)
+    if (isDltTestPlansPage()) {
       try {
         const plans = await loadJSON(base + 'data/testplans.json');
-        renderTestPlans(Array.isArray(plans) ? plans : []);
+        renderDltTestPlans(Array.isArray(plans) ? plans : []);
       } catch (_) {}
     }
 
-    // Main page: count badges
-    if (isMainPage() && !isCasesPage()) {
+    // Main page: count badges (cases + tools only)
+    if (isMainPage()) {
       try {
         const cases = await loadJSON(base + 'data/cases.json');
         const arr   = Array.isArray(cases) ? cases : [];
@@ -650,28 +637,12 @@
           countEl.textContent = active + ' ' + pluralize(active, 'инструмент', 'инструмента', 'инструментов');
         }
       } catch (_) {}
-
-      try {
-        const data = await loadJSON(base + 'data/checklists.json');
-        const items = Array.isArray(data?.items) ? data.items : [];
-        const countEl = $('#checklistsCount');
-        if (countEl && items.length > 0) {
-          countEl.textContent = items.length + ' ' + pluralize(items.length, 'чек-лист', 'чек-листа', 'чек-листов');
-        }
-      } catch (_) {}
-
-      try {
-        const plans = await loadJSON(base + 'data/testplans.json');
-        const arr = Array.isArray(plans) ? plans : [];
-        const countEl = $('#testPlansCount');
-        if (countEl && arr.length > 0) {
-          countEl.textContent = arr.length + ' ' + pluralize(arr.length, 'план', 'плана', 'планов');
-        }
-      } catch (_) {}
     }
 
-    // iOS press on main tiles
+    // iOS press on all interactive elements
     bindPressEffect('.tile--active');
+    bindPressEffect('.toolCard--active');
+    bindPressEffect('.dltNav__btn');
   }
 
   function pluralize(n, one, few, many) {
