@@ -216,10 +216,10 @@
 
         const iconWrap = document.createElement('div');
         iconWrap.className = 'toolCard__icon';
-        const emoji = document.createElement('span');
-        emoji.className = 'toolCard__emoji';
-        emoji.textContent = '🔧';
-        iconWrap.appendChild(emoji);
+        const icon = document.createElement('span');
+        icon.className = 'icon icon--tool';
+        icon.setAttribute('aria-hidden', 'true');
+        iconWrap.appendChild(icon);
         div.appendChild(iconWrap);
 
         const title = document.createElement('div');
@@ -243,10 +243,10 @@
       img.alt = safeText(tool.title);
       iconWrap.appendChild(img);
     } else {
-      const emoji = document.createElement('span');
-      emoji.className = 'toolCard__emoji';
-      emoji.textContent = '🛠';
-      iconWrap.appendChild(emoji);
+      const icon = document.createElement('span');
+      icon.className = 'icon icon--tools';
+      icon.setAttribute('aria-hidden', 'true');
+      iconWrap.appendChild(icon);
     }
     el.appendChild(iconWrap);
 
