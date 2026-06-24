@@ -46,24 +46,32 @@
     render();
   }
 
-  function externalAttrs(href) {
-    return /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
+  function linkAttrs(href) {
+    if (!href || href.startsWith('#') || href.startsWith('mailto:')) return '';
+    return ' target="_blank" rel="noopener noreferrer"';
   }
 
   function buttonLink(item, fallbackVariant = 'secondary') {
     const variant = item.variant || fallbackVariant;
     const className = `btn btn--${variant}`;
 
+    if (item.action === 'copyEmail') {
+      return `<button class="${className}" type="button" data-copy-email>${esc(item.label)}</button>`;
+    }
+
     if (item.disabled || !item.href) {
       return `<span class="${className} is-disabled" aria-disabled="true">${esc(item.label)}</span>`;
     }
 
-    return `<a class="${className}" href="${esc(item.href)}"${externalAttrs(item.href)}>${esc(item.label)}</a>`;
+    return `<a class="${className}" href="${esc(item.href)}"${linkAttrs(item.href)}>${esc(item.label)}</a>`;
   }
 
   function textLink(item) {
+    if (item.action === 'copyEmail') {
+      return `<button class="footer-copy-link" type="button" data-copy-email>${esc(item.label)}</button>`;
+    }
     if (!item.href) return '';
-    return `<a href="${esc(item.href)}"${externalAttrs(item.href)}>${esc(item.label)}</a>`;
+    return `<a href="${esc(item.href)}"${linkAttrs(item.href)}>${esc(item.label)}</a>`;
   }
 
   function chipList(items, className = 'chip-list') {
@@ -107,6 +115,50 @@
 
     const ogDescription = $('meta[property="og:description"]');
     if (ogDescription) ogDescription.setAttribute('content', copy.meta.ogDescription);
+  }
+
+  function ensureToast() {
+    let toast = $('#copyToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'copyToast';
+      toast.className = 'copy-toast';
+      toast.setAttribute('role', 'status');
+      toast.setAttribute('aria-live', 'polite');
+      document.body.append(toast);
+    }
+    return toast;
+  }
+
+  async function copyEmail() {
+    const copy = siteData[currentLanguage];
+    const email = siteData.links.emailText;
+
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(email);
+      } else {
+        const textarea = document.createElement('textarea');
+        textarea.value = email;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.append(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        textarea.remove();
+      }
+    } catch {
+      // The toast still gives a clear click response if clipboard access is blocked.
+    }
+
+    const toast = ensureToast();
+    toast.textContent = copy.ui.emailCopied;
+    toast.classList.add('is-visible');
+    window.clearTimeout(copyEmail.hideTimer);
+    copyEmail.hideTimer = window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+    }, 1300);
   }
 
   function renderHeader(copy) {
@@ -325,10 +377,8 @@
             <article class="cert-card reveal">
               <img class="cert-card__preview" src="${esc(certificate.preview)}" alt="${esc(`${certificate.title} — ${certificate.type}`)}" width="900" height="620" loading="lazy" />
               <div class="cert-card__body">
-                <span class="status-chip">${esc(certificate.status)} · ${esc(certificate.format)}</span>
                 <h3>${esc(certificate.title)}</h3>
                 <p>${esc(certificate.type)}</p>
-                ${buttonLink({ label: copy.ui.openCertificate, href: certificate.href, variant: 'secondary' })}
               </div>
             </article>
           `).join('')}
@@ -442,6 +492,12 @@
         setLanguage(button.dataset.language);
       });
     }
+
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('[data-copy-email]')) {
+        copyEmail();
+      }
+    });
   }
 
   function render() {

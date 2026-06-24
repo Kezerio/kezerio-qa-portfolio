@@ -4,6 +4,7 @@ window.profileData = {
     email: 'mailto:wampirkost@gmail.com',
     emailText: 'wampirkost@gmail.com',
     telegram: 'https://t.me/KonstantinV_AI',
+    vk: 'https://vk.com/wampi',
     github: 'https://github.com/Kezerio',
     hh: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841',
     qaApiLab: 'https://qa-api-lab.onrender.com',
@@ -40,6 +41,7 @@ window.profileData = {
       footerProof: 'Доказательства',
       footerContact: 'Контакты',
       openCertificate: 'Открыть',
+      emailCopied: 'Почта скопирована',
     },
     person: {
       name: 'Константин Васильев',
@@ -60,7 +62,7 @@ window.profileData = {
     ],
     hero: {
       eyebrow: 'AI QA · Integration Support · Unity/Game QA',
-      title: '«Не работает» —\nэто не диагноз.\nЭто начало расследования.',
+      title: '❝Не ошибается тот, кто ничего не делает❞',
       subtitle: 'Тестирую AI-ответы, интеграции, пользовательские сценарии и мобильные проекты. Мой фокус — воспроизводимость, доказательства, понятные выводы и аккуратная коммуникация.',
       imageAlt: 'Портрет Константина Васильева',
       status: 'AI QA / Integration Support',
@@ -337,7 +339,8 @@ window.profileData = {
       text: 'Открыт к ролям AI QA, LLM Evaluator, QA Web/API, Game QA, Application Support и Integration Support. Предпочитаю удалённый формат, понятные задачи и команды, где ценят качество, доказательства и здравый смысл.',
       buttons: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI', variant: 'primary' },
-        { label: 'Email', href: 'mailto:wampirkost@gmail.com', variant: 'secondary' },
+        { label: 'VK', href: 'https://vk.com/wampi', variant: 'secondary' },
+        { label: 'Email', action: 'copyEmail', variant: 'secondary' },
         { label: 'GitHub', href: 'https://github.com/Kezerio', variant: 'secondary' },
         { label: 'Скачать CV', href: 'cv/Konstantin_Vasiliev_CV_RU.pdf', variant: 'ghost' },
       ],
@@ -353,7 +356,8 @@ window.profileData = {
       ],
       contactLinks: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI' },
-        { label: 'Email', href: 'mailto:wampirkost@gmail.com' },
+        { label: 'VK', href: 'https://vk.com/wampi' },
+        { label: 'Email', action: 'copyEmail' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841' },
         { label: 'CV RU', href: 'cv/Konstantin_Vasiliev_CV_RU.pdf' },
         { label: 'CV EN', href: 'cv/Konstantin_Vasiliev_CV_EN.pdf' },
@@ -382,6 +386,7 @@ window.profileData = {
       footerProof: 'Proof',
       footerContact: 'Contact',
       openCertificate: 'Open',
+      emailCopied: 'Email copied',
     },
     person: {
       name: 'Konstantin Vasiliev',
@@ -402,7 +407,7 @@ window.profileData = {
     ],
     hero: {
       eyebrow: 'AI QA · Integration Support · Unity/Game QA',
-      title: '“Not working” is not a diagnosis.\nIt is the start of an investigation.',
+      title: '“The only person who never makes mistakes is the one who does nothing.”',
       subtitle: 'I test AI responses, integrations, user flows, and mobile projects. My focus is reproducibility, evidence, clear technical notes, and calm communication.',
       imageAlt: 'Portrait of Konstantin Vasiliev',
       status: 'AI QA / Integration Support',
@@ -679,7 +684,8 @@ window.profileData = {
       text: 'Open to AI QA, LLM Evaluation, QA Web/API, Game QA, Application Support, and Integration Support roles. I prefer remote-friendly teams, clear tasks, and a culture where quality, evidence, and common sense matter.',
       buttons: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI', variant: 'primary' },
-        { label: 'Email', href: 'mailto:wampirkost@gmail.com', variant: 'secondary' },
+        { label: 'VK', href: 'https://vk.com/wampi', variant: 'secondary' },
+        { label: 'Email', action: 'copyEmail', variant: 'secondary' },
         { label: 'GitHub', href: 'https://github.com/Kezerio', variant: 'secondary' },
         { label: 'Download CV', href: 'cv/Konstantin_Vasiliev_CV_EN.pdf', variant: 'ghost' },
       ],
@@ -695,7 +701,8 @@ window.profileData = {
       ],
       contactLinks: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI' },
-        { label: 'Email', href: 'mailto:wampirkost@gmail.com' },
+        { label: 'VK', href: 'https://vk.com/wampi' },
+        { label: 'Email', action: 'copyEmail' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841' },
         { label: 'CV RU', href: 'cv/Konstantin_Vasiliev_CV_RU.pdf' },
         { label: 'CV EN', href: 'cv/Konstantin_Vasiliev_CV_EN.pdf' },
