@@ -3,76 +3,61 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Константин — Junior IT (QA / Backend / Web)</title>
+  <title>Константин Васильев — AI QA / Integration Support / QA Web/API / Unity Game QA</title>
+  <meta name="description" content="Портфолио Константина Васильева: AI QA, LLM Evaluation, Integration Support, QA Web/API, Unity/Game QA, баг-репорты, проекты, RuStore game и AI-assisted workflow." />
+  <meta property="og:title" content="Константин Васильев — AI QA / Integration Support / QA Web/API / Unity Game QA" />
+  <meta property="og:description" content="От «не работает» до воспроизводимого сценария, доказательств и понятного решения." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="images/og-cover.webp" />
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 
 <body>
-  <header class="topbar">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <div class="brand__avatar" aria-hidden="true">IT</div>
-        <div class="brand__text">
-          <div class="brand__name" id="nameTop">Константин</div>
-          <div class="brand__role" id="roleTop">Junior IT (QA / Backend / Web)</div>
-        </div>
-      </div>
+  <a class="skip-link" href="#main">Перейти к содержанию</a>
 
-      <div class="topbar__center">
-        <span class="topbar__title">Портфолио</span>
-      </div>
+  <header class="site-header" id="siteHeader">
+    <div class="wrap header__inner">
+      <a class="brand" href="#hero" aria-label="В начало страницы">
+        <span class="brand__mark" aria-hidden="true">KV</span>
+        <span class="brand__text">
+          <span data-brand-name>Konstantin Vasiliev</span>
+          <small data-brand-role>AI QA / Integration Support</small>
+        </span>
+      </a>
 
-      <div class="topbar__spacer"></div>
+      <nav class="nav" id="mainNav" aria-label="Основная навигация"></nav>
+
+      <div class="header__actions">
+        <div class="language-switch" id="languageSwitch" role="group" aria-label="Переключатель языка"></div>
+        <a class="header__cta" id="headerCta" href="#contact">Связаться</a>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Открыть меню">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
 
-  <main class="wrap main" role="main">
-    <div class="callout" id="dataStatus" hidden></div>
-
-    <div class="tiles" id="tilesGrid">
-      <a class="tile tile--active" href="about/">
-        <span class="tile__icon"><span class="icon icon--profile" aria-hidden="true"></span></span>
-        <span class="tile__label">Обо мне</span>
-      </a>
-
-      <a class="tile tile--active" href="cases/" id="tilesCases">
-        <span class="tile__icon"><span class="icon icon--cases" aria-hidden="true"></span></span>
-        <span class="tile__label">Кейсы тестирования</span>
-        <span class="tile__count" id="casesCount"></span>
-      </a>
-
-      <a class="tile tile--active" href="tools/" id="tilesTools">
-        <span class="tile__icon"><span class="icon icon--tools" aria-hidden="true"></span></span>
-        <span class="tile__label">Инструменты</span>
-        <span class="tile__count" id="toolsCount"></span>
-      </a>
-
-      <a class="tile tile--active" href="checklists/" id="tilesChecklists">
-        <span class="tile__icon"><span class="icon icon--check" aria-hidden="true"></span></span>
-        <span class="tile__label">Чек-листы</span>
-      </a>
-
-      <a class="tile tile--active" href="test-plans/" id="tilesTestPlans">
-        <span class="tile__icon"><span class="icon icon--plan" aria-hidden="true"></span></span>
-        <span class="tile__label">Тест-планы</span>
-      </a>
-
-      <a class="tile tile--active" href="contacts/">
-        <span class="tile__icon"><span class="icon icon--contact" aria-hidden="true"></span></span>
-        <span class="tile__label">Контакты</span>
-      </a>
-    </div>
+  <main id="main">
+    <section class="hero section" id="hero" aria-labelledby="heroTitle"></section>
+    <section class="section" id="about" aria-labelledby="aboutTitle"></section>
+    <section class="section section--surface" id="focus" aria-labelledby="focusTitle"></section>
+    <section class="section" id="experience" aria-labelledby="experienceTitle"></section>
+    <section class="section section--surface" id="lab" aria-labelledby="labTitle"></section>
+    <section class="section" id="projects" aria-labelledby="projectsTitle"></section>
+    <section class="section section--surface" id="skills" aria-labelledby="skillsTitle"></section>
+    <section class="section" id="certificates" aria-labelledby="certificatesTitle"></section>
+    <section class="section contact-section" id="contact" aria-labelledby="contactTitle"></section>
   </main>
 
-  <footer class="footer" role="contentinfo">
-    <div class="wrap footer__inner">
-      <div>&copy; <span id="year"></span> <span id="nameFooter">Константин</span></div>
-      <div class="muted">v.3.0.0</div>
-    </div>
-  </footer>
+  <footer class="footer" id="footer"></footer>
 
-  <div id="toast" class="toast" hidden role="status" aria-live="polite">Готово</div>
+  <noscript>
+    <div class="noscript">Для просмотра портфолио включите JavaScript: страница собирается из локального data-файла.</div>
+  </noscript>
 
+  <script src="assets/js/profile-data.js"></script>
   <script src="assets/app.js" defer></script>
 </body>
 </html>

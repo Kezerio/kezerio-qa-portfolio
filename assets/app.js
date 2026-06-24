@@ -1,650 +1,466 @@
 (() => {
   'use strict';
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
-  const safeText = (s) => (s == null ? '' : String(s).trim());
+  const siteData = window.profileData;
+  const languageStorageKey = 'kv-site-language';
+  const supportedLanguages = ['ru', 'us'];
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 
-  /* ===== Toast ===== */
-  const showToast = (message) => {
-    const toast = $('#toast');
-    if (!toast) return;
-    toast.textContent = message;
-    toast.hidden = false;
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(() => (toast.hidden = true), 1800);
-  };
+  if (!siteData || !$('#hero')) return;
 
-  /* ===== Clipboard ===== */
-  async function copyToClipboard(text) {
-    const value = safeText(text);
-    if (!value) return false;
+  let currentLanguage = readInitialLanguage();
+  let revealObserver = null;
+
+  const esc = (value) => String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+
+  const lineBreaks = (value) => esc(value).replaceAll('\n', '<br />');
+
+  function readInitialLanguage() {
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(value);
-        return true;
-      }
-    } catch (_) {}
-    try {
-      const ta = document.createElement('textarea');
-      ta.value = value;
-      ta.setAttribute('readonly', 'true');
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      const ok = document.execCommand('copy');
-      ta.remove();
-      return ok;
-    } catch (_) {
-      return false;
+      const saved = window.localStorage.getItem(languageStorageKey);
+      return supportedLanguages.includes(saved) ? saved : 'ru';
+    } catch {
+      return 'ru';
     }
   }
 
-  /* ===== iOS press effect ===== */
-  function bindPressEffect(selector) {
-    document.querySelectorAll(selector).forEach((el) => {
-      const add = () => el.classList.add('pressing');
-      const remove = () => el.classList.remove('pressing');
-      el.addEventListener('pointerdown', add);
-      el.addEventListener('pointerup', remove);
-      el.addEventListener('pointerleave', remove);
-      el.addEventListener('pointercancel', remove);
-    });
+  function saveLanguage(language) {
+    try {
+      window.localStorage.setItem(languageStorageKey, language);
+    } catch {
+      // localStorage can be unavailable in strict privacy contexts.
+    }
   }
 
-  /* ===== Cases rendering ===== */
-  function appendCaseLine(root, label, value) {
-    const text = safeText(value);
-    if (!text) return;
-    const p = document.createElement('p');
-    p.className = 'case__line';
-    const b = document.createElement('b');
-    b.textContent = label + ': ';
-    p.append(b, text);
-    root.appendChild(p);
+  function setLanguage(language) {
+    if (!supportedLanguages.includes(language) || language === currentLanguage) return;
+    currentLanguage = language;
+    saveLanguage(language);
+    document.body.classList.remove('nav-open');
+    render();
   }
 
-  function renderCases(cases) {
-    const list = $('#casesList');
-    if (!list) return;
-    list.innerHTML = '';
+  function externalAttrs(href) {
+    return /^https?:\/\//.test(href) ? ' target="_blank" rel="noopener noreferrer"' : '';
+  }
 
-    if (!cases.length) {
-      const emptyEl = $('#casesEmpty');
-      if (emptyEl) {
-        emptyEl.hidden = false;
-      } else {
-        const empty = document.createElement('div');
-        empty.className = 'callout';
-        empty.textContent = 'Кейсы пока не добавлены.';
-        list.appendChild(empty);
-      }
+  function buttonLink(item, fallbackVariant = 'secondary') {
+    const variant = item.variant || fallbackVariant;
+    const className = `btn btn--${variant}`;
+
+    if (item.disabled || !item.href) {
+      return `<span class="${className} is-disabled" aria-disabled="true">${esc(item.label)}</span>`;
+    }
+
+    return `<a class="${className}" href="${esc(item.href)}"${externalAttrs(item.href)}>${esc(item.label)}</a>`;
+  }
+
+  function textLink(item) {
+    if (!item.href) return '';
+    return `<a href="${esc(item.href)}"${externalAttrs(item.href)}>${esc(item.label)}</a>`;
+  }
+
+  function chipList(items, className = 'chip-list') {
+    if (!items?.length) return '';
+    return `
+      <div class="${className}">
+        ${items.map((item) => `<span>${esc(item)}</span>`).join('')}
+      </div>
+    `;
+  }
+
+  function cleanList(items) {
+    if (!items?.length) return '';
+    return `
+      <ul class="clean-list">
+        ${items.map((item) => `<li>${esc(item)}</li>`).join('')}
+      </ul>
+    `;
+  }
+
+  function sectionHead(id, eyebrow, title, subtitle) {
+    return `
+      <div class="section-head reveal">
+        <p class="eyebrow">${esc(eyebrow)}</p>
+        <h2 id="${esc(id)}">${esc(title)}</h2>
+        <p>${esc(subtitle)}</p>
+      </div>
+    `;
+  }
+
+  function updateDocument(copy) {
+    document.documentElement.lang = copy.meta.lang;
+    document.body.dataset.siteLanguage = currentLanguage;
+    document.title = copy.meta.title;
+
+    const description = $('meta[name="description"]');
+    if (description) description.setAttribute('content', copy.meta.description);
+
+    const ogTitle = $('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', copy.meta.title);
+
+    const ogDescription = $('meta[property="og:description"]');
+    if (ogDescription) ogDescription.setAttribute('content', copy.meta.ogDescription);
+  }
+
+  function renderHeader(copy) {
+    const skipLink = $('.skip-link');
+    if (skipLink) skipLink.textContent = copy.ui.skipLink;
+
+    const brand = $('.brand');
+    if (brand) brand.setAttribute('aria-label', copy.ui.brandAria);
+
+    const brandName = $('[data-brand-name]');
+    if (brandName) brandName.textContent = copy.person.nameEn;
+
+    const brandRole = $('[data-brand-role]');
+    if (brandRole) brandRole.textContent = 'AI QA / Integration Support';
+
+    const nav = $('#mainNav');
+    nav.setAttribute('aria-label', copy.ui.navAria);
+    nav.innerHTML = copy.nav.map(([label, href]) => `<a href="${esc(href)}">${esc(label)}</a>`).join('');
+
+    const headerCta = $('#headerCta');
+    if (headerCta) headerCta.textContent = copy.ui.headerCta;
+
+    const languageSwitch = $('#languageSwitch');
+    if (languageSwitch) {
+      languageSwitch.setAttribute('aria-label', copy.ui.languageAria);
+      languageSwitch.innerHTML = supportedLanguages.map((language) => `
+        <button class="language-switch__option" type="button" data-language="${language}" aria-pressed="${language === currentLanguage}">
+          ${language === 'ru' ? 'RU' : 'US'}
+        </button>
+      `).join('');
+    }
+
+    const menuToggle = $('#menuToggle');
+    if (menuToggle) {
+      const isOpen = document.body.classList.contains('nav-open');
+      menuToggle.setAttribute('aria-label', isOpen ? copy.ui.closeMenu : copy.ui.openMenu);
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+    }
+  }
+
+  function renderHero(copy) {
+    $('#hero').innerHTML = `
+      <div class="wrap hero__grid">
+        <div class="hero__copy reveal">
+          <p class="eyebrow">${esc(copy.hero.eyebrow)}</p>
+          <h1 id="heroTitle">${lineBreaks(copy.hero.title)}</h1>
+          <p class="hero__lead">${esc(copy.hero.subtitle)}</p>
+          <div class="hero__actions">
+            ${copy.hero.cta.map((item) => buttonLink(item)).join('')}
+          </div>
+          <div class="proof-list" aria-label="${esc(copy.ui.evidenceLabel)}">
+            ${copy.hero.proofPoints.map((item) => `<span>${esc(item)}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="hero__visual reveal">
+          <figure class="portrait-panel">
+            <img src="${esc(siteData.assets.heroImage)}" alt="${esc(copy.hero.imageAlt)}" width="1040" height="1280" loading="eager" />
+            <figcaption>${esc(copy.hero.status)}</figcaption>
+          </figure>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderAbout(copy) {
+    $('#about').innerHTML = `
+      <div class="wrap about-layout">
+        <div class="about-copy reveal">
+          <p class="eyebrow">${esc(copy.about.eyebrow)}</p>
+          <h2 id="aboutTitle">${esc(copy.about.title)}</h2>
+          <div class="rich-text">
+            ${copy.about.paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('')}
+          </div>
+        </div>
+        <div class="about-visual reveal">
+          <img src="${esc(siteData.assets.aboutImage)}" alt="${esc(copy.about.imageAlt)}" width="980" height="1280" loading="lazy" />
+          <div class="about-notes">
+            ${copy.about.notes.map((note) => `<span>${esc(note)}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderValueAreas(copy) {
+    $('#focus').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('focusTitle', 'Focus', copy.valueAreas.title, copy.valueAreas.subtitle)}
+        <div class="value-list">
+          ${copy.valueAreas.items.map((item, index) => `
+            <article class="value-row reveal">
+              <span class="row-index">${String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>${esc(item.title)}</h3>
+                <p>${esc(item.text)}</p>
+                ${chipList(item.tags)}
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderExperience(copy) {
+    $('#experience').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('experienceTitle', 'Experience', copy.experience.title, copy.experience.subtitle)}
+        <div class="experience-list">
+          ${copy.experience.items.map((item) => `
+            <article class="experience-row ${item.current ? 'experience-row--current' : ''} reveal">
+              <div class="experience-row__meta">
+                <span>${esc(item.period)}</span>
+                ${item.location ? `<small>${esc(item.location)}</small>` : ''}
+                ${item.current ? `<strong>${esc(copy.ui.currentLabel)}</strong>` : ''}
+              </div>
+              <div class="experience-row__body">
+                <p class="company">${esc(item.company)}</p>
+                <h3>${esc(item.role)}</h3>
+                ${cleanList(item.bullets)}
+                ${chipList(item.tools)}
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderIndependentLab(copy) {
+    $('#lab').innerHTML = `
+      <div class="wrap lab-layout">
+        <div class="lab-intro reveal">
+          <p class="eyebrow">${esc(copy.independentLab.eyebrow)}</p>
+          <h2 id="labTitle">${esc(copy.independentLab.title)}</h2>
+          <p>${esc(copy.independentLab.subtitle)}</p>
+          <small>${esc(copy.independentLab.note)}</small>
+        </div>
+        <div class="lab-list">
+          ${copy.independentLab.cards.map((card) => `
+            <article class="lab-item reveal">
+              <h3>${esc(card.title)}</h3>
+              <p>${esc(card.text)}</p>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderProjects(copy) {
+    $('#projects').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('projectsTitle', 'Projects', copy.projects.title, copy.projects.subtitle)}
+        <div class="project-grid">
+          ${copy.projects.items.map((project, index) => projectCard(project, copy, index)).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function projectCard(project, copy, index) {
+    const featured = index === 0 ? ' project-card--featured' : '';
+    return `
+      <article class="project-card${featured} reveal">
+        <div class="project-card__content">
+          <div class="project-card__topline">
+            <span>${esc(project.type)}</span>
+            <strong>${esc(project.status)}</strong>
+          </div>
+          <h3>${esc(project.title)}</h3>
+          <p>${esc(project.description)}</p>
+          <div class="project-role">
+            <span>${esc(copy.ui.roleLabel)}</span>
+            <b>${esc(project.role)}</b>
+          </div>
+          ${cleanList(project.highlights)}
+          ${chipList(project.tags)}
+          ${project.buttons?.length ? `
+            <div class="project-card__actions">
+              ${project.buttons.map((button) => buttonLink(button)).join('')}
+            </div>
+          ` : ''}
+        </div>
+        <aside class="project-card__proof" aria-label="${esc(copy.ui.evidenceLabel)}">
+          <span>${esc(copy.ui.evidenceLabel)}</span>
+          <p>${esc(project.proof)}</p>
+        </aside>
+      </article>
+    `;
+  }
+
+  function renderSkills(copy) {
+    $('#skills').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('skillsTitle', 'Skills', copy.skills.title, copy.skills.subtitle)}
+        <div class="skills-grid">
+          ${copy.skills.groups.map((group) => `
+            <article class="skills-group reveal">
+              <h3>${esc(group.title)}</h3>
+              ${chipList(group.items, 'chip-list chip-list--dense')}
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCertificates(copy) {
+    $('#certificates').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('certificatesTitle', 'Learning', copy.certificates.title, copy.certificates.subtitle)}
+        <div class="cert-grid">
+          ${copy.certificates.items.map((certificate) => `
+            <article class="cert-card reveal">
+              <img class="cert-card__preview" src="${esc(certificate.preview)}" alt="${esc(`${certificate.title} — ${certificate.type}`)}" width="900" height="620" loading="lazy" />
+              <div class="cert-card__body">
+                <span class="status-chip">${esc(certificate.status)} · ${esc(certificate.format)}</span>
+                <h3>${esc(certificate.title)}</h3>
+                <p>${esc(certificate.type)}</p>
+                ${buttonLink({ label: copy.ui.openCertificate, href: certificate.href, variant: 'secondary' })}
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderContact(copy) {
+    $('#contact').innerHTML = `
+      <div class="wrap contact-panel reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2 id="contactTitle">${esc(copy.contact.title)}</h2>
+          <p>${esc(copy.contact.text)}</p>
+        </div>
+        <div class="contact-panel__actions">
+          ${copy.contact.buttons.map((button) => buttonLink(button)).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderFooter(copy) {
+    const navLinks = copy.nav.map(([label, href]) => `<a href="${esc(href)}">${esc(label)}</a>`).join('');
+    const proofLinks = copy.footer.proofLinks.map(textLink).join('');
+    const contactLinks = copy.footer.contactLinks.map(textLink).join('');
+
+    $('#footer').innerHTML = `
+      <div class="wrap footer__grid">
+        <div>
+          <h2>${esc(copy.person.nameEn)}</h2>
+          <p>${esc(copy.footer.positioning)}</p>
+          <p>${esc(copy.person.location)} · ${esc(copy.person.availability)}</p>
+        </div>
+        <div>
+          <h3>${esc(copy.ui.footerNavigation)}</h3>
+          ${navLinks}
+        </div>
+        <div>
+          <h3>${esc(copy.ui.footerProof)}</h3>
+          ${proofLinks}
+        </div>
+        <div>
+          <h3>${esc(copy.ui.footerContact)}</h3>
+          ${contactLinks}
+        </div>
+      </div>
+      <div class="wrap footer__bottom">
+        <span>${esc(copy.footer.bottom)}</span>
+        <span>${esc(siteData.version)}</span>
+      </div>
+    `;
+  }
+
+  function bindReveal() {
+    const items = $$('.reveal');
+
+    if (revealObserver) {
+      revealObserver.disconnect();
+      revealObserver = null;
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      items.forEach((item) => item.classList.add('is-visible'));
       return;
     }
 
-    const emptyEl = $('#casesEmpty');
-    if (emptyEl) emptyEl.hidden = true;
-
-    cases.forEach((caseData) => {
-      const det = document.createElement('details');
-      det.className = 'case';
-
-      const sum = document.createElement('summary');
-      sum.className = 'case__summary';
-
-      const title = document.createElement('span');
-      title.className = 'case__title';
-      title.textContent = safeText(caseData?.title) || 'Без названия';
-
-      const desc = document.createElement('span');
-      desc.className = 'case__desc';
-      desc.textContent = safeText(caseData?.desc);
-
-      sum.appendChild(title);
-      if (desc.textContent) sum.appendChild(desc);
-      det.appendChild(sum);
-
-      const body = document.createElement('div');
-      body.className = 'case__body';
-
-      const items = Array.isArray(caseData?.items) ? caseData.items : [];
-      items.forEach((item) => {
-        const itemDet = document.createElement('details');
-        itemDet.className = 'case__item';
-
-        const itemSum = document.createElement('summary');
-        itemSum.className = 'case__itemSummary';
-
-        const id = document.createElement('span');
-        id.className = 'case__itemId';
-        id.textContent = safeText(item?.id);
-
-        const itemTitle = document.createElement('span');
-        itemTitle.className = 'case__itemTitle';
-        itemTitle.textContent = safeText(item?.title) || 'Подпункт';
-
-        if (id.textContent) itemSum.appendChild(id);
-        itemSum.appendChild(itemTitle);
-        itemDet.appendChild(itemSum);
-
-        const itemBody = document.createElement('div');
-        itemBody.className = 'case__itemBody';
-
-        appendCaseLine(itemBody, 'Окружение', item?.env);
-        appendCaseLine(itemBody, 'Шаги', item?.steps);
-        appendCaseLine(itemBody, 'Факт', item?.actual);
-        appendCaseLine(itemBody, 'Ожидание', item?.expected);
-        appendCaseLine(itemBody, 'Severity', item?.severity);
-        appendCaseLine(itemBody, 'Priority', item?.priority);
-        appendCaseLine(itemBody, 'Примечание', item?.note);
-
-        const links = Array.isArray(item?.links) ? item.links : [];
-        const validLinks = links.filter((l) => safeText(l?.url));
-        if (validLinks.length) {
-          const wrap = document.createElement('div');
-          wrap.className = 'case__links';
-          validLinks.forEach((link) => {
-            const a = document.createElement('a');
-            a.className = 'case__link';
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.href = safeText(link.url);
-            a.textContent = safeText(link?.label) || 'Ссылка';
-            wrap.appendChild(a);
-          });
-          itemBody.appendChild(wrap);
-        }
-
-        itemDet.appendChild(itemBody);
-        body.appendChild(itemDet);
-      });
-
-      det.appendChild(body);
-      list.appendChild(det);
-    });
-  }
-
-  /* ===== Category filter logic ===== */
-  function bindCategoryFilter(allCases) {
-    const catTilesContainer = $('#catTiles');
-    if (!catTilesContainer) return;
-
-    const activeTiles = $$('.catTile--active', catTilesContainer);
-    if (!activeTiles.length) return;
-
-    let selectedCategory = activeTiles[0].dataset.category;
-    activeTiles[0].classList.add('catTile--selected');
-    renderCases(allCases.filter((c) => c.category === selectedCategory));
-
-    activeTiles.forEach((tile) => {
-      tile.addEventListener('click', () => {
-        const cat = tile.dataset.category;
-        if (cat === selectedCategory) return;
-        selectedCategory = cat;
-        activeTiles.forEach((t) => t.classList.remove('catTile--selected'));
-        tile.classList.add('catTile--selected');
-        renderCases(allCases.filter((c) => c.category === cat));
-      });
-    });
-
-    bindPressEffect('.catTile--active');
-  }
-
-  /* ===== Tools page rendering ===== */
-  function renderTools(tools, base) {
-    const list = $('#toolsList');
-    if (!list) return;
-    list.innerHTML = '';
-
-    tools.forEach((tool) => {
-      const isActive = !!tool.active;
-
-      if (isActive && tool.href) {
-        const a = document.createElement('a');
-        a.className = 'toolCard toolCard--active';
-        a.href = tool.href.replace(/^tools\//, '');
-        buildToolCardContent(a, tool, base);
-        list.appendChild(a);
-      } else {
-        const div = document.createElement('div');
-        div.className = 'toolCard toolCard--disabled';
-        const badge = document.createElement('span');
-        badge.className = 'toolCard__badge';
-        badge.textContent = 'Скоро';
-        div.appendChild(badge);
-
-        const iconWrap = document.createElement('div');
-        iconWrap.className = 'toolCard__icon';
-        const icon = document.createElement('span');
-        icon.className = 'icon icon--tool';
-        icon.setAttribute('aria-hidden', 'true');
-        iconWrap.appendChild(icon);
-        div.appendChild(iconWrap);
-
-        const title = document.createElement('div');
-        title.className = 'toolCard__title';
-        title.textContent = safeText(tool.title) || 'Инструмент';
-        div.appendChild(title);
-
-        list.appendChild(div);
-      }
-    });
-
-    bindPressEffect('.toolCard--active');
-  }
-
-  function buildToolCardContent(el, tool, base) {
-    const iconWrap = document.createElement('div');
-    iconWrap.className = 'toolCard__icon';
-    if (tool.icon) {
-      const img = document.createElement('img');
-      img.src = base + tool.icon;
-      img.alt = safeText(tool.title);
-      iconWrap.appendChild(img);
-    } else {
-      const icon = document.createElement('span');
-      icon.className = 'icon icon--tools';
-      icon.setAttribute('aria-hidden', 'true');
-      iconWrap.appendChild(icon);
-    }
-    el.appendChild(iconWrap);
-
-    const title = document.createElement('div');
-    title.className = 'toolCard__title';
-    title.textContent = safeText(tool.title);
-    el.appendChild(title);
-
-    if (tool.subtitle) {
-      const sub = document.createElement('div');
-      sub.className = 'toolCard__subtitle';
-      sub.textContent = safeText(tool.subtitle);
-      el.appendChild(sub);
-    }
-
-    if (tool.desc) {
-      const desc = document.createElement('div');
-      desc.className = 'toolCard__desc';
-      desc.textContent = safeText(tool.desc);
-      el.appendChild(desc);
-    }
-  }
-
-  /* ===== Tool detail page ===== */
-  function renderToolDetail(tool, base) {
-    const container = $('#toolDetail');
-    if (!container) return;
-
-    const titleEl = $('#toolDetailTitle');
-    if (titleEl) titleEl.textContent = safeText(tool.title);
-    const subtitleEl = $('#toolDetailSubtitle');
-    if (subtitleEl) subtitleEl.textContent = safeText(tool.subtitle);
-
-    const descEl = $('#toolDetailDesc');
-    if (descEl) {
-      const p = document.createElement('p');
-      p.textContent = safeText(tool.desc);
-      descEl.appendChild(p);
-    }
-
-    const timelineEl = $('#toolDetailTimeline');
-    if (timelineEl && Array.isArray(tool.timeline) && tool.timeline.length) {
-      const wrap = document.createElement('div');
-      wrap.className = 'timeline';
-
-      tool.timeline.forEach((step) => {
-        const stepEl = document.createElement('div');
-        stepEl.className = 'timeline__step timeline__step--' + (step.status || 'planned');
-
-        const dot = document.createElement('div');
-        dot.className = 'timeline__dot';
-        stepEl.appendChild(dot);
-
-        const label = document.createElement('div');
-        label.className = 'timeline__label';
-        label.textContent = safeText(step.label);
-        stepEl.appendChild(label);
-
-        const line = document.createElement('div');
-        line.className = 'timeline__line';
-        stepEl.appendChild(line);
-
-        wrap.appendChild(stepEl);
-      });
-
-      timelineEl.appendChild(wrap);
-    }
-  }
-
-  /* ===== DLT QA Checklists page (checklists/dlt-qa/) ===== */
-  function renderDltChecklists(items) {
-    const list = $('#dltChecklistsList');
-    if (!list) return;
-    list.innerHTML = '';
-
-    if (!items.length) {
-      const empty = document.createElement('div');
-      empty.className = 'callout';
-      empty.textContent = 'Чек-листы пока не добавлены.';
-      list.appendChild(empty);
-      return;
-    }
-
-    items.forEach((item) => {
-      const det = document.createElement('details');
-      det.className = 'checkCard';
-
-      const sum = document.createElement('summary');
-      sum.className = 'checkCard__head';
-
-      const status = document.createElement('span');
-      status.className = 'checkCard__status checkCard__status--' + (item.status || 'in-progress');
-      status.textContent = statusLabel(item.status);
-      sum.appendChild(status);
-
-      const info = document.createElement('div');
-      info.className = 'checkCard__info';
-
-      const title = document.createElement('span');
-      title.className = 'checkCard__title';
-      title.textContent = safeText(item.title);
-      info.appendChild(title);
-
-      sum.appendChild(info);
-      det.appendChild(sum);
-
-      const body = document.createElement('div');
-      body.className = 'checkCard__body';
-
-      if (item.summary) {
-        const desc = document.createElement('p');
-        desc.className = 'checkCard__desc';
-        desc.textContent = safeText(item.summary);
-        body.appendChild(desc);
-      }
-
-      const checks = Array.isArray(item.checks) ? item.checks : [];
-      if (checks.length) {
-        const ul = document.createElement('ul');
-        // Read-only markers: ✓ for done, ○ for in-progress
-        const listMod = item.status === 'done' ? 'checkCard__list--done' : 'checkCard__list--pending';
-        ul.className = 'checkCard__list ' + listMod;
-        checks.forEach((check) => {
-          const li = document.createElement('li');
-          li.className = 'checkCard__item';
-          li.textContent = safeText(check);
-          ul.appendChild(li);
-        });
-        body.appendChild(ul);
-      }
-
-      det.appendChild(body);
-      list.appendChild(det);
-    });
-  }
-
-  /* ===== DLT QA Test Plans page (test-plans/dlt-qa/) ===== */
-  function renderDltTestPlans(plans) {
-    const list = $('#dltTestPlansList');
-    if (!list) return;
-    list.innerHTML = '';
-
-    if (!plans.length) {
-      const empty = document.createElement('div');
-      empty.className = 'callout';
-      empty.textContent = 'Тест-планы пока не добавлены.';
-      list.appendChild(empty);
-      return;
-    }
-
-    plans.forEach((plan) => {
-      const det = document.createElement('details');
-      det.className = 'planCard';
-
-      const sum = document.createElement('summary');
-      sum.className = 'planCard__head';
-
-      const status = document.createElement('span');
-      status.className = 'planCard__status planCard__status--' + (plan.status || 'in-progress');
-      status.textContent = statusLabel(plan.status);
-      sum.appendChild(status);
-
-      const info = document.createElement('div');
-      info.className = 'planCard__info';
-
-      const title = document.createElement('span');
-      title.className = 'planCard__title';
-      title.textContent = safeText(plan.title);
-      info.appendChild(title);
-
-      sum.appendChild(info);
-      det.appendChild(sum);
-
-      const body = document.createElement('div');
-      body.className = 'planCard__body';
-
-      if (plan.summary) {
-        const desc = document.createElement('p');
-        desc.className = 'planCard__desc';
-        desc.textContent = safeText(plan.summary);
-        body.appendChild(desc);
-      }
-
-      const sections = Array.isArray(plan.sections) ? plan.sections : [];
-      if (sections.length) {
-        const ul = document.createElement('ul');
-        ul.className = 'planCard__sections';
-        sections.forEach((sec) => {
-          const li = document.createElement('li');
-          li.className = 'planCard__section';
-          li.textContent = safeText(sec);
-          ul.appendChild(li);
-        });
-        body.appendChild(ul);
-      }
-
-      det.appendChild(body);
-      list.appendChild(det);
-    });
-  }
-
-  /* ===== Status label helper ===== */
-  function statusLabel(status) {
-    switch (status) {
-      case 'done': return 'Готово';
-      case 'in-progress': return 'В работе';
-      case 'in-review': return 'На ревью';
-      case 'planned': return 'Запланировано';
-      default: return 'В работе';
-    }
-  }
-
-  /* ===== Contacts page ===== */
-  function initContacts(profile) {
-    const email    = safeText(profile?.contacts?.email);
-    const telegram = safeText(profile?.contacts?.telegram);
-    const github   = safeText(profile?.links?.github);
-    const hh       = safeText(profile?.links?.hh);
-
-    const emailValEl = $('#contactEmail');
-    if (emailValEl && email) emailValEl.textContent = email;
-
-    const tgTile = $('#contactTileTelegram');
-    if (tgTile && telegram) tgTile.href = telegram;
-
-    const ghTile = $('#contactTileGitHub');
-    if (ghTile && github) ghTile.href = github;
-
-    const hhTile = $('#contactTileHh');
-    if (hhTile && hh) {
-      hhTile.href = hh;
-      hhTile.hidden = false;
-    }
-
-    const emailTile = $('#contactTileEmail');
-    if (emailTile && email) {
-      emailTile.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          doCopy(email);
+    revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          revealObserver.unobserve(entry.target);
         }
       });
-      emailTile.addEventListener('click', () => doCopy(email));
-    }
+    }, { threshold: 0.12 });
 
-    bindPressEffect('.contactTile');
+    items.forEach((item) => revealObserver.observe(item));
   }
 
-  async function doCopy(email) {
-    const ok = await copyToClipboard(email);
-    showToast(ok ? 'Email скопирован' : 'Не удалось скопировать');
-  }
+  function bindStaticEvents() {
+    const menuToggle = $('#menuToggle');
+    const nav = $('#mainNav');
+    const languageSwitch = $('#languageSwitch');
 
-  /* ===== Resume links on /about/ ===== */
-  function initAbout(profile) {
-    const hh = safeText(profile?.links?.hh);
-    if (!hh) return;
-    const btn = $('#resumeLinkBottom');
-    if (btn) btn.href = hh;
-  }
-
-  /* ===== Data loading ===== */
-  async function loadJSON(path) {
-    const res = await fetch(path, { cache: 'no-store' });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    return res.json();
-  }
-
-  /* ===== Page detection ===== */
-  const isCasesPage         = () => !!$('#casesList');
-  const isContactsPage      = () => !!$('#contactTiles');
-  const isAboutPage         = () => !!$('#resumeCta');
-  const isToolsPage         = () => !!$('#toolsList');
-  const isToolDetailPage    = () => !!$('#toolDetail');
-  const isDltChecklistsPage = () => !!$('#dltChecklistsList');
-  const isDltTestPlansPage  = () => !!$('#dltTestPlansList');
-  const isMainPage          = () => !!$('#tilesGrid');
-
-  function basePath() {
-    // 2-level deep (tools/dlt-qa, checklists/dlt-qa, test-plans/dlt-qa)
-    if (document.querySelector('link[href^="../../assets/"]')) return '../../';
-    // 1-level deep (cases, about, contacts, tools, checklists, test-plans)
-    if (document.querySelector('link[href^="../assets/"]')) return '../';
-    return '';
-  }
-
-  /* ===== Main ===== */
-  async function main() {
-    const yearEl = $('#year');
-    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
-
-    const base = basePath();
-
-    // Load profile
-    try {
-      const profile = await loadJSON(base + 'data/profile.json');
-
-      const name      = safeText(profile?.name)      || 'Константин';
-      const roleShort = safeText(profile?.roleShort) || 'Junior IT (QA / Backend / Web)';
-
-      const nameTop    = $('#nameTop');
-      const roleTop    = $('#roleTop');
-      const nameFooter = $('#nameFooter');
-      if (nameTop)    nameTop.textContent    = name;
-      if (roleTop)    roleTop.textContent    = roleShort;
-      if (nameFooter) nameFooter.textContent = name;
-
-      if (isContactsPage()) initContacts(profile);
-      if (isAboutPage())    initAbout(profile);
-    } catch (_) {
-      // Profile didn't load — static fallback text stays
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        const copy = siteData[currentLanguage];
+        const isOpen = document.body.classList.toggle('nav-open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? copy.ui.closeMenu : copy.ui.openMenu);
+      });
     }
 
-    // Cases page
-    if (isCasesPage()) {
-      try {
-        const cases = await loadJSON(base + 'data/cases.json');
-        bindCategoryFilter(Array.isArray(cases) ? cases : []);
-      } catch (_) {
-        const box = $('#dataStatus');
-        if (box) { box.hidden = false; box.textContent = 'Не удалось загрузить кейсы. Обновите страницу.'; }
-        renderCases([]);
-      }
-    }
-
-    // Tools list page
-    if (isToolsPage()) {
-      try {
-        const tools = await loadJSON(base + 'data/tools.json');
-        renderTools(Array.isArray(tools) ? tools : [], base);
-      } catch (_) {}
-    }
-
-    // Tool detail page (tools/dlt-qa/)
-    if (isToolDetailPage()) {
-      try {
-        const tools = await loadJSON(base + 'data/tools.json');
-        const arr = Array.isArray(tools) ? tools : [];
-        const pathParts = window.location.pathname.replace(/\/+$/, '').split('/');
-        const slug = pathParts[pathParts.length - 1];
-        const tool = arr.find((t) => t.id === slug) || arr[0];
-        if (tool) renderToolDetail(tool, base);
-      } catch (_) {}
-    }
-
-    // DLT QA Checklists page (checklists/dlt-qa/)
-    if (isDltChecklistsPage()) {
-      try {
-        const data = await loadJSON(base + 'data/checklists.json');
-        const items = Array.isArray(data?.items) ? data.items : [];
-        renderDltChecklists(items);
-      } catch (_) {}
-    }
-
-    // DLT QA Test Plans page (test-plans/dlt-qa/)
-    if (isDltTestPlansPage()) {
-      try {
-        const plans = await loadJSON(base + 'data/testplans.json');
-        renderDltTestPlans(Array.isArray(plans) ? plans : []);
-      } catch (_) {}
-    }
-
-    // Main page: count badges (cases + tools only)
-    if (isMainPage()) {
-      try {
-        const cases = await loadJSON(base + 'data/cases.json');
-        const arr   = Array.isArray(cases) ? cases : [];
-        const total = arr.reduce((n, c) => n + (Array.isArray(c.items) ? c.items.length : 0), 0);
-        const countEl = $('#casesCount');
-        if (countEl && total > 0) {
-          countEl.textContent = total + ' ' + pluralize(total, 'кейс', 'кейса', 'кейсов');
+    if (nav) {
+      nav.addEventListener('click', (event) => {
+        if (event.target.closest('a')) {
+          document.body.classList.remove('nav-open');
+          if (menuToggle) {
+            menuToggle.setAttribute('aria-expanded', 'false');
+            menuToggle.setAttribute('aria-label', siteData[currentLanguage].ui.openMenu);
+          }
         }
-      } catch (_) {}
-
-      try {
-        const tools = await loadJSON(base + 'data/tools.json');
-        const active = (Array.isArray(tools) ? tools : []).filter((t) => t.active).length;
-        const countEl = $('#toolsCount');
-        if (countEl && active > 0) {
-          countEl.textContent = active + ' ' + pluralize(active, 'инструмент', 'инструмента', 'инструментов');
-        }
-      } catch (_) {}
+      });
     }
 
-    // iOS press on all interactive elements
-    bindPressEffect('.tile--active');
-    bindPressEffect('.toolCard--active');
-    bindPressEffect('.dltNav__btn');
+    if (languageSwitch) {
+      languageSwitch.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-language]');
+        if (!button) return;
+        setLanguage(button.dataset.language);
+      });
+    }
   }
 
-  function pluralize(n, one, few, many) {
-    const abs  = Math.abs(n) % 100;
-    const last = abs % 10;
-    if (abs > 10 && abs < 20) return many;
-    if (last > 1  && last < 5) return few;
-    if (last === 1) return one;
-    return many;
+  function render() {
+    const copy = siteData[currentLanguage];
+    updateDocument(copy);
+    renderHeader(copy);
+    renderHero(copy);
+    renderAbout(copy);
+    renderValueAreas(copy);
+    renderExperience(copy);
+    renderIndependentLab(copy);
+    renderProjects(copy);
+    renderSkills(copy);
+    renderCertificates(copy);
+    renderContact(copy);
+    renderFooter(copy);
+    bindReveal();
   }
 
-  main();
+  bindStaticEvents();
+  render();
 })();
