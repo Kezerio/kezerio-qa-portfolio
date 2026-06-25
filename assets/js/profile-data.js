@@ -4,7 +4,7 @@ window.profileData = {
     email: 'mailto:wampirkost@gmail.com',
     emailText: 'wampirkost@gmail.com',
     telegram: 'https://t.me/KonstantinV_AI',
-    vk: 'https://vk.com/wampi',
+    vk: 'https://vk.com/intni',
     github: 'https://github.com/Kezerio',
     hh: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841',
     phone: 'tel:+79155488625',
@@ -428,7 +428,7 @@ window.profileData = {
       ],
       buttons: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI', variant: 'primary' },
-        { label: 'VK', href: 'https://vk.com/wampi', variant: 'secondary' },
+        { label: 'VK', href: 'https://vk.com/intni', variant: 'secondary' },
         { label: 'Email', action: 'copyEmail', variant: 'secondary' },
         { label: 'Позвонить', href: 'tel:+79155488625', variant: 'secondary' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841', variant: 'secondary' },
@@ -447,7 +447,7 @@ window.profileData = {
       ],
       contactLinks: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI' },
-        { label: 'VK', href: 'https://vk.com/wampi' },
+        { label: 'VK', href: 'https://vk.com/intni' },
         { label: 'Email', action: 'copyEmail' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841' },
         { label: 'CV RU', href: 'cv/Konstantin_Vasiliev_CV_RU.pdf' },
@@ -855,7 +855,7 @@ window.profileData = {
       ],
       buttons: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI', variant: 'primary' },
-        { label: 'VK', href: 'https://vk.com/wampi', variant: 'secondary' },
+        { label: 'VK', href: 'https://vk.com/intni', variant: 'secondary' },
         { label: 'Email', action: 'copyEmail', variant: 'secondary' },
         { label: 'Call', href: 'tel:+79155488625', variant: 'secondary' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841', variant: 'secondary' },
@@ -874,7 +874,7 @@ window.profileData = {
       ],
       contactLinks: [
         { label: 'Telegram', href: 'https://t.me/KonstantinV_AI' },
-        { label: 'VK', href: 'https://vk.com/wampi' },
+        { label: 'VK', href: 'https://vk.com/intni' },
         { label: 'Email', action: 'copyEmail' },
         { label: 'HH.ru', href: 'https://spb.hh.ru/resume/5ebe9e34ff0f0684d30039ed1f6f3045393841' },
         { label: 'CV RU', href: 'cv/Konstantin_Vasiliev_CV_RU.pdf' },
