@@ -606,24 +606,48 @@
   function bindProjectRail() {
     const rail = $('[data-projects-rail]');
     if (!rail) return;
-    const amount = () => {
-      const card = $('.project-card', rail);
-      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || '0') || 0;
-      return card ? card.getBoundingClientRect().width + gap : Math.max(320, rail.clientWidth * 0.82);
+
+    const scrollTargets = () => {
+      const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      const railLeft = rail.getBoundingClientRect().left;
+      const targets = $$('.project-card', rail)
+        .map((card) => card.getBoundingClientRect().left - railLeft + rail.scrollLeft)
+        .map((left) => Math.min(maxScroll, Math.max(0, Math.round(left))))
+        .filter((left, index, list) => index === 0 || Math.abs(left - list[index - 1]) > 8);
+
+      if (!targets.length || targets[0] > 8) targets.unshift(0);
+      if (Math.abs(targets[targets.length - 1] - maxScroll) > 8) targets.push(maxScroll);
+      return targets;
     };
 
     const scrollLoop = (direction) => {
-      const maxScroll = rail.scrollWidth - rail.clientWidth;
-      const next = rail.scrollLeft + amount() * direction;
+      const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+      if (maxScroll <= 0) return;
 
-      if (direction > 0 && next >= maxScroll - 8) {
+      const current = rail.scrollLeft;
+      const targets = scrollTargets();
+
+      if (direction > 0 && current >= maxScroll - 8) {
         rail.scrollTo({ left: 0, behavior: 'smooth' });
         return;
       }
 
-      if (direction < 0 && next <= 8) {
+      if (direction < 0 && current <= 8) {
         rail.scrollTo({ left: maxScroll, behavior: 'smooth' });
         return;
+      }
+
+      let next = direction > 0 ? maxScroll : 0;
+      if (direction > 0) {
+        const forwardTarget = targets.find((left) => left > current + 8);
+        if (typeof forwardTarget === 'number') next = forwardTarget;
+      } else {
+        for (let index = targets.length - 1; index >= 0; index -= 1) {
+          if (targets[index] < current - 8) {
+            next = targets[index];
+            break;
+          }
+        }
       }
 
       rail.scrollTo({ left: next, behavior: 'smooth' });
