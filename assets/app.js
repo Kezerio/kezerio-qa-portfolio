@@ -57,7 +57,11 @@
     const className = `btn btn--${variant}`;
 
     if (item.action === 'copyEmail') {
-      return `<button class="${className}" type="button" data-copy-email>${esc(item.label)}</button>`;
+      return `<button class="${className}" type="button" data-copy-email data-original-label="${esc(item.label)}">${esc(item.label)}</button>`;
+    }
+
+    if (item.action === 'copyPhone') {
+      return `<button class="${className}" type="button" data-copy-phone data-original-label="${esc(item.label)}">${esc(item.label)}</button>`;
     }
 
     if (item.disabled || !item.href) {
@@ -131,35 +135,70 @@
     return toast;
   }
 
-  async function copyEmail() {
+  async function copyToClipboard(value) {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(value);
+      return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = value;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.append(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+  }
+
+  function showCopyToast(message) {
+    const toast = ensureToast();
+    toast.textContent = message;
+    toast.classList.add('is-visible');
+    window.clearTimeout(showCopyToast.hideTimer);
+    showCopyToast.hideTimer = window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+    }, 1300);
+  }
+
+  function setCopyFeedback(trigger, label) {
+    if (!trigger?.classList.contains('btn')) return;
+    const originalLabel = trigger.dataset.originalLabel || trigger.textContent;
+    trigger.textContent = label;
+    trigger.classList.add('is-copied');
+    window.clearTimeout(trigger.copyFeedbackTimer);
+    trigger.copyFeedbackTimer = window.setTimeout(() => {
+      trigger.textContent = originalLabel;
+      trigger.classList.remove('is-copied');
+    }, 1300);
+  }
+
+  async function copyEmail(trigger) {
     const copy = siteData[currentLanguage];
     const email = siteData.links.emailText;
 
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(email);
-      } else {
-        const textarea = document.createElement('textarea');
-        textarea.value = email;
-        textarea.setAttribute('readonly', '');
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-        document.body.append(textarea);
-        textarea.select();
-        document.execCommand('copy');
-        textarea.remove();
-      }
+      await copyToClipboard(email);
     } catch {
       // The toast still gives a clear click response if clipboard access is blocked.
     }
 
-    const toast = ensureToast();
-    toast.textContent = copy.ui.emailCopied;
-    toast.classList.add('is-visible');
-    window.clearTimeout(copyEmail.hideTimer);
-    copyEmail.hideTimer = window.setTimeout(() => {
-      toast.classList.remove('is-visible');
-    }, 1300);
+    setCopyFeedback(trigger, copy.ui.copiedShort);
+    showCopyToast(copy.ui.emailCopied);
+  }
+
+  async function copyPhone(trigger) {
+    const copy = siteData[currentLanguage];
+
+    try {
+      await copyToClipboard(siteData.links.phoneText);
+    } catch {
+      // The toast still gives a clear click response if clipboard access is blocked.
+    }
+
+    setCopyFeedback(trigger, copy.ui.copiedShort);
+    showCopyToast(copy.ui.phoneCopied);
   }
 
   function renderHeader(copy) {
@@ -173,7 +212,7 @@
     if (brandName) brandName.textContent = copy.person.nameEn;
 
     const brandRole = $('[data-brand-role]');
-    if (brandRole) brandRole.textContent = 'AI QA / Support';
+    if (brandRole) brandRole.textContent = copy.person.shortRole || copy.person.role;
 
     const nav = $('#mainNav');
     nav.setAttribute('aria-label', copy.ui.navAria);
@@ -327,15 +366,13 @@
         ${sectionHead('projectsTitle', copy.projects.eyebrow, copy.projects.title, copy.projects.subtitle)}
         <div class="project-toolbar reveal">
           <p>${esc(copy.ui.projectRailHint)}</p>
-          <div class="project-toolbar__actions">
-            <button type="button" data-projects-prev aria-label="${esc(copy.ui.projectPrevious)}">‹</button>
-            <button type="button" data-projects-next aria-label="${esc(copy.ui.projectNext)}">›</button>
-          </div>
         </div>
         <div class="project-rail-wrap">
+          <button class="project-rail-button project-rail-button--prev" type="button" data-projects-prev aria-label="${esc(copy.ui.projectPrevious)}">‹</button>
           <div class="project-rail" data-projects-rail tabindex="0" aria-label="${esc(copy.projects.title)}">
             ${copy.projects.items.map((project) => projectCard(project, copy)).join('')}
           </div>
+          <button class="project-rail-button project-rail-button--next" type="button" data-projects-next aria-label="${esc(copy.ui.projectNext)}">›</button>
         </div>
       </div>
     `;
@@ -375,24 +412,20 @@
     $('#skills').innerHTML = `
       <div class="wrap">
         ${sectionHead('skillsTitle', copy.skills.eyebrow, copy.skills.title, copy.skills.subtitle)}
-        <div class="skill-legend reveal">
-          ${copy.skills.legend.map((item) => `
-            <span><b>${esc(item.level)}</b>${esc(item.label)}</span>
-          `).join('')}
-        </div>
         <div class="skills-grid">
           ${copy.skills.levels.map((group) => `
-            <article class="skills-group reveal">
-              <div class="skills-group__head">
-                <span>${esc(group.level)}</span>
-                <h3>${esc(group.title)}</h3>
-              </div>
+            <details class="skills-group reveal">
+              <summary>
+                <span class="skills-group__title">${esc(group.title)}</span>
+                <span class="skills-group__preview">${group.items.slice(0, 4).map((item) => esc(item)).join(' / ')}</span>
+                <span class="skills-group__more" aria-hidden="true">...</span>
+              </summary>
               <div class="skill-chip-list">
                 ${group.items.map((item) => `
-                  <span class="skill-chip"><b>${esc(group.level)}</b>${esc(item)}</span>
+                  <span class="skill-chip">${esc(item)}</span>
                 `).join('')}
               </div>
-            </article>
+            </details>
           `).join('')}
         </div>
       </div>
@@ -438,10 +471,13 @@
   }
 
   function learningCard(item) {
+    const mediaLabel = `${siteData[currentLanguage].ui.previewOpen}: ${item.title}`;
     return `
       <article class="learning-card">
         ${item.preview ? `
-          <img class="learning-card__preview" src="${esc(item.preview)}" alt="${esc(`${item.title} - ${item.type}`)}" width="900" height="620" loading="lazy" />
+          <button class="learning-card__media" type="button" data-preview-src="${esc(item.preview)}" data-preview-title="${esc(item.title)}" aria-label="${esc(mediaLabel)}">
+            <img class="learning-card__preview" src="${esc(item.preview)}" alt="${esc(`${item.title} - ${item.type}`)}" width="900" height="620" loading="lazy" />
+          </button>
         ` : ''}
         <div class="learning-card__body">
           <p>${esc(item.type)}</p>
@@ -570,14 +606,98 @@
   function bindProjectRail() {
     const rail = $('[data-projects-rail]');
     if (!rail) return;
-    const amount = () => Math.max(320, rail.clientWidth * 0.82);
+    const amount = () => {
+      const card = $('.project-card', rail);
+      const gap = Number.parseFloat(window.getComputedStyle(rail).columnGap || '0') || 0;
+      return card ? card.getBoundingClientRect().width + gap : Math.max(320, rail.clientWidth * 0.82);
+    };
 
-    $('[data-projects-prev]')?.addEventListener('click', () => {
-      rail.scrollBy({ left: -amount(), behavior: 'smooth' });
+    const scrollLoop = (direction) => {
+      const maxScroll = rail.scrollWidth - rail.clientWidth;
+      const next = rail.scrollLeft + amount() * direction;
+
+      if (direction > 0 && next >= maxScroll - 8) {
+        rail.scrollTo({ left: 0, behavior: 'smooth' });
+        return;
+      }
+
+      if (direction < 0 && next <= 8) {
+        rail.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        return;
+      }
+
+      rail.scrollTo({ left: next, behavior: 'smooth' });
+    };
+
+    $('[data-projects-prev]')?.addEventListener('click', () => scrollLoop(-1));
+    $('[data-projects-next]')?.addEventListener('click', () => scrollLoop(1));
+  }
+
+  function ensurePreviewDialog() {
+    let dialog = $('#previewDialog');
+    const copy = siteData[currentLanguage];
+
+    if (!dialog) {
+      dialog = document.createElement('div');
+      dialog.id = 'previewDialog';
+      dialog.className = 'preview-dialog';
+      dialog.setAttribute('role', 'dialog');
+      dialog.setAttribute('aria-modal', 'true');
+      dialog.setAttribute('aria-hidden', 'true');
+      dialog.innerHTML = `
+        <div class="preview-dialog__backdrop" data-preview-close></div>
+        <div class="preview-dialog__panel">
+          <button class="preview-dialog__close" type="button" data-preview-close></button>
+          <img class="preview-dialog__image" alt="" />
+          <p class="preview-dialog__title"></p>
+        </div>
+      `;
+      document.body.append(dialog);
+    }
+
+    const closeButton = $('.preview-dialog__close', dialog);
+    closeButton.setAttribute('aria-label', copy.ui.previewClose);
+    closeButton.textContent = '×';
+    return dialog;
+  }
+
+  function openPreview(src, title) {
+    const dialog = ensurePreviewDialog();
+    const image = $('.preview-dialog__image', dialog);
+    const caption = $('.preview-dialog__title', dialog);
+
+    image.src = src;
+    image.alt = title;
+    caption.textContent = title;
+    dialog.setAttribute('aria-hidden', 'false');
+    dialog.classList.add('is-open');
+    document.body.classList.add('preview-open');
+    $('.preview-dialog__close', dialog)?.focus();
+  }
+
+  function closePreview() {
+    const dialog = $('#previewDialog');
+    if (!dialog) return;
+    dialog.classList.remove('is-open');
+    dialog.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('preview-open');
+  }
+
+  function bindPreviewDialog() {
+    document.addEventListener('click', (event) => {
+      const previewButton = event.target.closest('[data-preview-src]');
+      if (previewButton) {
+        openPreview(previewButton.dataset.previewSrc, previewButton.dataset.previewTitle || '');
+        return;
+      }
+
+      if (event.target.closest('[data-preview-close]')) {
+        closePreview();
+      }
     });
 
-    $('[data-projects-next]')?.addEventListener('click', () => {
-      rail.scrollBy({ left: amount(), behavior: 'smooth' });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closePreview();
     });
   }
 
@@ -645,8 +765,15 @@
     }
 
     document.addEventListener('click', (event) => {
-      if (event.target.closest('[data-copy-email]')) {
-        copyEmail();
+      const emailButton = event.target.closest('[data-copy-email]');
+      if (emailButton) {
+        copyEmail(emailButton);
+        return;
+      }
+
+      const phoneButton = event.target.closest('[data-copy-phone]');
+      if (phoneButton) {
+        copyPhone(phoneButton);
       }
     });
   }
@@ -671,5 +798,6 @@
   }
 
   bindStaticEvents();
+  bindPreviewDialog();
   render();
 })();

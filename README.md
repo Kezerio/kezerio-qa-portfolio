@@ -1,8 +1,8 @@
-# Konstantin Vasiliev Portfolio v5.1.0
+# Konstantin Vasiliev Portfolio v5.1.1
 
 Static one-page portfolio for AI QA / LLM Evaluation / Integration Support / QA Web/API / Unity Game QA positioning.
 
-## v5.1.0
+## v5.1.1
 
 This release continues the full visual redesign with a more human resume-style structure.
 
@@ -15,6 +15,12 @@ This release continues the full visual redesign with a more human resume-style s
 - Added phone, salary expectations, format, location, goal, and English level to the contact CTA.
 - Added `pismo-arm.webp` preview for the military service recommendation.
 - Cleaned long dash characters from text files.
+- Updated hero positioning for QA, AI Agents, Game Dev, and Technical Support L3.
+- Reworked About gallery controls into glass side zones and line indicators.
+- Reworked project rail side controls and one-card looped scrolling.
+- Reworked Skills as compact expandable blocks without numeric badges.
+- Added full image preview modal for learning and achievement images.
+- Phone and email contact buttons now show copied feedback.
 - Added RU / US language switch without page reload.
 - Language choice is saved in `localStorage` with key `kv-site-language`.
 
