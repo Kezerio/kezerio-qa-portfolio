@@ -11,6 +11,7 @@
 
   let currentLanguage = readInitialLanguage();
   let revealObserver = null;
+  let aboutGalleryIndex = 0;
 
   const esc = (value) => String(value ?? '')
     .replaceAll('&', '&amp;')
@@ -47,7 +48,7 @@
   }
 
   function linkAttrs(href) {
-    if (!href || href.startsWith('#') || href.startsWith('mailto:')) return '';
+    if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return '';
     return ' target="_blank" rel="noopener noreferrer"';
   }
 
@@ -97,7 +98,7 @@
       <div class="section-head reveal">
         <p class="eyebrow">${esc(eyebrow)}</p>
         <h2 id="${esc(id)}">${esc(title)}</h2>
-        <p>${esc(subtitle)}</p>
+        ${subtitle ? `<p>${esc(subtitle)}</p>` : ''}
       </div>
     `;
   }
@@ -172,7 +173,7 @@
     if (brandName) brandName.textContent = copy.person.nameEn;
 
     const brandRole = $('[data-brand-role]');
-    if (brandRole) brandRole.textContent = 'AI QA / Integration Support';
+    if (brandRole) brandRole.textContent = 'AI QA / Support';
 
     const nav = $('#mainNav');
     nav.setAttribute('aria-label', copy.ui.navAria);
@@ -206,12 +207,14 @@
           <p class="eyebrow">${esc(copy.hero.eyebrow)}</p>
           <h1 id="heroTitle">${lineBreaks(copy.hero.title)}</h1>
           <p class="hero__lead">${esc(copy.hero.subtitle)}</p>
+          ${copy.hero.description ? `<p class="hero__description">${esc(copy.hero.description)}</p>` : ''}
           <div class="hero__actions">
             ${copy.hero.cta.map((item) => buttonLink(item)).join('')}
           </div>
           <div class="proof-list" aria-label="${esc(copy.ui.evidenceLabel)}">
             ${copy.hero.proofPoints.map((item) => `<span>${esc(item)}</span>`).join('')}
           </div>
+          ${copy.hero.quote ? `<p class="hero__quote">${esc(copy.hero.quote)}</p>` : ''}
         </div>
 
         <div class="hero__visual reveal">
@@ -224,7 +227,19 @@
     `;
   }
 
+  function galleryItems(copy) {
+    const items = siteData.aboutGallery?.length ? siteData.aboutGallery : [
+      { src: siteData.assets.aboutImage, alt: copy.about.imageAlt },
+    ];
+    return items;
+  }
+
   function renderAbout(copy) {
+    const items = galleryItems(copy);
+    aboutGalleryIndex = Math.min(aboutGalleryIndex, items.length - 1);
+    const activeItem = items[aboutGalleryIndex];
+    const hasControls = items.length > 1;
+
     $('#about').innerHTML = `
       <div class="wrap about-layout">
         <div class="about-copy reveal">
@@ -233,32 +248,27 @@
           <div class="rich-text">
             ${copy.about.paragraphs.map((paragraph) => `<p>${esc(paragraph)}</p>`).join('')}
           </div>
-        </div>
-        <div class="about-visual reveal">
-          <img src="${esc(siteData.assets.aboutImage)}" alt="${esc(copy.about.imageAlt)}" width="980" height="1280" loading="lazy" />
           <div class="about-notes">
             ${copy.about.notes.map((note) => `<span>${esc(note)}</span>`).join('')}
           </div>
         </div>
-      </div>
-    `;
-  }
-
-  function renderValueAreas(copy) {
-    $('#focus').innerHTML = `
-      <div class="wrap">
-        ${sectionHead('focusTitle', 'Focus', copy.valueAreas.title, copy.valueAreas.subtitle)}
-        <div class="value-list">
-          ${copy.valueAreas.items.map((item, index) => `
-            <article class="value-row reveal">
-              <span class="row-index">${String(index + 1).padStart(2, '0')}</span>
-              <div>
-                <h3>${esc(item.title)}</h3>
-                <p>${esc(item.text)}</p>
-                ${chipList(item.tags)}
-              </div>
-            </article>
-          `).join('')}
+        <div class="about-gallery reveal" data-about-gallery aria-label="${esc(copy.ui.galleryLabel)}" ${hasControls ? 'tabindex="0"' : ''}>
+          <div class="about-gallery__stage">
+            <img class="is-loaded" data-gallery-image src="${esc(activeItem.src)}" alt="${esc(activeItem.alt)}" width="980" height="1280" loading="lazy" />
+            ${hasControls ? `
+              <button class="gallery-button gallery-button--prev" type="button" data-gallery-prev aria-label="${esc(copy.ui.galleryPrevious)}">‹</button>
+              <button class="gallery-button gallery-button--next" type="button" data-gallery-next aria-label="${esc(copy.ui.galleryNext)}">›</button>
+            ` : ''}
+          </div>
+          ${hasControls ? `
+            <div class="gallery-dots" role="group" aria-label="${esc(copy.ui.galleryLabel)}">
+              ${items.map((item, index) => `
+                <button type="button" data-gallery-dot="${index}" aria-label="${esc(`${copy.ui.galleryDot} ${index + 1}`)}" aria-pressed="${index === aboutGalleryIndex}">
+                  <span></span>
+                </button>
+              `).join('')}
+            </div>
+          ` : ''}
         </div>
       </div>
     `;
@@ -267,13 +277,14 @@
   function renderExperience(copy) {
     $('#experience').innerHTML = `
       <div class="wrap">
-        ${sectionHead('experienceTitle', 'Experience', copy.experience.title, copy.experience.subtitle)}
+        ${sectionHead('experienceTitle', copy.experience.eyebrow, copy.experience.title, copy.experience.subtitle)}
         <div class="experience-list">
           ${copy.experience.items.map((item) => `
             <article class="experience-row ${item.current ? 'experience-row--current' : ''} reveal">
               <div class="experience-row__meta">
                 <span>${esc(item.period)}</span>
                 ${item.location ? `<small>${esc(item.location)}</small>` : ''}
+                ${item.format ? `<small>${esc(item.format)}</small>` : ''}
                 ${item.current ? `<strong>${esc(copy.ui.currentLabel)}</strong>` : ''}
               </div>
               <div class="experience-row__body">
@@ -312,19 +323,27 @@
 
   function renderProjects(copy) {
     $('#projects').innerHTML = `
-      <div class="wrap">
-        ${sectionHead('projectsTitle', 'Projects', copy.projects.title, copy.projects.subtitle)}
-        <div class="project-grid">
-          ${copy.projects.items.map((project, index) => projectCard(project, copy, index)).join('')}
+      <div class="wrap projects-wrap">
+        ${sectionHead('projectsTitle', copy.projects.eyebrow, copy.projects.title, copy.projects.subtitle)}
+        <div class="project-toolbar reveal">
+          <p>${esc(copy.ui.projectRailHint)}</p>
+          <div class="project-toolbar__actions">
+            <button type="button" data-projects-prev aria-label="${esc(copy.ui.projectPrevious)}">‹</button>
+            <button type="button" data-projects-next aria-label="${esc(copy.ui.projectNext)}">›</button>
+          </div>
+        </div>
+        <div class="project-rail-wrap">
+          <div class="project-rail" data-projects-rail tabindex="0" aria-label="${esc(copy.projects.title)}">
+            ${copy.projects.items.map((project) => projectCard(project, copy)).join('')}
+          </div>
         </div>
       </div>
     `;
   }
 
-  function projectCard(project, copy, index) {
-    const featured = index === 0 ? ' project-card--featured' : '';
+  function projectCard(project, copy) {
     return `
-      <article class="project-card${featured} reveal">
+      <article class="project-card reveal">
         <div class="project-card__content">
           <div class="project-card__topline">
             <span>${esc(project.type)}</span>
@@ -338,16 +357,16 @@
           </div>
           ${cleanList(project.highlights)}
           ${chipList(project.tags)}
+          <aside class="project-card__proof" aria-label="${esc(copy.ui.evidenceLabel)}">
+            <span>${esc(copy.ui.evidenceLabel)}</span>
+            <p>${esc(project.proof)}</p>
+          </aside>
           ${project.buttons?.length ? `
             <div class="project-card__actions">
               ${project.buttons.map((button) => buttonLink(button)).join('')}
             </div>
           ` : ''}
         </div>
-        <aside class="project-card__proof" aria-label="${esc(copy.ui.evidenceLabel)}">
-          <span>${esc(copy.ui.evidenceLabel)}</span>
-          <p>${esc(project.proof)}</p>
-        </aside>
       </article>
     `;
   }
@@ -355,30 +374,23 @@
   function renderSkills(copy) {
     $('#skills').innerHTML = `
       <div class="wrap">
-        ${sectionHead('skillsTitle', 'Skills', copy.skills.title, copy.skills.subtitle)}
-        <div class="skills-grid">
-          ${copy.skills.groups.map((group) => `
-            <article class="skills-group reveal">
-              <h3>${esc(group.title)}</h3>
-              ${chipList(group.items, 'chip-list chip-list--dense')}
-            </article>
+        ${sectionHead('skillsTitle', copy.skills.eyebrow, copy.skills.title, copy.skills.subtitle)}
+        <div class="skill-legend reveal">
+          ${copy.skills.legend.map((item) => `
+            <span><b>${esc(item.level)}</b>${esc(item.label)}</span>
           `).join('')}
         </div>
-      </div>
-    `;
-  }
-
-  function renderCertificates(copy) {
-    $('#certificates').innerHTML = `
-      <div class="wrap">
-        ${sectionHead('certificatesTitle', 'Learning', copy.certificates.title, copy.certificates.subtitle)}
-        <div class="cert-grid">
-          ${copy.certificates.items.map((certificate) => `
-            <article class="cert-card reveal">
-              <img class="cert-card__preview" src="${esc(certificate.preview)}" alt="${esc(`${certificate.title} — ${certificate.type}`)}" width="900" height="620" loading="lazy" />
-              <div class="cert-card__body">
-                <h3>${esc(certificate.title)}</h3>
-                <p>${esc(certificate.type)}</p>
+        <div class="skills-grid">
+          ${copy.skills.levels.map((group) => `
+            <article class="skills-group reveal">
+              <div class="skills-group__head">
+                <span>${esc(group.level)}</span>
+                <h3>${esc(group.title)}</h3>
+              </div>
+              <div class="skill-chip-list">
+                ${group.items.map((item) => `
+                  <span class="skill-chip"><b>${esc(group.level)}</b>${esc(item)}</span>
+                `).join('')}
               </div>
             </article>
           `).join('')}
@@ -387,13 +399,78 @@
     `;
   }
 
+  function renderValueAreas(copy) {
+    $('#focus').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('focusTitle', copy.valueAreas.eyebrow, copy.valueAreas.title, copy.valueAreas.subtitle)}
+        <div class="value-list">
+          ${copy.valueAreas.items.map((item, index) => `
+            <article class="value-row reveal">
+              <span class="row-index">${String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>${esc(item.title)}</h3>
+                <p>${esc(item.text)}</p>
+                ${chipList(item.tags)}
+              </div>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderLearning(copy) {
+    $('#certificates').innerHTML = `
+      <div class="wrap">
+        ${sectionHead('certificatesTitle', copy.learning.eyebrow, copy.learning.title, copy.learning.subtitle)}
+        <div class="learning-groups">
+          ${copy.learning.groups.map((group) => `
+            <section class="learning-group reveal" aria-label="${esc(group.title)}">
+              <h3>${esc(group.title)}</h3>
+              <div class="learning-grid">
+                ${group.items.map((item) => learningCard(item)).join('')}
+              </div>
+            </section>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function learningCard(item) {
+    return `
+      <article class="learning-card">
+        ${item.preview ? `
+          <img class="learning-card__preview" src="${esc(item.preview)}" alt="${esc(`${item.title} - ${item.type}`)}" width="900" height="620" loading="lazy" />
+        ` : ''}
+        <div class="learning-card__body">
+          <p>${esc(item.type)}</p>
+          <h4>${esc(item.title)}</h4>
+          ${item.period ? `<strong>${esc(item.period)}</strong>` : ''}
+          ${item.description ? `<span>${esc(item.description)}</span>` : ''}
+        </div>
+      </article>
+    `;
+  }
+
   function renderContact(copy) {
     $('#contact').innerHTML = `
       <div class="wrap contact-panel reveal">
-        <div>
-          <p class="eyebrow">Contact</p>
+        <div class="contact-panel__copy">
+          <p class="eyebrow">${esc(copy.contact.eyebrow)}</p>
           <h2 id="contactTitle">${esc(copy.contact.title)}</h2>
           <p>${esc(copy.contact.text)}</p>
+        </div>
+        <div class="contact-panel__details" aria-label="${esc(copy.ui.detailsLabel)}">
+          ${copy.contact.details.map((detail) => {
+            const content = `
+              <span>${esc(detail.label)}</span>
+              <strong>${esc(detail.value)}</strong>
+            `;
+            return detail.href
+              ? `<a class="contact-detail" href="${esc(detail.href)}"${linkAttrs(detail.href)}>${content}</a>`
+              : `<div class="contact-detail">${content}</div>`;
+          }).join('')}
         </div>
         <div class="contact-panel__actions">
           ${copy.contact.buttons.map((button) => buttonLink(button)).join('')}
@@ -434,6 +511,76 @@
     `;
   }
 
+  function setAboutGalleryIndex(index) {
+    const items = galleryItems(siteData[currentLanguage]);
+    if (!items.length) return;
+    aboutGalleryIndex = (index + items.length) % items.length;
+
+    const gallery = $('[data-about-gallery]');
+    const image = $('[data-gallery-image]');
+    if (!gallery || !image) return;
+
+    const activeItem = items[aboutGalleryIndex];
+    image.classList.remove('is-loaded');
+    image.src = activeItem.src;
+    image.alt = activeItem.alt;
+    window.requestAnimationFrame(() => image.classList.add('is-loaded'));
+
+    $$('[data-gallery-dot]', gallery).forEach((dot) => {
+      dot.setAttribute('aria-pressed', String(Number(dot.dataset.galleryDot) === aboutGalleryIndex));
+    });
+  }
+
+  function bindAboutGallery() {
+    const gallery = $('[data-about-gallery]');
+    if (!gallery) return;
+    const items = galleryItems(siteData[currentLanguage]);
+    if (items.length <= 1) return;
+
+    $('[data-gallery-prev]', gallery)?.addEventListener('click', () => setAboutGalleryIndex(aboutGalleryIndex - 1));
+    $('[data-gallery-next]', gallery)?.addEventListener('click', () => setAboutGalleryIndex(aboutGalleryIndex + 1));
+
+    $$('[data-gallery-dot]', gallery).forEach((dot) => {
+      dot.addEventListener('click', () => setAboutGalleryIndex(Number(dot.dataset.galleryDot)));
+    });
+
+    gallery.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        setAboutGalleryIndex(aboutGalleryIndex - 1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        setAboutGalleryIndex(aboutGalleryIndex + 1);
+      }
+    });
+
+    let touchStartX = 0;
+    gallery.addEventListener('touchstart', (event) => {
+      touchStartX = event.changedTouches[0]?.clientX ?? 0;
+    }, { passive: true });
+    gallery.addEventListener('touchend', (event) => {
+      const touchEndX = event.changedTouches[0]?.clientX ?? touchStartX;
+      const delta = touchEndX - touchStartX;
+      if (Math.abs(delta) < 48) return;
+      setAboutGalleryIndex(aboutGalleryIndex + (delta < 0 ? 1 : -1));
+    }, { passive: true });
+  }
+
+  function bindProjectRail() {
+    const rail = $('[data-projects-rail]');
+    if (!rail) return;
+    const amount = () => Math.max(320, rail.clientWidth * 0.82);
+
+    $('[data-projects-prev]')?.addEventListener('click', () => {
+      rail.scrollBy({ left: -amount(), behavior: 'smooth' });
+    });
+
+    $('[data-projects-next]')?.addEventListener('click', () => {
+      rail.scrollBy({ left: amount(), behavior: 'smooth' });
+    });
+  }
+
   function bindReveal() {
     const items = $$('.reveal');
 
@@ -441,6 +588,10 @@
       revealObserver.disconnect();
       revealObserver = null;
     }
+
+    items.forEach((item, index) => {
+      item.style.setProperty('--reveal-delay', `${Math.min(index * 36, 260)}ms`);
+    });
 
     if (!('IntersectionObserver' in window)) {
       items.forEach((item) => item.classList.add('is-visible'));
@@ -506,14 +657,16 @@
     renderHeader(copy);
     renderHero(copy);
     renderAbout(copy);
-    renderValueAreas(copy);
     renderExperience(copy);
     renderIndependentLab(copy);
     renderProjects(copy);
     renderSkills(copy);
-    renderCertificates(copy);
+    renderValueAreas(copy);
+    renderLearning(copy);
     renderContact(copy);
     renderFooter(copy);
+    bindAboutGallery();
+    bindProjectRail();
     bindReveal();
   }
 
