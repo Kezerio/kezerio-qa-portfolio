@@ -484,6 +484,7 @@
           <h4>${esc(item.title)}</h4>
           ${item.period ? `<strong>${esc(item.period)}</strong>` : ''}
           ${item.description ? `<span>${esc(item.description)}</span>` : ''}
+          ${item.href ? `<a class="btn btn--secondary learning-card__link" href="${esc(item.href)}"${linkAttrs(item.href)}>${esc(item.linkLabel || item.href)}</a>` : ''}
         </div>
       </article>
     `;

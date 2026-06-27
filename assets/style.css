@@ -1252,6 +1252,11 @@ p {
   line-height: 1.58;
 }
 
+.learning-card__link {
+  width: fit-content;
+  margin-top: 6px;
+}
+
 .preview-open {
   overflow: hidden;
 }
