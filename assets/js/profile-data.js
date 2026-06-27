@@ -245,6 +245,26 @@ window.profileData = {
           proof: 'Материалы показывают ход мысли: условия, шаги, ожидание, факт, риск и доказательства.',
         },
         {
+          title: 'Учебный проект: Swagger Notes API Testing',
+          type: 'API-тестирование / учебная практика',
+          status: 'Практика завершена',
+          description: 'Ручная проверка Notes API на ExpandTesting через Swagger UI и Postman: авторизация, профиль, восстановление пароля, CRUD заметок и ошибки валидации.',
+          role: 'Manual API tester / Postman / Swagger UI',
+          highlights: [
+            'проверил health-check, создание пользователя, login и получение access token',
+            'проверил GET профиля и PATCH обновление с X-Auth-Token в headers',
+            'прошел сценарий восстановления пароля',
+            'изучил CRUD заметок: create, get, update, partial update, delete',
+            'проверил позитивные и негативные сценарии: токен, email, метод, обязательные поля',
+            'разобрал form-data и x-www-form-urlencoded в body Postman',
+          ],
+          tags: ['Postman', 'Swagger UI', 'REST API', 'Headers', 'X-Auth-Token', 'x-www-form-urlencoded'],
+          buttons: [
+            { label: 'Открыть Swagger', href: 'https://practice.expandtesting.com/notes/api/api-docs/#/', variant: 'secondary' },
+          ],
+          proof: 'Практика дала опыт анализа response body, статус-кодов, токенов, headers и ошибок валидации.',
+        },
+        {
           title: 'Своя мастерская: Fix & Flip Repair Empire',
           type: 'Прототип / презентация',
           status: 'Prototype / pitch materials',
@@ -675,6 +695,26 @@ window.profileData = {
             { label: 'QA API Lab', href: 'https://qa-api-lab.onrender.com', variant: 'secondary' },
           ],
           proof: 'The materials show thinking: conditions, steps, expected result, actual result, risk, and evidence.',
+        },
+        {
+          title: 'Learning project: Swagger Notes API Testing',
+          type: 'API testing / learning practice',
+          status: 'Practice completed',
+          description: 'Manual testing of the ExpandTesting Notes API through Swagger UI and Postman: auth, profile, password recovery, notes CRUD, and validation errors.',
+          role: 'Manual API tester / Postman / Swagger UI',
+          highlights: [
+            'checked health-check, user creation, login, and access token retrieval',
+            'tested profile GET and PATCH update with X-Auth-Token in headers',
+            'worked through the password recovery scenario',
+            'studied notes CRUD: create, get, update, partial update, delete',
+            'checked positive and negative scenarios: token, email, method, required fields',
+            'compared form-data and x-www-form-urlencoded body formats in Postman',
+          ],
+          tags: ['Postman', 'Swagger UI', 'REST API', 'Headers', 'X-Auth-Token', 'x-www-form-urlencoded'],
+          buttons: [
+            { label: 'Open Swagger docs', href: 'https://practice.expandtesting.com/notes/api/api-docs/#/', variant: 'secondary' },
+          ],
+          proof: 'The practice added hands-on work with response bodies, status codes, tokens, headers, and validation errors.',
         },
         {
           title: 'Fix & Flip Repair Empire',
