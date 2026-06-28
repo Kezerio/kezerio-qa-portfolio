@@ -57,6 +57,8 @@ window.profileData = {
       projectRailHint: 'Прокрутите горизонтально, чтобы увидеть больше проектов',
       projectPrevious: 'Прокрутить проекты назад',
       projectNext: 'Прокрутить проекты вперёд',
+      certificatePrevious: 'Прокрутить сертификаты назад',
+      certificateNext: 'Прокрутить сертификаты вперёд',
       detailsLabel: 'Коротко по формату',
       copiedShort: 'Скопировано',
       phoneCopied: 'Телефон скопирован',
@@ -357,6 +359,7 @@ window.profileData = {
       groups: [
         {
           title: 'Сертификаты',
+          carousel: true,
           items: [
             {
               title: 'Основы ИИ',
@@ -367,6 +370,11 @@ window.profileData = {
               title: 'Агенты и рабочие процессы',
               type: 'Сертификат о прохождении курса',
               preview: 'certificates/agents-workflows.webp',
+            },
+            {
+              title: 'Setting a Foundation for Successful Test Automation',
+              type: 'Сертификат о прохождении бесплатного курса',
+              preview: 'certificates/test-automation-foundation.png',
             },
           ],
         },
@@ -502,6 +510,8 @@ window.profileData = {
       projectRailHint: 'Scroll horizontally to see more projects',
       projectPrevious: 'Scroll projects backward',
       projectNext: 'Scroll projects forward',
+      certificatePrevious: 'Scroll certificates backward',
+      certificateNext: 'Scroll certificates forward',
       detailsLabel: 'Quick details',
       copiedShort: 'Copied',
       phoneCopied: 'Phone copied',
@@ -802,6 +812,7 @@ window.profileData = {
       groups: [
         {
           title: 'Certificates',
+          carousel: true,
           items: [
             {
               title: 'AI Foundations',
@@ -812,6 +823,11 @@ window.profileData = {
               title: 'Agents and Workflows',
               type: 'Course completion certificate',
               preview: 'certificates/agents-workflows.webp',
+            },
+            {
+              title: 'Setting a Foundation for Successful Test Automation',
+              type: 'Free course completion certificate',
+              preview: 'certificates/test-automation-foundation.png',
             },
           ],
         },

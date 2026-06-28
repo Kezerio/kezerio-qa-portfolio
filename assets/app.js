@@ -457,16 +457,36 @@
       <div class="wrap">
         ${sectionHead('certificatesTitle', copy.learning.eyebrow, copy.learning.title, copy.learning.subtitle)}
         <div class="learning-groups">
-          ${copy.learning.groups.map((group) => `
-            <section class="learning-group reveal" aria-label="${esc(group.title)}">
-              <h3>${esc(group.title)}</h3>
-              <div class="learning-grid">
-                ${group.items.map((item) => learningCard(item)).join('')}
-              </div>
-            </section>
-          `).join('')}
+          ${copy.learning.groups.map((group) => learningGroup(group, copy)).join('')}
         </div>
       </div>
+    `;
+  }
+
+  function learningGroup(group, copy) {
+    const cards = group.items.map((item) => learningCard(item)).join('');
+    if (group.carousel && group.items.length > 1) {
+      return `
+        <section class="learning-group learning-group--carousel reveal" aria-label="${esc(group.title)}">
+          <h3>${esc(group.title)}</h3>
+          <div class="learning-rail-wrap">
+            <button class="learning-rail-button learning-rail-button--prev" type="button" data-learning-prev aria-label="${esc(copy.ui.certificatePrevious)}">‹</button>
+            <div class="learning-grid learning-grid--rail" data-learning-rail tabindex="0" aria-label="${esc(group.title)}">
+              ${cards}
+            </div>
+            <button class="learning-rail-button learning-rail-button--next" type="button" data-learning-next aria-label="${esc(copy.ui.certificateNext)}">›</button>
+          </div>
+        </section>
+      `;
+    }
+
+    return `
+      <section class="learning-group reveal" aria-label="${esc(group.title)}">
+        <h3>${esc(group.title)}</h3>
+        <div class="learning-grid">
+          ${cards}
+        </div>
+      </section>
     `;
   }
 
@@ -658,6 +678,62 @@
     $('[data-projects-next]')?.addEventListener('click', () => scrollLoop(1));
   }
 
+  function bindLearningRails() {
+    $$('[data-learning-rail]').forEach((rail) => {
+      const wrap = rail.closest('.learning-rail-wrap');
+      if (!wrap) return;
+
+      const scrollTargets = () => {
+        const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        const railLeft = rail.getBoundingClientRect().left;
+        const targets = $$('.learning-card', rail)
+          .map((card) => card.getBoundingClientRect().left - railLeft + rail.scrollLeft)
+          .map((left) => Math.min(maxScroll, Math.max(0, Math.round(left))))
+          .filter((left, index, list) => index === 0 || Math.abs(left - list[index - 1]) > 8);
+
+        if (!targets.length || targets[0] > 8) targets.unshift(0);
+        if (Math.abs(targets[targets.length - 1] - maxScroll) > 8) targets.push(maxScroll);
+        return targets;
+      };
+
+      const scrollLoop = (direction) => {
+        const maxScroll = Math.max(0, rail.scrollWidth - rail.clientWidth);
+        if (maxScroll <= 0) return;
+
+        const current = rail.scrollLeft;
+        const targets = scrollTargets();
+
+        if (direction > 0 && current >= maxScroll - 8) {
+          rail.scrollTo({ left: 0, behavior: 'smooth' });
+          return;
+        }
+
+        if (direction < 0 && current <= 8) {
+          rail.scrollTo({ left: maxScroll, behavior: 'smooth' });
+          return;
+        }
+
+        let next = direction > 0 ? maxScroll : 0;
+        if (direction > 0) {
+          const forwardTarget = targets.find((left) => left > current + 8);
+          if (typeof forwardTarget === 'number') next = forwardTarget;
+        } else {
+          for (let index = targets.length - 1; index >= 0; index -= 1) {
+            if (targets[index] < current - 8) {
+              next = targets[index];
+              break;
+            }
+          }
+        }
+
+        rail.scrollTo({ left: next, behavior: 'smooth' });
+      };
+
+      $('[data-learning-prev]', wrap)?.addEventListener('click', () => scrollLoop(-1));
+      $('[data-learning-next]', wrap)?.addEventListener('click', () => scrollLoop(1));
+    });
+  }
+
   function ensurePreviewDialog() {
     let dialog = $('#previewDialog');
     const copy = siteData[currentLanguage];
@@ -819,6 +895,7 @@
     renderFooter(copy);
     bindAboutGallery();
     bindProjectRail();
+    bindLearningRails();
     bindReveal();
   }
 

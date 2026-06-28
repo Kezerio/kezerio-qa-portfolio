@@ -1195,6 +1195,52 @@ p {
   gap: 18px;
 }
 
+.learning-rail-wrap {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.learning-grid--rail {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(420px, calc((100% - 18px) / 2));
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 2px 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-color: rgba(196, 165, 106, 0.45) rgba(255, 255, 255, 0.04);
+}
+
+.learning-grid--rail .learning-card {
+  scroll-snap-align: start;
+}
+
+.learning-rail-button {
+  align-self: center;
+  width: 42px;
+  height: 126px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--text-main);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.82;
+  backdrop-filter: blur(14px);
+  transition: opacity 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+
+.learning-rail-button:hover {
+  opacity: 1;
+  border-color: rgba(226, 204, 152, 0.22);
+  background: rgba(16, 20, 26, 0.40);
+}
+
 .learning-card {
   min-width: 0;
   overflow: hidden;
@@ -1572,9 +1618,18 @@ a.contact-detail:hover {
     grid-auto-columns: minmax(440px, 64%);
   }
 
+  .learning-grid--rail {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(340px, 76%);
+  }
+
   .skills-grid,
   .learning-grid {
     grid-template-columns: 1fr;
+  }
+
+  .learning-grid--rail {
+    grid-template-columns: none;
   }
 }
 
@@ -1643,6 +1698,22 @@ a.contact-detail:hover {
   .project-rail-button {
     width: 38px;
     height: 118px;
+    font-size: 28px;
+  }
+
+  .learning-rail-wrap {
+    grid-template-columns: 36px minmax(0, 1fr) 36px;
+    gap: 8px;
+  }
+
+  .learning-grid--rail {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(280px, 92%);
+  }
+
+  .learning-rail-button {
+    width: 36px;
+    height: 108px;
     font-size: 28px;
   }
 
@@ -1797,6 +1868,23 @@ a.contact-detail:hover {
   }
 
   .project-rail-button {
+    width: 34px;
+    height: 98px;
+    font-size: 28px;
+  }
+
+  .learning-rail-wrap {
+    grid-template-columns: 34px minmax(0, 1fr) 34px;
+    gap: 7px;
+  }
+
+  .learning-grid--rail {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(230px, 100%);
+    gap: 14px;
+  }
+
+  .learning-rail-button {
     width: 34px;
     height: 98px;
     font-size: 28px;
