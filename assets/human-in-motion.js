@@ -204,11 +204,4 @@
     });
   });
 
-  if (!reducedMotion && portrait && window.matchMedia('(pointer: fine)').matches) {
-    window.addEventListener('pointermove', function (event) {
-      var x = (event.clientX / window.innerWidth - 0.5) * 14;
-      var y = (event.clientY / window.innerHeight - 0.5) * 9;
-      portrait.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
-    }, { passive: true });
-  }
 }());
