@@ -55,7 +55,8 @@
       factLocation: 'Санкт-Петербург',
       factEnglish: 'Английский B1, продолжаю учиться',
       factStatus: 'Открыт к предложениям',
-      contactText: 'Интересны позиции QA, AI QA, Game QA и технические роли, где пригодятся диагностика, поддержка и работа с интеграциями.'
+      contactText: 'Интересны позиции QA, AI QA, Game QA и технические роли, где пригодятся диагностика, поддержка и работа с интеграциями.',
+      privacyNotice: 'Cookies и трекеры не используются'
     },
     en: {
       title: 'Konstantin Vasiliev - QA / AI QA / Support / Game QA',
@@ -110,7 +111,8 @@
       factLocation: 'Saint Petersburg',
       factEnglish: 'English B1 and improving',
       factStatus: 'Open to opportunities',
-      contactText: 'I am interested in QA, AI QA, Game QA and technical roles where diagnostics, support and integration experience are useful.'
+      contactText: 'I am interested in QA, AI QA, Game QA and technical roles where diagnostics, support and integration experience are useful.',
+      privacyNotice: 'No cookies or trackers are used'
     }
   };
 
