@@ -407,6 +407,8 @@ button, input { font: inherit; }
   color: var(--fusion-ink);
   background: var(--fusion-cream);
   font-family: var(--sans);
+  min-width: 0;
+  overflow-x: hidden;
 }
 .fusion-progress { position: fixed; z-index: 100; top: 0; left: 0; right: 0; height: 5px; pointer-events: none; }
 .fusion-progress i { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--fusion-lime), var(--fusion-coral), var(--fusion-lilac), var(--fusion-blue)); }
@@ -558,45 +560,151 @@ button, input { font: inherit; }
   .final-contact-facts { grid-template-columns: 1fr 1fr; }
 }
 
+/* Reflow mode for tablets and desktop browsers enlarged to 200% */
+@media (max-width: 1000px) {
+  .fusion-nav, .final-nav { padding: 18px 3vw; grid-template-columns: 1fr auto; }
+  .fusion-nav nav { display: none; }
+
+  .fusion-hero {
+    display: flex;
+    min-height: 0;
+    padding: 52px 4vw 34px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .fusion-hero__headline {
+    order: 1;
+    width: 100%;
+    margin: 0;
+    align-content: initial;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 8px;
+    transform: rotate(-.6deg);
+  }
+  .fusion-word {
+    max-width: 100%;
+    font-size: clamp(50px, 9.5vw, 90px);
+    line-height: .82;
+    overflow-wrap: anywhere;
+  }
+  .fusion-word:nth-child(2) { margin-left: 7vw; }
+  .fusion-word:nth-child(3) { margin-left: 2vw; }
+  .fusion-word:nth-child(4) { margin-left: 11vw; }
+  .fusion-hero__portrait {
+    position: relative;
+    order: 2;
+    width: min(72vw, 440px);
+    right: auto;
+    bottom: auto;
+    margin: 42px auto 28px;
+    flex: 0 0 auto;
+  }
+  .fusion-hero__bottom {
+    position: relative;
+    order: 3;
+    width: min(760px, 100%);
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+  .fusion-hero__note {
+    position: relative;
+    order: 4;
+    left: auto;
+    bottom: auto;
+    margin: 32px 0 0;
+  }
+
+  .fusion-projects { grid-template-columns: 1fr; }
+  .fusion-project, .fusion-project:first-child { grid-column: auto; }
+  .fusion-project h3,
+  .fusion-manifesto h2,
+  .fusion-section-head h2,
+  .fusion-story__copy h2,
+  .fusion-tools h2,
+  .fusion-contact h2 { overflow-wrap: anywhere; }
+  .fusion-manifesto h2 { line-height: .94; }
+  .fusion-section-head h2 { line-height: .9; }
+  .fusion-project h3 { line-height: .82; }
+  .fusion-story__copy h2 { line-height: .9; }
+  .fusion-tools h2 { line-height: .92; }
+  .fusion-contact h2 { line-height: .9; }
+}
+
 @media (max-width: 720px) {
   .fusion-nav { padding: 16px 20px; grid-template-columns: 1fr 1fr; }
   .fusion-nav nav { display: none; }
   .final-nav__contact { display: none; }
-  .fusion-hero { min-height: 980px; padding: 60px 20px 25px; }
-  .fusion-hero__headline { width: 100%; margin: 0; gap: 4px; }
-  .fusion-word { font-size: 54px; }
-  .fusion-hero__portrait { width: 76vw; right: 5vw; bottom: 125px; }
+  .fusion-hero { min-height: 0; padding: 48px 20px 28px; }
+  .fusion-hero__headline { width: 100%; margin: 0; gap: 6px; }
+  .fusion-word { font-size: clamp(36px, 14vw, 58px); }
+  .fusion-word:nth-child(2) { margin-left: 5vw; }
+  .fusion-word:nth-child(3) { margin-left: 0; }
+  .fusion-word:nth-child(4) { margin-left: 8vw; }
+  .fusion-hero__portrait { width: min(78vw, 390px); right: auto; bottom: auto; margin: 38px auto 26px; }
   .fusion-photo-orbit { width: 100px; height: 100px; padding-top: 34px; }
   .fusion-photo-tag { left: -5px; bottom: 24px; }
-  .fusion-hero__note { left: 20px; bottom: 22px; }
-  .fusion-hero__bottom { left: 20px; right: 20px; bottom: 60px; align-items: flex-start; flex-direction: column; gap: 18px; }
-  .fusion-hero__bottom p { max-width: 70%; font-size: 13px; }
+  .fusion-hero__note { left: auto; bottom: auto; margin-top: 28px; }
+  .fusion-hero__bottom { left: auto; right: auto; bottom: auto; align-items: flex-start; flex-direction: column; gap: 18px; }
+  .fusion-hero__bottom p { max-width: 100%; font-size: 13px; }
   .fusion-manifesto, .fusion-proof, .fusion-story, .fusion-route, .fusion-tools, .fusion-contact { padding: 90px 20px; }
-  .fusion-manifesto h2 { font-size: 47px; }
+  .fusion-manifesto h2 { font-size: clamp(34px, 11vw, 47px); line-height: .96; }
   .fusion-manifesto__foot { grid-template-columns: 1fr; gap: 25px; }
   .fusion-section-head { align-items: flex-start; flex-direction: column; gap: 20px; }
-  .fusion-section-head h2 { font-size: 58px; text-align: left; }
+  .fusion-section-head h2 { font-size: clamp(40px, 13vw, 58px); line-height: .92; text-align: left; }
   .fusion-projects { grid-template-columns: 1fr; }
   .fusion-project, .fusion-project:first-child { min-height: 450px; padding: 23px; grid-column: auto; }
-  .fusion-project h3 { font-size: 82px; }
+  .fusion-project h3 { font-size: clamp(56px, 18vw, 82px); line-height: .84; }
   .fusion-project > div { align-items: flex-start; flex-direction: column; }
-  .fusion-story__photos { min-height: 530px; }
+  .fusion-story__photos { min-height: clamp(390px, 125vw, 530px); }
   .fusion-story__photos span { width: 95px; height: 95px; right: 0; }
-  .fusion-story__copy h2 { font-size: 52px; }
+  .fusion-story__copy h2 { font-size: clamp(38px, 11vw, 52px); line-height: .94; }
   .fusion-route__line { display: none; }
   .fusion-route__items { margin-top: 65px; grid-template-columns: 1fr; gap: 65px; }
-  .fusion-tools h2 { font-size: 65px; }
-  .fusion-contact h2 { font-size: 69px; }
+  .fusion-tools h2 { font-size: clamp(38px, 11vw, 65px); line-height: .96; }
+  .fusion-contact h2 { font-size: clamp(44px, 13vw, 69px); line-height: .94; }
   .fusion-contact__row { align-items: flex-start; flex-direction: column; }
   .fusion-contact__row > div { flex-wrap: wrap; }
   .fusion-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
   .growth-zone { padding: 90px 20px 30px; }
-  .growth-zone__field { display: flex; min-height: auto; margin: 50px -20px 0; padding: 0 20px 28px; overflow-x: auto; align-items: stretch; scroll-snap-type: x mandatory; }
-  .growth-stage, .growth-stage--base, .growth-stage--now, .growth-stage--practice, .growth-stage--next { min-width: 82vw; min-height: 470px; scroll-snap-align: start; }
+  .growth-zone__field { display: grid; min-height: auto; margin: 50px 0 0; padding: 0; overflow: visible; grid-template-columns: 1fr; align-items: stretch; }
+  .growth-stage, .growth-stage--base, .growth-stage--now, .growth-stage--practice, .growth-stage--next { min-width: 0; min-height: 400px; }
   .growth-stage time { margin-top: auto; }
   .final-learning { padding: 90px 20px; }
   .final-learning__grid { grid-template-columns: 1fr; }
   .final-contact-facts { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 420px) {
+  .fusion-nav, .final-nav { padding: 13px 14px; }
+  .fusion-logo { width: 40px; height: 40px; }
+  .final-nav__actions { gap: 6px; }
+  .final-language button { min-width: 31px; padding: 7px 6px; }
+  .fusion-hero { padding: 40px 14px 26px; }
+  .fusion-word { font-size: clamp(34px, 14vw, 50px); }
+  .fusion-word:nth-child(2) { margin-left: 3vw; }
+  .fusion-word:nth-child(4) { margin-left: 5vw; }
+  .fusion-hero__portrait { width: min(86vw, 350px); margin-top: 34px; }
+  .fusion-photo-orbit { width: 86px; height: 86px; right: -8px; padding: 28px 6px 0; font-size: 7px; }
+  .fusion-photo-tag { padding: 11px 13px; font-size: 9px; }
+  .fusion-manifesto, .fusion-proof, .fusion-story, .fusion-route, .fusion-tools, .fusion-contact { padding: 72px 16px; }
+  .fusion-project, .fusion-project:first-child { min-height: 400px; padding: 18px; }
+  .fusion-project h3 { font-size: clamp(50px, 18vw, 68px); }
+  .fusion-project p { font-size: 14px; }
+  .fusion-story { gap: 62px; }
+  .fusion-story__photos span { width: 78px; height: 78px; font-size: 10px; }
+  .fusion-chip-field button { padding: 12px 15px; font-size: 14px; }
+  .growth-zone { padding: 72px 16px 28px; }
+  .growth-stage { padding: 23px; }
+  .growth-stage, .growth-stage--base, .growth-stage--now, .growth-stage--practice, .growth-stage--next { min-height: 370px; }
+  .final-learning { padding: 72px 16px; }
+  .final-certificate > div { padding: 20px; grid-template-columns: 34px 1fr; }
+  .fusion-contact__row { margin-top: 50px; }
+  .final-contact-facts { margin-top: 48px; }
 }
 
 /* Shared responsive rules */
