@@ -1,6 +1,13 @@
-# Konstantin Vasiliev Portfolio v6.0.0
+# Konstantin Vasiliev Portfolio v6.1.0
 
 Static one-page portfolio for QA / AI QA / Technical Support / QA Web/API / Unity Game QA positioning.
+
+## v6.1.0
+
+- API Lab now opens a static wake gate in a new tab instead of waiting on a blank Render loading screen.
+- The wake gate polls `/health`, explains the free hosting delay, and redirects when API Lab is ready.
+- Added three waiting games: HTTP status, JSON contract, and boundary values.
+- The wake gate uses no cookies, analytics, tracking, or browser storage.
 
 ## v6.0.0
 
@@ -42,6 +49,14 @@ The main interaction and localized copy live here:
 
 ```text
 assets/human-in-motion.js
+```
+
+The API Lab wake gate lives here:
+
+```text
+api-lab/index.html
+api-lab/api-lab.css
+api-lab/api-lab.js
 ```
 
 The visual system and test concepts live here:
@@ -127,6 +142,7 @@ Important public links:
 
 ```text
 https://www.rustore.ru/catalog/app/com.mellstroy.clicker
+https://kezerio.github.io/kezerio-qa-portfolio/api-lab/
 https://qa-api-lab.onrender.com
 https://github.com/Kezerio
 ```
@@ -145,6 +161,7 @@ Use bundled Node if system `node` is unavailable.
 ```bash
 node --check assets/app.js
 node --check assets/js/profile-data.js
+node --check api-lab/api-lab.js
 git diff --check
 ```
 
@@ -155,6 +172,9 @@ Serve locally and verify these paths return `200`:
 /assets/style.css
 /assets/app.js
 /assets/js/profile-data.js
+/api-lab/
+/api-lab/api-lab.css
+/api-lab/api-lab.js
 /images/konstantin-hero.webp
 /images/konstantin-about.webp
 /images/konstantin-avatar.webp
@@ -202,7 +222,7 @@ Also verify:
 git status
 git diff --stat
 git add .
-git commit -m "Release portfolio v5.0.0"
+git commit -m "Add API Lab wake gate"
 git push
 ```
 
@@ -211,5 +231,7 @@ GitHub Pages should serve the static files from the configured branch/root.
 ## Privacy Notes
 
 - The site publishes the public phone number provided for contact.
+- The site does not set cookies and does not include analytics or trackers.
+- The language switch stores only the selected language in `localStorage`.
 - Private automation, client, token, login, account, and internal URL data must stay out of public assets.
 - Do not publish private screenshots, cookies, tokens, or account-specific URLs.

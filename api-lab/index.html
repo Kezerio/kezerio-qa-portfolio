@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>API Lab просыпается - Константин Васильев</title>
+  <meta name="description" content="Сервер QA API Lab просыпается на бесплатном Render. Пока ждём, сыграйте в три короткие QA-игры." />
+  <link rel="stylesheet" href="api-lab.css?v=20260723-wake-games" />
+</head>
+<body class="wake-page">
+  <a class="skip-link" href="#games">К мини-играм</a>
+  <div class="wake-progress" aria-hidden="true"><i data-wake-progress></i></div>
+
+  <header class="wake-nav">
+    <a class="wake-logo" href="../" aria-label="Вернуться в портфолио">K:\</a>
+    <p><span>03</span> API LAB / WAKE GATE</p>
+    <a class="wake-back" href="../#proof">Портфолио ↗</a>
+  </header>
+
+  <main>
+    <section class="wake-hero">
+      <div class="wake-copy">
+        <p class="eyebrow">FREE SERVER WAKE-UP / 01</p>
+        <h1><span>API LAB</span><span>ПРОСЫПАЕТСЯ.</span></h1>
+        <p class="wake-lead">Бесплатный сервер Render засыпает после 15 минут без запросов. Первый запуск обычно занимает до минуты. Мы уже отправили сигнал и проверяем готовность.</p>
+      </div>
+
+      <aside class="wake-console" data-wake-console>
+        <div class="wake-console__top">
+          <span class="wake-signal" aria-hidden="true"></span>
+          <span data-wake-state>STARTING</span>
+        </div>
+        <strong><span data-wake-seconds>00</span><small>SEC</small></strong>
+        <p data-wake-message>Отправляю первый запрос...</p>
+        <div class="wake-meter" aria-hidden="true"><i data-wake-meter></i></div>
+        <div class="wake-console__meta">
+          <span>ATTEMPTS <b data-wake-attempts>0</b></span>
+          <span>GET /health</span>
+        </div>
+      </aside>
+
+      <div class="wake-actions">
+        <a href="https://qa-api-lab.onrender.com/" data-open-lab>Открыть напрямую <span>↗</span></a>
+        <button type="button" data-stay hidden>Остаться и доиграть</button>
+      </div>
+    </section>
+
+    <div class="wake-marquee" aria-hidden="true"><div>SERVER WAKING ✦ PLAY WHILE YOU WAIT ✦ 200 · 401 · 404 · 422 ✦ SERVER WAKING ✦ PLAY WHILE YOU WAIT ✦ 200 · 401 · 404 · 422 ✦</div></div>
+
+    <section class="games" id="games">
+      <header class="section-head">
+        <p>WAITING ROOM / 02</p>
+        <h2>Три игры.<br />Ноль скуки.</h2>
+      </header>
+
+      <div class="game-tabs" role="tablist" aria-label="Мини-игры">
+        <button class="is-active" type="button" role="tab" aria-selected="true" data-game-tab="status">01 · STATUS HUNT</button>
+        <button type="button" role="tab" aria-selected="false" data-game-tab="json">02 · JSON DETECTIVE</button>
+        <button type="button" role="tab" aria-selected="false" data-game-tab="boundary">03 · BOUNDARY TAP</button>
+      </div>
+
+      <div class="game-stage">
+        <section class="mini-game mini-game--status is-active" role="tabpanel" data-game-panel="status">
+          <div class="game-brief">
+            <span>STATUS HUNT</span>
+            <h3>Какой HTTP-код вернётся?</h3>
+            <p data-status-question>Валидный формат логина, но пароль не совпал.</p>
+            <small>SCORE <b data-status-score>0</b> / <b data-status-total>0</b></small>
+          </div>
+          <div class="status-options" data-status-options></div>
+          <p class="game-feedback" data-status-feedback aria-live="polite">Выберите код ответа.</p>
+        </section>
+
+        <section class="mini-game mini-game--json" role="tabpanel" data-game-panel="json" hidden>
+          <div class="game-brief">
+            <span>JSON DETECTIVE</span>
+            <h3>Найдите поле с ошибкой.</h3>
+            <p>Контракт ожидал роль тестировщика. Какое поле сломано?</p>
+          </div>
+          <div class="json-compare">
+            <pre><b>EXPECTED</b>
+{
+  "id": 17,
+  "status": "ok",
+  "role": "tester"
+}</pre>
+            <pre><b>ACTUAL</b>
+{
+  "id": 17,
+  "status": "ok",
+  "role": "admin"
+}</pre>
+          </div>
+          <div class="json-options" data-json-options>
+            <button type="button" data-json-answer="id">id</button>
+            <button type="button" data-json-answer="status">status</button>
+            <button type="button" data-json-answer="role">role</button>
+          </div>
+          <p class="game-feedback" data-json-feedback aria-live="polite">Сравните значения и выберите ключ.</p>
+        </section>
+
+        <section class="mini-game mini-game--boundary" role="tabpanel" data-game-panel="boundary" hidden>
+          <div class="game-brief">
+            <span>BOUNDARY TAP</span>
+            <h3>Поймайте две внешние границы.</h3>
+            <p>Допустимое количество товара: от 1 до 99 включительно. Выберите два значения, которые должны дать 422.</p>
+          </div>
+          <div class="boundary-options" data-boundary-options>
+            <button type="button" data-boundary-value="0">0</button>
+            <button type="button" data-boundary-value="1">1</button>
+            <button type="button" data-boundary-value="50">50</button>
+            <button type="button" data-boundary-value="99">99</button>
+            <button type="button" data-boundary-value="100">100</button>
+          </div>
+          <button class="boundary-check" type="button" data-boundary-check>Проверить выбор</button>
+          <p class="game-feedback" data-boundary-feedback aria-live="polite">Нужно выбрать ровно два значения.</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="wake-facts">
+      <article><span>01</span><h3>Почему ждём?</h3><p>Render останавливает бесплатный web service после 15 минут без входящего трафика.</p></article>
+      <article><span>02</span><h3>Что происходит?</h3><p>Первый HTTP-запрос запускает новый экземпляр приложения. Обычно это занимает около минуты.</p></article>
+      <article><span>03</span><h3>Что дальше?</h3><p>Когда `/health` вернёт 200, эта страница автоматически переведёт вас в живую лабораторию.</p></article>
+    </section>
+  </main>
+
+  <div class="ready-overlay" data-ready-overlay hidden>
+    <div>
+      <span>HTTP 200</span>
+      <h2>API ONLINE.</h2>
+      <p>Открываю лабораторию через <b data-redirect-countdown>3</b>...</p>
+      <button type="button" data-stay-overlay>Остаться здесь</button>
+    </div>
+  </div>
+
+  <footer class="wake-footer">
+    <span>QA API LAB WAKE GATE</span>
+    <span>Cookies и трекеры не используются</span>
+    <span>© <b data-year></b></span>
+  </footer>
+
+  <script src="api-lab.js?v=20260723-wake-games" defer></script>
+</body>
+</html>
