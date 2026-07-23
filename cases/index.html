@@ -3,82 +3,102 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Кейсы тестирования - Константин</title>
-  <link rel="stylesheet" href="../assets/style.css" />
+  <title>QA Cases - Константин Васильев</title>
+  <meta name="description" content="Практические QA-кейсы Константина Васильева: воспроизведение, факты, expected и actual, приоритеты и доказательства." />
+  <meta property="og:title" content="QA Cases - Константин Васильев" />
+  <meta property="og:description" content="Не обещания, а оформленные QA-кейсы и баг-репорты с доказательствами." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="../images/og-cover.webp" />
+  <link rel="canonical" href="https://kezerio.github.io/kezerio-qa-portfolio/cases/" />
+  <link rel="stylesheet" href="cases.css?v=20260723-case-files-2" />
 </head>
+<body class="cases-page">
+  <a class="cases-skip" href="#case-files">К кейсам</a>
+  <div class="cases-progress" aria-hidden="true"><i></i></div>
 
-<body>
-  <header class="topbar">
-    <div class="wrap topbar__inner">
-      <div class="brand">
-        <a class="brand__avatar brand__avatar--link" href="../" aria-label="На главную">IT</a>
-        <div class="brand__text">
-          <div class="brand__name" id="nameTop">Константин</div>
-          <div class="brand__role" id="roleTop">Junior IT (QA / Backend / Web)</div>
+  <header class="cases-nav" id="top">
+    <a class="cases-logo" href="../" aria-label="Вернуться на главную">K:\</a>
+    <p><span>02</span> QA CASES / DOCUMENTED</p>
+    <a class="cases-nav__back" href="../#proof">На главную <span>↗</span></a>
+  </header>
+
+  <main>
+    <section class="cases-hero">
+      <p class="cases-eyebrow">QUALITY EVIDENCE / 01</p>
+      <h1 aria-label="Не слова. Кейсы.">
+        <span class="cases-title-word cases-title-word--ink">НЕ СЛОВА.</span>
+        <span class="cases-title-word cases-title-word--lime">КЕЙСЫ.</span>
+      </h1>
+
+      <aside class="cases-hero__aside">
+        <div class="cases-orbit" aria-hidden="true">REPRODUCE · ISOLATE · DOCUMENT ·</div>
+        <strong data-total-reports>6</strong>
+        <p>зафиксированных дефектов в Web, Game QA и iOS</p>
+        <a href="#case-files">Открыть материалы <span>↓</span></a>
+      </aside>
+
+      <p class="cases-hero__note">Я показываю не список знакомых терминов, а ход проверки: что заметил, как воспроизвёл, что ожидал и какие факты передал дальше.</p>
+    </section>
+
+    <div class="cases-marquee" aria-hidden="true">
+      <div>FIND THE SIGNAL ✦ REPRODUCE ✦ COMPARE EXPECTED / ACTUAL ✦ ATTACH EVIDENCE ✦ FIND THE SIGNAL ✦ REPRODUCE ✦ COMPARE EXPECTED / ACTUAL ✦ ATTACH EVIDENCE ✦</div>
+    </div>
+
+    <section class="cases-library" id="case-files">
+      <header class="cases-section-head">
+        <p>CASE FILES / 02</p>
+        <h2>Открывайте.<br />Проверяйте.</h2>
+      </header>
+
+      <div class="cases-controls">
+        <div class="cases-filters" role="group" aria-label="Фильтр кейсов">
+          <button class="is-active" type="button" data-filter="all" aria-pressed="true">Все <span data-filter-count="all">0</span></button>
+          <button type="button" data-filter="sites" aria-pressed="false">Web <span data-filter-count="sites">0</span></button>
+          <button type="button" data-filter="games" aria-pressed="false">Game QA <span data-filter-count="games">0</span></button>
+          <button type="button" data-filter="ios" aria-pressed="false">iOS <span data-filter-count="ios">0</span></button>
+        </div>
+        <p class="cases-status" data-cases-status aria-live="polite">Загружаю материалы...</p>
+      </div>
+
+      <div class="cases-list" data-cases-list>
+        <div class="cases-loading">
+          <i></i><i></i><i></i>
+          <span>Собираю case files</span>
         </div>
       </div>
 
-      <div class="topbar__center">
-        <span class="topbar__title">Кейсы тестирования</span>
+      <noscript><p class="cases-error">Для просмотра интерактивных кейсов включите JavaScript.</p></noscript>
+    </section>
+
+    <section class="cases-method" id="method">
+      <header class="cases-section-head cases-section-head--dark">
+        <p>WORKFLOW / 03</p>
+        <h2>От сигнала<br />до передачи.</h2>
+      </header>
+      <div class="cases-method__grid">
+        <article><span>01</span><h3>Замечаю</h3><p>Отделяю реальный симптом от впечатления и собираю контекст.</p></article>
+        <article><span>02</span><h3>Повторяю</h3><p>Ищу устойчивый сценарий, окружение и границы проблемы.</p></article>
+        <article><span>03</span><h3>Сравниваю</h3><p>Фиксирую expected и actual без двусмысленности.</p></article>
+        <article><span>04</span><h3>Передаю</h3><p>Добавляю приоритет, доказательства и понятный следующий шаг.</p></article>
       </div>
+    </section>
 
-      <div class="topbar__spacer"></div>
-    </div>
-  </header>
-
-  <main class="wrap main main--cases" role="main">
-    <section class="section">
-      <div class="section__head">
-        <a class="back-link" href="../">&larr; На главную</a>
-        <h1>Кейсы тестирования</h1>
-        <p class="muted">Выберите категорию, чтобы посмотреть кейсы и баг-репорты.</p>
+    <section class="cases-next" id="next">
+      <p>Часть практики не публикуется из-за конфиденциальности. Здесь остаются материалы, которые можно открыть и проверить.</p>
+      <h2>Нужен человек,<br />который <span>докопается?</span></h2>
+      <div>
+        <a href="../#contact">Написать мне <span>↗</span></a>
+        <a href="../">Вернуться к портфолио</a>
       </div>
-
-      <div class="catTiles" id="catTiles">
-        <button class="catTile catTile--active" data-category="ios" type="button">
-          <span class="catTile__icon"><span class="icon icon--all" aria-hidden="true"></span></span>
-          <span class="catTile__label">iOS</span>
-        </button>
-        <button class="catTile catTile--active" data-category="sites" type="button">
-          <span class="catTile__icon"><span class="icon icon--web" aria-hidden="true"></span></span>
-          <span class="catTile__label">Сайты</span>
-        </button>
-        <button class="catTile catTile--active" data-category="games" type="button">
-          <span class="catTile__icon"><span class="icon icon--game" aria-hidden="true"></span></span>
-          <span class="catTile__label">Игры</span>
-        </button>
-        <button class="catTile catTile--disabled" disabled type="button">
-          <span class="catTile__icon"><span class="icon icon--integration" aria-hidden="true"></span></span>
-          <span class="catTile__label">API</span>
-          <span class="catTile__badge">В разработке</span>
-        </button>
-        <button class="catTile catTile--disabled" disabled type="button">
-          <span class="catTile__icon"><span class="icon icon--ai" aria-hidden="true"></span></span>
-          <span class="catTile__label">Автотесты</span>
-          <span class="catTile__badge">В разработке</span>
-        </button>
-        <button class="catTile catTile--disabled" disabled type="button">
-          <span class="catTile__icon"><span class="icon icon--archive" aria-hidden="true"></span></span>
-          <span class="catTile__label">Прочее</span>
-          <span class="catTile__badge">В разработке</span>
-        </button>
-      </div>
-
-      <div class="callout" id="dataStatus" hidden></div>
-      <div class="casesEmpty callout" id="casesEmpty" hidden>В этой категории пока нет кейсов.</div>
-      <div class="cases" id="casesList"></div>
     </section>
   </main>
 
-  <footer class="footer" role="contentinfo">
-    <div class="wrap footer__inner">
-      <div>&copy; <span id="year"></span> <span id="nameFooter">Константин</span></div>
-      <div class="muted">v.3.0.0</div>
-    </div>
+  <footer class="cases-footer">
+    <span>KONSTANTIN VASILIEV®</span>
+    <span>QUALITY WITH A HUMAN PULSE</span>
+    <span>© <b data-year></b></span>
   </footer>
 
-  <div id="toast" class="toast" hidden role="status" aria-live="polite">Готово</div>
-
-  <script src="../assets/app.js" defer></script>
+  <script src="cases.js?v=20260723-case-files-2" defer></script>
 </body>
 </html>
