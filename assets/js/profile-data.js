@@ -134,7 +134,7 @@ window.profileData = {
       subtitle: 'Здесь только подтверждённая работа: обращения, тикеты, удалённая диагностика, клиентская коммуникация, CRM, VoIP, WMS и аккуратная фиксация результата.',
       items: [
         {
-          role: 'Специалист по сопровождению клиентов / Integration Support',
+          role: 'Специалист по сопровождению клиентов',
           company: 'Телфин, телекоммуникационная компания',
           period: 'Август 2024 - настоящее время',
           location: 'Санкт-Петербург',
@@ -587,7 +587,7 @@ window.profileData = {
       subtitle: 'Real professional experience with customer requests, tickets, remote diagnostics, client communication, CRM, VoIP, WMS, and clear handoffs.',
       items: [
         {
-          role: 'Customer Support Specialist / Integration Support',
+          role: 'Customer Support Specialist',
           company: 'Telfin, telecommunications company',
           period: 'August 2024 - Present',
           location: 'Saint Petersburg',

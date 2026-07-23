@@ -1,28 +1,20 @@
-# Konstantin Vasiliev Portfolio v5.1.1
+# Konstantin Vasiliev Portfolio v6.0.0
 
-Static one-page portfolio for AI QA / LLM Evaluation / Integration Support / QA Web/API / Unity Game QA positioning.
+Static one-page portfolio for QA / AI QA / Technical Support / QA Web/API / Unity Game QA positioning.
 
-## v5.1.1
+## v6.0.0
 
-This release continues the full visual redesign with a more human resume-style structure.
+This release introduces the Human in Motion direction: editorial typography, kinetic motion, warm photography, and concise human copy.
 
-- Reordered sections: About, Experience, Practice, Projects, Skills, Focus, Learning, Contact.
-- Rewritten RU / US copy in a more direct and human tone.
-- Added About photo gallery with arrows, dots, keyboard support, and mobile swipe.
-- Rebuilt Projects as a horizontal scroll rail with snap and compact evidence blocks.
-- Rebuilt Skills as three practical levels: core, working, learning.
-- Rebuilt Learning as certificates, education, and achievements.
-- Added phone, salary expectations, format, location, goal, and English level to the contact CTA.
-- Added `pismo-arm.webp` preview for the military service recommendation.
-- Cleaned long dash characters from text files.
-- Updated hero positioning for QA, AI Agents, Game Dev, and Technical Support L3.
-- Reworked About gallery controls into glass side zones and line indicators.
-- Reworked project rail side controls and one-card looped scrolling.
-- Reworked Skills as compact expandable blocks without numeric badges.
-- Added full image preview modal for learning and achievement images.
-- Phone and email contact buttons now show copied feedback.
-- Added RU / US language switch without page reload.
+- Rebuilt the main page around the Human in Motion visual system.
+- Combined editorial type, animated ticker strips, and a portrait-led hero.
+- Rewrote the main copy in a direct, conversational voice.
+- Added a growth zone with an honest current title: Customer Support Specialist.
+- Preserved public projects, QA evidence, certificates, CV files, and contacts.
+- Added responsive layouts for desktop and mobile.
+- Added a RU / EN language switch without page reload.
 - Language choice is saved in `localStorage` with key `kv-site-language`.
+- Removed long dash characters from public text files.
 
 The project is static. There is no React, Vite, npm, or build step.
 
@@ -40,42 +32,32 @@ http://127.0.0.1:4173/
 
 ## Content
 
-Main content, links, localized RU / US copy, project data, certificate data, and footer links live here:
+The main page content lives here:
 
 ```text
-assets/js/profile-data.js
+index.html
 ```
 
-The data shape is:
+The main interaction and localized copy live here:
 
 ```text
-window.profileData = {
-  ru: {},
-  us: {},
-  links: {},
-  assets: {}
-}
+assets/human-in-motion.js
 ```
 
-The renderer lives here:
+The visual system and test concepts live here:
 
 ```text
-assets/app.js
-```
-
-The visual system lives here:
-
-```text
-assets/style.css
+concepts/concepts.css
+concepts/index.html
 ```
 
 ## Language Switch
 
-The header contains a segmented `RU / US` control.
+The header contains a segmented `RU / EN` control.
 
 - RU is the default language.
 - Saved language key: `kv-site-language`.
-- Saved values: `ru` / `us`.
+- Saved values: `ru` / `en`.
 - Switching updates page copy, navigation, buttons, footer, alt text, document language, title, and meta description.
 
 ## Photos
