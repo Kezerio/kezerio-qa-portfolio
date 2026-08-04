@@ -81,8 +81,11 @@ a { color: inherit; }
   letter-spacing: .08em;
 }
 .cases-nav p span { color: var(--coral); }
+.cases-nav__actions { display: flex; justify-self: end; align-items: center; gap: 9px; }
+.cases-language { display: flex; padding: 3px; background: #e7dfd6; border: 1px solid #171a1820; border-radius: 100px; }
+.cases-language button { min-width: 34px; padding: 7px 8px; color: var(--ink); background: transparent; border: 0; border-radius: 100px; cursor: pointer; font: 9px var(--mono); }
+.cases-language button.is-active { color: var(--cream); background: var(--ink); }
 .cases-nav__back {
-  justify-self: end;
   padding: 11px 16px;
   color: var(--cream);
   background: var(--ink);
@@ -418,6 +421,11 @@ a { color: inherit; }
   text-transform: uppercase;
 }
 
+.cases-back-to-top { display: grid; position: fixed; z-index: 180; right: clamp(14px, 2.4vw, 34px); bottom: clamp(14px, 2.4vw, 34px); width: 50px; height: 50px; place-items: center; color: var(--ink); background: #f8f0e7b8; border: 1px solid #171a1890; border-radius: 50%; box-shadow: 0 12px 35px #171a1826; backdrop-filter: blur(12px); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(12px) scale(.94); transition: opacity .28s ease, transform .28s ease, background .28s ease; }
+.cases-back-to-top span { font: 700 18px/1 var(--mono); }
+.cases-back-to-top:hover { background: var(--lime); transform: translateY(-2px) scale(1); }
+.cases-back-to-top.is-visible { opacity: .82; pointer-events: auto; transform: translateY(0) scale(1); }
+
 .case-file.reveal { opacity: 0; transform: translateY(30px); transition: opacity .65s ease, transform .65s ease, border-radius .35s ease; }
 .case-file.reveal.is-visible { opacity: 1; transform: translateY(0); }
 
@@ -448,6 +456,8 @@ a { color: inherit; }
   .cases-nav { min-height: 72px; padding: 14px 18px; }
   .cases-logo { width: 42px; height: 42px; }
   .cases-nav__back { padding: 10px 13px; }
+  .cases-nav__actions { gap: 6px; }
+  .cases-language button { min-width: 31px; padding-inline: 6px; }
   .cases-hero { padding: 55px 18px 38px; }
   .cases-hero h1 { margin: 45px 0; gap: 7px; }
   .cases-title-word { font-size: clamp(40px, 13vw, 64px); line-height: .9; }

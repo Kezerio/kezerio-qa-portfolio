@@ -26,7 +26,11 @@ a { color: inherit; }
 .wake-logo { display: grid; width: 46px; height: 46px; place-items: center; color: var(--cream); background: var(--ink); border-radius: 4px; text-decoration: none; font: 12px var(--mono); }
 .wake-nav p { margin: 0; font: 9px var(--mono); letter-spacing: .08em; }
 .wake-nav p span { color: var(--coral); }
-.wake-back { justify-self: end; padding: 11px 15px; color: var(--cream); background: var(--ink); border-radius: 100px; text-decoration: none; font: 9px var(--mono); text-transform: uppercase; }
+.wake-nav__actions { display: flex; justify-self: end; align-items: center; gap: 9px; }
+.wake-language { display: flex; padding: 3px; background: #e7dfd6; border: 1px solid #171a1820; border-radius: 100px; }
+.wake-language button { min-width: 34px; padding: 7px 8px; color: var(--ink); background: transparent; border: 0; border-radius: 100px; cursor: pointer; font: 9px var(--mono); }
+.wake-language button.is-active { color: var(--cream); background: var(--ink); }
+.wake-back { padding: 11px 15px; color: var(--cream); background: var(--ink); border-radius: 100px; text-decoration: none; font: 9px var(--mono); text-transform: uppercase; }
 
 .wake-hero { display: grid; position: relative; min-height: calc(100svh - 88px); padding: 5vw 4vw 3vw; overflow: hidden; background: var(--cream); grid-template-columns: minmax(0, 1.35fr) minmax(300px, .65fr); grid-template-rows: 1fr auto; gap: 3vw 7vw; }
 .wake-hero::before { content: ""; position: absolute; width: 42vw; height: 42vw; right: 23vw; top: 2vh; background: radial-gradient(circle, #d8c7ff8c, #75a9ff3d 44%, transparent 70%); border-radius: 45% 55% 39% 61%; filter: blur(10px); animation: wake-ambient 8s ease-in-out infinite alternate; }
@@ -108,6 +112,11 @@ a { color: inherit; }
 .ready-overlay button { margin-top: 18px; padding: 12px 16px; color: var(--cream); background: var(--ink); border: 0; border-radius: 100px; cursor: pointer; font: 9px var(--mono); text-transform: uppercase; }
 .wake-footer { display: flex; padding: 24px 3vw; color: var(--cream); background: var(--ink); justify-content: space-between; gap: 20px; font: 9px var(--mono); text-transform: uppercase; }
 
+.wake-back-to-top { display: grid; position: fixed; z-index: 180; right: clamp(14px, 2.4vw, 34px); bottom: clamp(14px, 2.4vw, 34px); width: 50px; height: 50px; place-items: center; color: var(--ink); background: #f8f0e7b8; border: 1px solid #171a1890; border-radius: 50%; box-shadow: 0 12px 35px #171a1826; backdrop-filter: blur(12px); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(12px) scale(.94); transition: opacity .28s ease, transform .28s ease, background .28s ease; }
+.wake-back-to-top span { font: 700 18px/1 var(--mono); }
+.wake-back-to-top:hover { background: var(--lime); transform: translateY(-2px) scale(1); }
+.wake-back-to-top.is-visible { opacity: .82; pointer-events: auto; transform: translateY(0) scale(1); }
+
 @keyframes wake-ticker { to { transform: translateX(-50%); } }
 @keyframes wake-ambient { to { transform: scale(1.15) translate(3vw, 2vh); border-radius: 61% 39% 57% 43%; } }
 @keyframes wake-signal { 50% { box-shadow: 0 0 0 16px #ff704d00; } }
@@ -131,6 +140,8 @@ a { color: inherit; }
   .wake-nav { min-height: 72px; padding: 14px 16px; }
   .wake-logo { width: 42px; height: 42px; }
   .wake-back { padding: 10px 12px; }
+  .wake-nav__actions { gap: 6px; }
+  .wake-language button { min-width: 31px; padding-inline: 6px; }
   .wake-hero { padding: 55px 16px 35px; }
   .eyebrow { margin-bottom: 38px; }
   .wake-copy h1 { gap: 6px; }

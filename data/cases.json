@@ -1,21 +1,42 @@
 [
   {
     "category": "sites",
-    "title": "OZON: главная страница - футер недостижим",
-    "desc": "Infinite scroll: футер на главной нельзя открыть.",
+    "title": {
+      "ru": "OZON: главная страница - футер недостижим",
+      "en": "OZON: home page - footer is unreachable"
+    },
+    "desc": {
+      "ru": "Infinite scroll: футер на главной нельзя открыть.",
+      "en": "Infinite scroll prevents visitors from reaching the home page footer."
+    },
     "items": [
       {
         "id": "BUG-OZON-001",
-        "title": "Невозможно добраться до футера на главной странице из-за бесконечной подгрузки товаров",
-        "env": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
-        "steps": "Открыть главную → прокручивать вниз → товары подгружаются бесконечно → футер не появляется",
-        "actual": "Футер недостижим, список товаров подгружается бесконечно.",
-        "expected": "Должна быть возможность открыть футер (ограничение подгрузок/«показать ещё»/конец списка).",
+        "title": {
+          "ru": "Невозможно добраться до футера на главной странице из-за бесконечной подгрузки товаров",
+          "en": "The home page footer cannot be reached because products load endlessly"
+        },
+        "env": {
+          "ru": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
+          "en": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82"
+        },
+        "steps": {
+          "ru": "Открыть главную, прокручивать вниз, товары подгружаются бесконечно, футер не появляется",
+          "en": "Open the home page, keep scrolling down, observe products loading endlessly and confirm that the footer never appears"
+        },
+        "actual": {
+          "ru": "Футер недостижим, список товаров подгружается бесконечно.",
+          "en": "The footer is unreachable because the product list keeps loading."
+        },
+        "expected": {
+          "ru": "Должна быть возможность открыть футер: ограничение подгрузок, кнопка «показать ещё» или конец списка.",
+          "en": "Visitors should be able to reach the footer through a loading limit, a Show more action or the end of the list."
+        },
         "severity": "Minor",
         "priority": "Low",
         "links": [
           {
-            "label": "Видео/репорт",
+            "label": { "ru": "Видео и репорт", "en": "Video and report" },
             "url": "https://drive.google.com/file/d/1jEu2kJlYLWOft8q9DPNHqKZbT7wck9tQ/view"
           }
         ]
@@ -24,25 +45,55 @@
   },
   {
     "category": "sites",
-    "title": "OZON: режим для слабовидящих - проблемы доступности",
-    "desc": "В режиме доступности часть контента остаётся нечитаемой/ломается верстка.",
+    "title": {
+      "ru": "OZON: режим для слабовидящих - проблемы доступности",
+      "en": "OZON: low-vision mode - accessibility issues"
+    },
+    "desc": {
+      "ru": "В режиме доступности часть контента остаётся нечитаемой, а вёрстка ломается.",
+      "en": "Some content remains unreadable and parts of the layout break in accessibility mode."
+    },
     "items": [
       {
         "id": "BUG-OZON-A11Y-001",
-        "title": "В режиме «для слабовидящих» часть текста не увеличивается (FAQ/доставка/возврат/оплата)",
-        "env": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
-        "actual": "Часть текста остаётся мелкой, на связанных разделах размер шрифта стандартный.",
-        "expected": "В режиме для слабовидящих шрифт должен быть увеличен и сохраняться в связанных разделах.",
+        "title": {
+          "ru": "В режиме для слабовидящих часть текста не увеличивается в FAQ, доставке, возврате и оплате",
+          "en": "Some FAQ, delivery, returns and payment text does not scale in low-vision mode"
+        },
+        "env": {
+          "ru": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
+          "en": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82"
+        },
+        "actual": {
+          "ru": "Часть текста остаётся мелкой, на связанных разделах размер шрифта стандартный.",
+          "en": "Some text stays small and linked sections keep the default font size."
+        },
+        "expected": {
+          "ru": "В режиме для слабовидящих шрифт должен быть увеличен и сохраняться в связанных разделах.",
+          "en": "Low-vision mode should increase the font size and preserve it across linked sections."
+        },
         "severity": "Critical",
         "priority": "Medium",
         "links": []
       },
       {
         "id": "BUG-OZON-A11Y-002",
-        "title": "В режиме для слабовидящих при отключении изображений серые блоки перекрывают текст",
-        "env": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
-        "actual": "Серые плейсхолдеры перекрывают текст, страница плохо читается.",
-        "expected": "При отключении изображений элементы не должны перекрывать текст.",
+        "title": {
+          "ru": "При отключении изображений серые блоки перекрывают текст в режиме для слабовидящих",
+          "en": "Grey placeholders cover text when images are disabled in low-vision mode"
+        },
+        "env": {
+          "ru": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82",
+          "en": "Desktop, Windows 11, Ozon web, Microsoft Edge 144.0.3719.82"
+        },
+        "actual": {
+          "ru": "Серые плейсхолдеры перекрывают текст, страница плохо читается.",
+          "en": "Grey placeholders overlap the text and make the page difficult to read."
+        },
+        "expected": {
+          "ru": "При отключении изображений элементы не должны перекрывать текст.",
+          "en": "Disabling images should not cause any element to overlap text."
+        },
         "severity": "Critical",
         "priority": "Medium",
         "links": []
@@ -51,16 +102,34 @@
   },
   {
     "category": "games",
-    "title": ".kkrieger (тестовое): ближний бой - урон проходит вне логики",
-    "desc": "Хитбокс/проверка дистанции: урон проходит на расстоянии и по высоте.",
+    "title": {
+      "ru": ".kkrieger, тестовое: ближний бой - урон проходит вне логики",
+      "en": ".kkrieger test: melee damage lands outside the intended range"
+    },
+    "desc": {
+      "ru": "Хитбокс и проверка дистанции: урон проходит на расстоянии и по высоте.",
+      "en": "Hitbox and distance validation allow damage from too far away and at the wrong height."
+    },
     "items": [
       {
         "id": "BUG-GAME-001",
-        "title": "Ближний бой: урон проходит вне допустимой дистанции и по высоте",
-        "env": "Windows 11, .kkrieger (beta)",
-        "steps": "Подойти к мобу → отойти примерно на 1 м → урон иногда проходит → включить полёт (Y) → подняться на 1-2 м над мобом → урон продолжает проходить",
-        "actual": "Урон проходит на ~1 м и по высоте, где визуально атака не достаёт.",
-        "expected": "Урон только в допустимом радиусе ближней атаки и с корректной проверкой высоты.",
+        "title": {
+          "ru": "Ближний бой: урон проходит вне допустимой дистанции и по высоте",
+          "en": "Melee damage lands outside the allowed distance and vertical range"
+        },
+        "env": { "ru": "Windows 11, .kkrieger beta", "en": "Windows 11, .kkrieger beta" },
+        "steps": {
+          "ru": "Подойти к противнику, отойти примерно на 1 м и атаковать. Затем включить полёт клавишей Y, подняться на 1-2 м над противником и атаковать снова",
+          "en": "Approach an enemy, move about 1 m away and attack. Then enable flight with Y, move 1-2 m above the enemy and attack again"
+        },
+        "actual": {
+          "ru": "Урон проходит примерно с 1 м и по высоте, где визуально атака не достаёт.",
+          "en": "Damage lands from about 1 m away and at a height the attack animation cannot visually reach."
+        },
+        "expected": {
+          "ru": "Урон должен проходить только в допустимом радиусе ближней атаки и при корректной проверке высоты.",
+          "en": "Damage should land only inside the allowed melee radius and vertical range."
+        },
         "severity": "Major",
         "priority": "High",
         "links": []
@@ -69,38 +138,77 @@
   },
   {
     "category": "sites",
-    "title": "Тестовое задание (аноним.): Coin Value и баланс - ощущение «пропали деньги»",
-    "desc": "При росте Coin Value баланс округляется вниз, остаток не виден.",
+    "title": {
+      "ru": "Анонимное тестовое: Coin Value и баланс - ощущение «пропали деньги»",
+      "en": "Anonymous test task: Coin Value and balance create a missing-money impression"
+    },
+    "desc": {
+      "ru": "При росте Coin Value баланс округляется вниз, остаток не виден.",
+      "en": "When Coin Value increases, the balance rounds down and hides the remainder."
+    },
     "items": [
       {
         "id": "TC-CV-001",
-        "title": "Coin Value: визуальная потеря остатка при округлении баланса",
-        "actual": "При увеличении Coin Value баланс округляется вниз, остаток меньше Coin Value не отображается.",
-        "expected": "Пользователь должен видеть полный баланс, и реальная ценность (Balance × Coin Value) не должна «теряться» визуально.",
+        "title": {
+          "ru": "Coin Value: визуальная потеря остатка при округлении баланса",
+          "en": "Coin Value: the balance remainder appears to be lost after rounding"
+        },
+        "actual": {
+          "ru": "При увеличении Coin Value баланс округляется вниз, остаток меньше Coin Value не отображается.",
+          "en": "Increasing Coin Value rounds the balance down and hides any remainder below the current Coin Value."
+        },
+        "expected": {
+          "ru": "Пользователь должен видеть полный баланс, а реальная ценность Balance × Coin Value не должна визуально теряться.",
+          "en": "The complete balance should remain visible and the real Balance × Coin Value amount should not appear to be lost."
+        },
         "severity": "Critical",
         "priority": "Medium",
-        "note": "Ссылка на продукт не публикуется по соображениям конфиденциальности, описан сценарий и результат.",
+        "note": {
+          "ru": "Ссылка на продукт не публикуется по соображениям конфиденциальности. Здесь описаны сценарий и результат.",
+          "en": "The product link is not published for confidentiality reasons. The scenario and result are documented here."
+        },
         "links": []
       }
     ]
   },
   {
     "category": "ios",
-    "title": "iOS: Screen Time - пропадает звук после «Игнорировать на сегодня»",
-    "desc": "После системной плашки Screen Time видео продолжает идти без звука.",
+    "title": {
+      "ru": "iOS: Screen Time - пропадает звук после «Игнорировать на сегодня»",
+      "en": "iOS: Screen Time - audio disappears after Ignore for Today"
+    },
+    "desc": {
+      "ru": "После системного окна Screen Time видео продолжает воспроизводиться без звука.",
+      "en": "Video continues without audio after dismissing the Screen Time prompt."
+    },
     "items": [
       {
         "id": "BUG-IOS-001",
-        "title": "После «Игнорировать на сегодня» звук в видео не возвращается сразу",
-        "env": "iPhone XR, iOS 18.7.3, родительский контроль/Screen Time включён",
-        "steps": "Смотреть видео → дождаться плашки Screen Time → нажать «Игнорировать на сегодня» → продолжить видео",
-        "actual": "Звук исчезает и сам не возвращается; помогает только подождать и/или пощёлкать пауза/плей/переключить видео.",
-        "expected": "Звук должен продолжать работать сразу после закрытия плашки.",
+        "title": {
+          "ru": "После «Игнорировать на сегодня» звук в видео не возвращается сразу",
+          "en": "Video audio does not return immediately after Ignore for Today"
+        },
+        "env": {
+          "ru": "iPhone XR, iOS 18.7.3, родительский контроль и Screen Time включены",
+          "en": "iPhone XR, iOS 18.7.3, parental controls and Screen Time enabled"
+        },
+        "steps": {
+          "ru": "Смотреть видео, дождаться окна Screen Time, нажать «Игнорировать на сегодня» и продолжить просмотр",
+          "en": "Play a video, wait for the Screen Time prompt, tap Ignore for Today and continue playback"
+        },
+        "actual": {
+          "ru": "Звук исчезает и сам не возвращается. Помогает ожидание, пауза, повторный запуск или переключение видео.",
+          "en": "Audio disappears and does not return on its own. Waiting, pausing, resuming or switching videos may restore it."
+        },
+        "expected": {
+          "ru": "Звук должен продолжать работать сразу после закрытия системного окна.",
+          "en": "Audio should continue immediately after the system prompt is dismissed."
+        },
         "severity": "Major",
         "priority": "Medium",
         "links": [
           {
-            "label": "Видео",
+            "label": { "ru": "Видео", "en": "Video" },
             "url": "https://cloud.mail.ru/public/3WP2/Wme8SrRUe"
           }
         ]

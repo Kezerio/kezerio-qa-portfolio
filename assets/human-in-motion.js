@@ -5,6 +5,9 @@
     ru: {
       title: 'Константин Васильев - QA / AI QA / Support / Game QA',
       description: 'Портфолио Константина Васильева: техническая поддержка, QA, AI QA, Web/API, Game QA, проекты и подтверждённая практика.',
+      homeLabel: 'В начало страницы',
+      navLabel: 'Основная навигация',
+      languageLabel: 'Выбор языка',
       skip: 'К содержанию',
       navProof: 'Проекты',
       navStory: 'Обо мне',
@@ -56,11 +59,15 @@
       factEnglish: 'Английский B1, продолжаю учиться',
       factStatus: 'Открыт к предложениям',
       contactText: 'Интересны позиции QA, AI QA, Game QA и технические роли, где пригодятся диагностика, поддержка и работа с интеграциями.',
+      backToTop: 'Наверх',
       privacyNotice: 'Cookies и трекеры не используются'
     },
     en: {
       title: 'Konstantin Vasiliev - QA / AI QA / Support / Game QA',
       description: 'Portfolio of Konstantin Vasiliev: technical support, QA, AI QA, Web/API, Game QA, projects and hands-on practice.',
+      homeLabel: 'Back to the top of the page',
+      navLabel: 'Main navigation',
+      languageLabel: 'Language switcher',
       skip: 'Skip to content',
       navProof: 'Projects',
       navStory: 'About',
@@ -112,6 +119,7 @@
       factEnglish: 'English B1 and improving',
       factStatus: 'Open to opportunities',
       contactText: 'I am interested in QA, AI QA, Game QA and technical roles where diagnostics, support and integration experience are useful.',
+      backToTop: 'Back to top',
       privacyNotice: 'No cookies or trackers are used'
     }
   };
@@ -121,6 +129,7 @@
   var portrait = document.querySelector('[data-fusion-portrait]');
   var metaDescription = document.querySelector('meta[name="description"]');
   var languageButtons = Array.from(document.querySelectorAll('[data-language]'));
+  var backToTopButton = document.querySelector('[data-back-to-top]');
   var chipColors = ['#ccff52', '#ff704d', '#f7afd9', '#d8c7ff', '#f8f0e7'];
 
   document.querySelectorAll('[data-year]').forEach(function (node) {
@@ -133,6 +142,7 @@
     document.documentElement.lang = selected;
     document.title = copy.title;
     if (metaDescription) metaDescription.setAttribute('content', copy.description);
+    if (backToTopButton) backToTopButton.setAttribute('aria-label', copy.backToTop);
 
     document.querySelectorAll('[data-i18n]').forEach(function (node) {
       var key = node.getAttribute('data-i18n');
@@ -142,6 +152,11 @@
     document.querySelectorAll('[data-i18n-html]').forEach(function (node) {
       var key = node.getAttribute('data-i18n-html');
       if (copy[key]) node.innerHTML = copy[key];
+    });
+
+    document.querySelectorAll('[data-i18n-aria]').forEach(function (node) {
+      var key = node.getAttribute('data-i18n-aria');
+      if (copy[key]) node.setAttribute('aria-label', copy[key]);
     });
 
     languageButtons.forEach(function (button) {
@@ -190,13 +205,24 @@
   }
 
   function updateProgress() {
-    if (!progressBar) return;
     var scrollable = document.documentElement.scrollHeight - window.innerHeight;
     var progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
-    progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+    if (progressBar) progressBar.style.width = Math.min(100, Math.max(0, progress)) + '%';
+    if (backToTopButton) {
+      var visible = window.scrollY > Math.min(560, window.innerHeight * .7);
+      backToTopButton.classList.toggle('is-visible', visible);
+      backToTopButton.setAttribute('aria-hidden', String(!visible));
+      backToTopButton.tabIndex = visible ? 0 : -1;
+    }
   }
   updateProgress();
   window.addEventListener('scroll', updateProgress, { passive: true });
+
+  if (backToTopButton) {
+    backToTopButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: reducedMotion ? 'auto' : 'smooth' });
+    });
+  }
 
   document.querySelectorAll('.fusion-chip-field button').forEach(function (button, index) {
     button.style.setProperty('--chip-color', chipColors[index % chipColors.length]);

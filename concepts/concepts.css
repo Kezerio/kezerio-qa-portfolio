@@ -515,6 +515,10 @@ button, input { font: inherit; }
 .final-language button { min-width: 34px; padding: 7px 9px; color: var(--fusion-ink); background: transparent; border: 0; border-radius: 100px; cursor: pointer; font: 9px var(--mono); }
 .final-language button.is-active { color: var(--fusion-cream); background: var(--fusion-ink); }
 .final-nav__contact { padding: 10px 15px; color: var(--fusion-cream); background: var(--fusion-ink); border-radius: 100px; text-decoration: none; font: 9px var(--mono); text-transform: uppercase; }
+.site-back-to-top { display: grid; position: fixed; z-index: 180; right: clamp(14px, 2.4vw, 34px); bottom: clamp(14px, 2.4vw, 34px); width: 50px; height: 50px; place-items: center; color: var(--fusion-ink); background: #f8f0e7b8; border: 1px solid #171a1890; border-radius: 50%; box-shadow: 0 12px 35px #171a1826; backdrop-filter: blur(12px); cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(12px) scale(.94); transition: opacity .28s ease, transform .28s ease, background .28s ease; }
+.site-back-to-top span { font: 700 18px/1 var(--mono); }
+.site-back-to-top:hover { background: var(--fusion-lime); transform: translateY(-2px) scale(1); }
+.site-back-to-top.is-visible { opacity: .82; pointer-events: auto; transform: translateY(0) scale(1); }
 .final-hero-copy > div { max-width: 440px; }
 .final-hero-copy strong { display: block; margin-bottom: 8px; font: 9px var(--mono); letter-spacing: .08em; }
 .final-hero-copy p { max-width: none; }

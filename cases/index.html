@@ -10,35 +10,41 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="../images/og-cover.webp" />
   <link rel="canonical" href="https://kezerio.github.io/kezerio-qa-portfolio/cases/" />
-  <link rel="stylesheet" href="cases.css?v=20260723-desktop-motion" />
+  <link rel="stylesheet" href="cases.css?v=20260804-language-scroll" />
   <link rel="stylesheet" href="../assets/desktop-motion.css?v=20260723-desktop-motion" />
 </head>
 <body class="cases-page">
-  <a class="cases-skip" href="#case-files">К кейсам</a>
+  <a class="cases-skip" href="#case-files" data-i18n="skip">К кейсам</a>
   <div class="cases-progress" aria-hidden="true"><i></i></div>
 
   <header class="cases-nav" id="top">
-    <a class="cases-logo" href="../" aria-label="Вернуться на главную">K:\</a>
+    <a class="cases-logo" href="../" aria-label="Вернуться на главную" data-i18n-aria="logoLabel">K:\</a>
     <p><span>02</span> QA CASES / DOCUMENTED</p>
-    <a class="cases-nav__back" href="../#proof">На главную <span>↗</span></a>
+    <div class="cases-nav__actions">
+      <div class="cases-language" role="group" aria-label="Выбор языка" data-i18n-aria="languageLabel">
+        <button class="is-active" type="button" data-language="ru" aria-pressed="true">RU</button>
+        <button type="button" data-language="en" aria-pressed="false">EN</button>
+      </div>
+      <a class="cases-nav__back" href="../#proof"><span data-i18n="home">На главную</span> <span>↗</span></a>
+    </div>
   </header>
 
   <main>
     <section class="cases-hero">
       <p class="cases-eyebrow">QUALITY EVIDENCE / 01</p>
-      <h1 aria-label="Не слова. Кейсы.">
-        <span class="cases-title-word cases-title-word--ink">НЕ СЛОВА.</span>
-        <span class="cases-title-word cases-title-word--lime">КЕЙСЫ.</span>
+      <h1 aria-label="Не слова. Кейсы." data-i18n-aria="heroAria">
+        <span class="cases-title-word cases-title-word--ink" data-i18n="heroLineOne">НЕ СЛОВА.</span>
+        <span class="cases-title-word cases-title-word--lime" data-i18n="heroLineTwo">КЕЙСЫ.</span>
       </h1>
 
       <aside class="cases-hero__aside">
         <div class="cases-orbit" aria-hidden="true">REPRODUCE · ISOLATE · DOCUMENT ·</div>
         <strong data-total-reports>6</strong>
-        <p>зафиксированных дефектов в Web, Game QA и iOS</p>
-        <a href="#case-files">Открыть материалы <span>↓</span></a>
+        <p data-i18n="reportCountText">зафиксированных дефектов в Web, Game QA и iOS</p>
+        <a href="#case-files"><span data-i18n="openMaterials">Открыть материалы</span> <span>↓</span></a>
       </aside>
 
-      <p class="cases-hero__note">Я показываю не список знакомых терминов, а ход проверки: что заметил, как воспроизвёл, что ожидал и какие факты передал дальше.</p>
+      <p class="cases-hero__note" data-i18n="heroNote">Я показываю не список знакомых терминов, а ход проверки: что заметил, как воспроизвёл, что ожидал и какие факты передал дальше.</p>
     </section>
 
     <div class="cases-marquee" aria-hidden="true">
@@ -48,12 +54,12 @@
     <section class="cases-library" id="case-files">
       <header class="cases-section-head">
         <p>CASE FILES / 02</p>
-        <h2>Открывайте.<br />Проверяйте.</h2>
+        <h2 data-i18n-html="libraryTitle">Открывайте.<br />Проверяйте.</h2>
       </header>
 
       <div class="cases-controls">
-        <div class="cases-filters" role="group" aria-label="Фильтр кейсов">
-          <button class="is-active" type="button" data-filter="all" aria-pressed="true">Все <span data-filter-count="all">0</span></button>
+        <div class="cases-filters" role="group" aria-label="Фильтр кейсов" data-i18n-aria="filterLabel">
+          <button class="is-active" type="button" data-filter="all" aria-pressed="true"><span data-i18n="all">Все</span> <span data-filter-count="all">0</span></button>
           <button type="button" data-filter="sites" aria-pressed="false">Web <span data-filter-count="sites">0</span></button>
           <button type="button" data-filter="games" aria-pressed="false">Game QA <span data-filter-count="games">0</span></button>
           <button type="button" data-filter="ios" aria-pressed="false">iOS <span data-filter-count="ios">0</span></button>
@@ -64,7 +70,7 @@
       <div class="cases-list" data-cases-list>
         <div class="cases-loading">
           <i></i><i></i><i></i>
-          <span>Собираю case files</span>
+          <span data-i18n="loadingFiles">Собираю case files</span>
         </div>
       </div>
 
@@ -74,22 +80,22 @@
     <section class="cases-method" id="method">
       <header class="cases-section-head cases-section-head--dark">
         <p>WORKFLOW / 03</p>
-        <h2>От сигнала<br />до передачи.</h2>
+        <h2 data-i18n-html="workflowTitle">От сигнала<br />до передачи.</h2>
       </header>
       <div class="cases-method__grid">
-        <article><span>01</span><h3>Замечаю</h3><p>Отделяю реальный симптом от впечатления и собираю контекст.</p></article>
-        <article><span>02</span><h3>Повторяю</h3><p>Ищу устойчивый сценарий, окружение и границы проблемы.</p></article>
-        <article><span>03</span><h3>Сравниваю</h3><p>Фиксирую expected и actual без двусмысленности.</p></article>
-        <article><span>04</span><h3>Передаю</h3><p>Добавляю приоритет, доказательства и понятный следующий шаг.</p></article>
+        <article><span>01</span><h3 data-i18n="noticeTitle">Замечаю</h3><p data-i18n="noticeText">Отделяю реальный симптом от впечатления и собираю контекст.</p></article>
+        <article><span>02</span><h3 data-i18n="reproduceTitle">Повторяю</h3><p data-i18n="reproduceText">Ищу устойчивый сценарий, окружение и границы проблемы.</p></article>
+        <article><span>03</span><h3 data-i18n="compareTitle">Сравниваю</h3><p data-i18n="compareText">Фиксирую expected и actual без двусмысленности.</p></article>
+        <article><span>04</span><h3 data-i18n="handoffTitle">Передаю</h3><p data-i18n="handoffText">Добавляю приоритет, доказательства и понятный следующий шаг.</p></article>
       </div>
     </section>
 
     <section class="cases-next" id="next">
-      <p>Часть практики не публикуется из-за конфиденциальности. Здесь остаются материалы, которые можно открыть и проверить.</p>
-      <h2>Нужен человек,<br />который <span>докопается?</span></h2>
+      <p data-i18n="nextText">Часть практики не публикуется из-за конфиденциальности. Здесь остаются материалы, которые можно открыть и проверить.</p>
+      <h2 data-i18n-html="nextTitle">Нужен человек,<br />который <span>докопается?</span></h2>
       <div>
-        <a href="../#contact">Написать мне <span>↗</span></a>
-        <a href="../">Вернуться к портфолио</a>
+        <a href="../#contact"><span data-i18n="contactMe">Написать мне</span> <span>↗</span></a>
+        <a href="../" data-i18n="backPortfolio">Вернуться к портфолио</a>
       </div>
     </section>
   </main>
@@ -97,10 +103,13 @@
   <footer class="cases-footer">
     <span>KONSTANTIN VASILIEV®</span>
     <span>QUALITY WITH A HUMAN PULSE</span>
+    <span data-i18n="privacy">Cookies и трекеры не используются</span>
     <span>© <b data-year></b></span>
   </footer>
 
-  <script src="cases.js?v=20260723-desktop-motion" defer></script>
+  <button class="cases-back-to-top" type="button" data-back-to-top aria-label="Наверх" aria-hidden="true" tabindex="-1"><span aria-hidden="true">↑</span></button>
+
+  <script src="cases.js?v=20260804-language-scroll" defer></script>
   <script src="../assets/desktop-motion.js?v=20260723-desktop-motion" defer></script>
 </body>
 </html>
