@@ -148,9 +148,7 @@
   }
 
   function labUrl() {
-    const url = new URL(targetUrl);
-    url.searchParams.set('lang', currentLanguage);
-    return url.toString();
+    return targetUrl;
   }
 
   function renderStatusQuestion() {
