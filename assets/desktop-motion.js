@@ -143,8 +143,8 @@
   }
 
   function refreshMotionBindings() {
-    document.querySelectorAll('.fusion-project, .growth-stage, .final-certificate, .case-file, .cases-method__grid article').forEach(bindTilt);
-    document.querySelectorAll('.fusion-nav nav a, .final-nav__contact, .fusion-hero__bottom a, .fusion-contact__row a, .cases-nav__back, .cases-filters button, .cases-next a').forEach(bindMagnetic);
+    document.querySelectorAll('.fusion-project, .growth-stage, .final-certificate, .case-file, .cases-method__grid article, .humanizm-job, .humanizm-skill-panel, .humanizm-api-strip').forEach(bindTilt);
+    document.querySelectorAll('.fusion-nav nav a, .final-nav__contact, .fusion-hero__bottom a, .fusion-contact__row a, .cases-nav__back, .cases-filters button, .cases-next a, .humanizm-menu-button, .humanizm-menu nav a, .humanizm-privacy-note a, .humanizm-privacy-note button').forEach(bindMagnetic);
   }
 
   var sectionObserver = new IntersectionObserver(function (entries) {

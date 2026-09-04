@@ -163,6 +163,17 @@
     --motion-lift: -10px;
     border-radius: 70px 18px 70px 18px;
   }
+  .has-desktop-motion .humanizm-job.motion-tilt,
+  .has-desktop-motion .humanizm-skill-panel.motion-tilt,
+  .has-desktop-motion .humanizm-api-strip.motion-tilt {
+    transform: perspective(1300px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--motion-lift, 0));
+    transition: transform .18s ease-out, border-radius .35s ease;
+  }
+  .has-desktop-motion .humanizm-job.motion-tilt:hover,
+  .has-desktop-motion .humanizm-skill-panel.motion-tilt:hover,
+  .has-desktop-motion .humanizm-api-strip.motion-tilt:hover {
+    --motion-lift: -7px;
+  }
   .has-desktop-motion .case-file.motion-tilt.reveal.is-visible {
     transform: perspective(1300px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(var(--motion-lift, 0));
     transition: transform .18s ease-out, border-radius .35s ease, opacity .65s ease;

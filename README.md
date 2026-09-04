@@ -1,166 +1,81 @@
-# Konstantin Vasiliev Portfolio v6.1.0
+# Konstantin Vasiliev Portfolio v7.0.0
 
-Static one-page portfolio for QA / AI QA / Technical Support / QA Web/API / Unity Game QA positioning.
+Static bilingual portfolio for AI Product, AI-assisted QA, technical support, integration support, Web/API practice, and Android projects.
 
-## v6.1.0
+## Humanizm release
 
-- API Lab now opens a static wake gate in a new tab instead of waiting on a blank Render loading screen.
-- The wake gate polls `/health`, explains the free hosting delay, and redirects when API Lab is ready.
-- Added three waiting games: HTTP status, JSON contract, and boundary values.
-- The wake gate uses no cookies, analytics, tracking, or browser storage.
-
-## v6.0.0
-
-This release introduces the Human in Motion direction: editorial typography, kinetic motion, warm photography, and concise human copy.
-
-- Rebuilt the main page around the Human in Motion visual system.
-- Combined editorial type, animated ticker strips, and a portrait-led hero.
-- Rewrote the main copy in a direct, conversational voice.
-- Added a growth zone with an honest current title: Customer Support Specialist.
-- Preserved public projects, QA evidence, certificates, CV files, and contacts.
-- Added responsive layouts for desktop and mobile.
-- Added a RU / EN language switch without page reload.
-- Language choice is saved in `localStorage` with key `kv-site-language`.
-- Removed long dash characters from public text files.
+- Keeps the Human in Motion editorial identity, warm photography, kinetic tickers, and desktop motion.
+- Puts verified commercial experience before projects and personal information.
+- Uses the current resume facts only. Warehouse work and unsupported LLM Evaluator positioning are not part of the main site.
+- Shows skill levels as commercial, project, and beginner.
+- Describes API practice with methods, headers, status codes, negative checks, boundary checks, and test counts.
+- Adds a light full-screen route menu, RU / EN switching, responsive layouts, and a back-to-top control.
+- Updates both RU and EN PDF resumes.
+- Adds a bilingual privacy page and an informational localStorage notice.
 
 The project is static. There is no React, Vite, npm, or build step.
 
-## Local Run
+## Local run
 
 ```bash
 python -m http.server 4173
 ```
 
-Open:
+Open `http://127.0.0.1:4173/`.
 
-```text
-http://127.0.0.1:4173/
-```
-
-## Content
-
-The main page content lives here:
+## Main files
 
 ```text
 index.html
-```
-
-The main interaction and localized copy live here:
-
-```text
+assets/humanizm.css
 assets/human-in-motion.js
+assets/desktop-motion.css
+assets/desktop-motion.js
+privacy/index.html
+privacy/privacy.css
+privacy/privacy.js
 ```
 
-The API Lab wake gate lives here:
+Other public sections:
 
 ```text
-api-lab/index.html
-api-lab/api-lab.css
-api-lab/api-lab.js
+cases/
+api-lab/
+concepts/
 ```
 
-The visual system and test concepts live here:
+## Language
 
-```text
-concepts/concepts.css
-concepts/index.html
-```
-
-## Language Switch
-
-The header contains a segmented `RU / EN` control.
-
-- RU is the default language.
-- Saved language key: `kv-site-language`.
-- Saved values: `ru` / `en`.
-- Switching updates page copy, navigation, buttons, footer, alt text, document language, title, and meta description.
-
-## Photos
-
-Photo assets:
-
-```text
-images/konstantin-hero.webp
-images/konstantin-about.webp
-images/konstantin-avatar.webp
-images/og-cover.webp
-images/about/about-1.webp
-images/about/about-2.webp
-images/about/about-3.webp
-images/about/about-4.webp
-```
-
-Use optimized WebP where possible. Keep natural portrait framing and avoid aggressive face cropping.
+- RU is the default.
+- The `?lang=ru` and `?lang=en` query parameters are supported.
+- A user-selected language is saved as `kv-site-language` in localStorage.
+- Internal links preserve the selected language.
+- The privacy page and downloadable CV are localized.
 
 ## CV
-
-CV files:
 
 ```text
 cv/Konstantin_Vasiliev_CV_RU.pdf
 cv/Konstantin_Vasiliev_CV_EN.pdf
 ```
 
-## Certificates
+Both files reflect the current AI Product Specialist / AI-Assisted QA resume and contain no warehouse role, named relocation destination, or unsupported commercial LLM evaluation claim.
 
-Certificate files:
+## Privacy and data flow
 
-```text
-certificates/ai-foundations.pdf
-certificates/ai-foundations.webp
-certificates/agents-workflows.png
-certificates/agents-workflows.webp
-```
-
-Rules:
-
-- Do not show raw filenames in the UI.
-- Use human-readable titles: `Основы ИИ` / `AI Foundations`, `Агенты и рабочие процессы` / `Agents and Workflows`.
-- Certificate cards use previews without status labels or open buttons.
-- Do not show planned or optional certificates unless real files exist.
-- Course completion certificates must not be presented as professional certifications.
-
-## Achievements
-
-Achievement preview files:
-
-```text
-images/achievements/pismo-arm.webp
-```
-
-## Documents
-
-Project documents:
-
-```text
-documents/svoya-masterskaya.pdf
-```
-
-## Links
-
-Important public links:
-
-```text
-https://www.rustore.ru/catalog/app/com.mellstroy.clicker
-https://kezerio.github.io/kezerio-qa-portfolio/api-lab/
-https://qa-api-lab.onrender.com
-https://github.com/Kezerio
-```
-
-Do not render:
-
-- empty `href="#"` links
-- visible placeholder links
-- Unity page links without a real URL
-- old self-reference to the current portfolio
+- The site code has no registration, contact form, advertising, analytics, or tracking pixels.
+- The main site stores only language preference and notice acknowledgement in localStorage.
+- GitHub Pages logs visitor IP addresses for security according to GitHub documentation.
+- Opening the API Lab gate sends a GET health request to `qa-api-lab.onrender.com` to wake the demo and show its status.
+- External Telegram, RuStore, Google Drive, Mail.ru, and similar pages open only after a link action.
+- Re-audit the privacy notice before adding forms, analytics, advertising, embeds, or new external requests.
 
 ## Checks
 
-Use bundled Node if system `node` is unavailable.
-
 ```bash
-node --check assets/app.js
-node --check assets/js/profile-data.js
+node --check assets/human-in-motion.js
+node --check assets/desktop-motion.js
+node --check privacy/privacy.js
 node --check api-lab/api-lab.js
 git diff --check
 ```
@@ -169,69 +84,45 @@ Serve locally and verify these paths return `200`:
 
 ```text
 /
-/assets/style.css
-/assets/app.js
-/assets/js/profile-data.js
+/privacy/
+/cases/
 /api-lab/
-/api-lab/api-lab.css
-/api-lab/api-lab.js
-/images/konstantin-hero.webp
-/images/konstantin-about.webp
-/images/konstantin-avatar.webp
-/images/og-cover.webp
-/images/about/about-1.webp
-/images/about/about-2.webp
-/images/about/about-3.webp
-/images/about/about-4.webp
-/images/achievements/pismo-arm.webp
+/assets/humanizm.css
+/assets/human-in-motion.js
 /cv/Konstantin_Vasiliev_CV_RU.pdf
 /cv/Konstantin_Vasiliev_CV_EN.pdf
-/documents/svoya-masterskaya.pdf
-/certificates/ai-foundations.pdf
-/certificates/ai-foundations.webp
-/certificates/agents-workflows.png
-/certificates/agents-workflows.webp
 ```
 
 Recommended viewport checks:
 
 ```text
 360px
-768px
-1280px
+390px
+720px
+1024px
 1440px
 ```
 
-Also verify:
+Verify that:
 
-- RU / US switch works without reload.
-- `document.documentElement.lang` changes.
-- Language selection persists after reload.
-- No horizontal scroll on mobile.
-- About gallery arrows, dots, keyboard navigation, and mobile swipe work.
-- Projects rail scrolls horizontally and keeps equal card heights.
-- Certificate previews load.
-- Learning contains certificates, education, and achievements.
-- Project 67 has no active external link.
-- Old QA Portfolio and AI Lab discussion links are absent.
-- No long dash or en dash characters are present.
+- there is no horizontal overflow;
+- text does not overlap at narrow widths or the 200 percent zoom equivalent;
+- the route menu opens, closes, and lands below the sticky header;
+- RU and EN have no mixed-language interface copy;
+- images and certificate previews load;
+- all `target="_blank"` links use `rel="noopener noreferrer"`;
+- API Lab opens in a new tab and its direct button opens the Render URL without a language query;
+- reduced-motion preferences disable non-essential motion;
+- no long dash or en dash characters are introduced in public text files.
 
-## Deploy To GitHub Pages
+## Deploy to GitHub Pages
 
 ```bash
 git status
 git diff --stat
 git add .
-git commit -m "Add API Lab wake gate"
+git commit -m "Rebrand portfolio in Humanizm style"
 git push
 ```
 
-GitHub Pages should serve the static files from the configured branch/root.
-
-## Privacy Notes
-
-- The site publishes the public phone number provided for contact.
-- The site does not set cookies and does not include analytics or trackers.
-- The language switch stores only the selected language in `localStorage`.
-- Private automation, client, token, login, account, and internal URL data must stay out of public assets.
-- Do not publish private screenshots, cookies, tokens, or account-specific URLs.
+GitHub Pages serves the static files from the configured branch and repository root.

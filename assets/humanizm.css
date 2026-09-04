@@ -1,0 +1,283 @@
+:root {
+  --hz-cream: #f8f0e7;
+  --hz-ink: #111311;
+  --hz-lime: #ccff52;
+  --hz-coral: #ff704d;
+  --hz-lilac: #d8c7ff;
+  --hz-blue: #75a9ff;
+  --hz-pink: #f7afd9;
+  --hz-line: #111311;
+}
+
+html { scroll-behavior: smooth; }
+.humanizm-page { overflow-x: hidden; background: var(--hz-cream); }
+.humanizm-page *, .humanizm-page *::before, .humanizm-page *::after { box-sizing: border-box; }
+.humanizm-page p, .humanizm-page li { overflow-wrap: anywhere; }
+.humanizm-page :focus-visible { outline: 3px solid var(--hz-coral); outline-offset: 4px; }
+.humanizm-page section[id] { scroll-margin-top: 78px; }
+
+.humanizm-nav {
+  position: sticky;
+  top: 0;
+  z-index: 220;
+  min-height: 78px;
+  padding-block: 16px;
+  grid-template-columns: auto 1fr auto;
+}
+.humanizm-nav__identity { display: flex; margin-left: 16px; align-items: baseline; gap: 12px; }
+.humanizm-nav__identity strong { font: 800 14px/1 var(--mono); letter-spacing: .06em; }
+.humanizm-nav__identity span { color: #6c6a65; font: 700 12px/1 var(--mono); }
+.humanizm-nav .final-language button { min-width: 38px; min-height: 38px; font-size: 12px; }
+.humanizm-menu-button {
+  display: flex;
+  min-height: 44px;
+  padding: 10px 15px;
+  align-items: center;
+  gap: 12px;
+  color: var(--hz-cream);
+  background: var(--hz-ink);
+  border: 1px solid var(--hz-ink);
+  border-radius: 100px;
+  cursor: pointer;
+  font: 700 13px/1 var(--mono);
+  text-transform: uppercase;
+}
+.humanizm-menu-button i, .humanizm-menu-button i::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: currentColor;
+  transition: transform .25s ease;
+  content: "";
+}
+.humanizm-menu-button i::after { transform: translateY(5px); }
+.humanizm-menu-button[aria-expanded="true"] i { transform: translateY(2px) rotate(45deg); }
+.humanizm-menu-button[aria-expanded="true"] i::after { transform: rotate(-90deg); }
+
+.humanizm-menu {
+  visibility: hidden;
+  position: fixed;
+  z-index: 210;
+  inset: 78px 0 0;
+  padding: clamp(24px, 4vw, 64px) clamp(20px, 5vw, 80px);
+  color: var(--hz-cream);
+  background: var(--hz-ink);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-24px);
+  transition: opacity .28s ease, transform .28s ease, visibility .28s;
+}
+.humanizm-menu.is-open { visibility: visible; opacity: 1; pointer-events: auto; transform: translateY(0); }
+.humanizm-menu__meta, .humanizm-menu__footer { display: flex; justify-content: space-between; gap: 24px; font: 12px/1.45 var(--mono); text-transform: uppercase; }
+.humanizm-menu__meta { padding-bottom: 18px; color: #b9bdb7; border-bottom: 1px solid #565954; }
+.humanizm-menu nav { display: grid; margin-block: clamp(22px, 4vh, 48px); grid-template-columns: repeat(2, 1fr); gap: 0 6vw; }
+.humanizm-menu nav a { display: grid; padding: clamp(12px, 2vh, 22px) 0; color: inherit; border-bottom: 1px solid #565954; text-decoration: none; grid-template-columns: 44px 1fr; align-items: center; }
+.humanizm-menu nav a span { color: var(--hz-lime); font: 13px/1 var(--mono); }
+.humanizm-menu nav a b { font: 700 clamp(32px, 5vw, 76px)/.88 var(--display); letter-spacing: -.035em; text-transform: uppercase; transition: color .2s ease, transform .2s ease; }
+.humanizm-menu nav a:hover b { color: var(--hz-coral); transform: translateX(10px); }
+.humanizm-menu__footer a { color: var(--hz-lime); }
+.menu-open { overflow: hidden; }
+
+.humanizm-hero { min-height: max(790px, calc(100svh - 78px)); padding-top: clamp(30px, 4vw, 64px); }
+.humanizm-hero .fusion-hero__headline { width: min(1100px, 83vw); margin-top: clamp(58px, 9vh, 110px); margin-left: 5vw; }
+.humanizm-hero .fusion-word { font-size: clamp(64px, 9.2vw, 142px); }
+.humanizm-hero .fusion-hero__note { bottom: 34px; font-size: 11px; }
+.humanizm-hero__copy { left: 22vw; right: 35vw; bottom: 32px; align-items: end; }
+.humanizm-hero__copy > div { max-width: 590px; }
+.humanizm-hero__copy strong { margin-bottom: 10px; font-size: 12px; }
+.humanizm-hero__copy p { font-size: clamp(16px, 1.16vw, 19px); line-height: 1.55; }
+.humanizm-hero__copy a { min-width: 142px; padding: 14px 18px; font-size: 12px; text-align: center; }
+.humanizm-pencil-note {
+  position: absolute;
+  z-index: 7;
+  right: 2.3vw;
+  top: 28%;
+  padding: 6px 9px;
+  color: #655f58;
+  border-bottom: 2px solid var(--hz-coral);
+  font: italic 16px/1.25 Georgia, serif;
+  transform: rotate(5deg);
+}
+
+.humanizm-section-head { display: grid; padding-inline: 0; grid-template-columns: minmax(180px, .55fr) minmax(430px, 1.45fr); gap: 24px 5vw; align-items: end; }
+.humanizm-section-head > p:first-child { align-self: start; font-size: 12px; }
+.humanizm-section-head h2 { font-size: clamp(54px, 7.2vw, 112px); }
+.humanizm-section-head h2 i { color: var(--hz-coral); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
+.humanizm-section-head > .humanizm-section-lead { max-width: 660px; margin: 0 0 2px auto; grid-column: 2; font: 400 clamp(16px, 1.35vw, 20px)/1.55 var(--sans); letter-spacing: 0; text-transform: none; }
+
+.humanizm-experience { padding: clamp(80px, 9vw, 145px) 4vw; background: var(--hz-lilac); }
+.humanizm-experience .humanizm-section-head { border-color: #8f81ae; }
+.humanizm-jobs { display: grid; margin-top: 34px; gap: 22px; }
+.humanizm-job { background: var(--hz-cream); border: 2px solid var(--hz-ink); box-shadow: 10px 10px 0 var(--hz-ink); }
+.humanizm-job--current { background: #fffaf4; }
+.humanizm-job header { display: grid; min-height: 110px; padding: 22px 26px; border-bottom: 2px solid var(--hz-ink); grid-template-columns: 155px 1fr auto; align-items: center; gap: 20px; }
+.humanizm-job header > span, .humanizm-job header > b { font: 700 12px/1.35 var(--mono); }
+.humanizm-job header > b { padding: 9px 11px; background: var(--hz-lime); transform: rotate(1deg); }
+.humanizm-job:not(.humanizm-job--current) header > b { background: var(--hz-blue); }
+.humanizm-job h3 { margin: 0; font: 800 clamp(30px, 4vw, 60px)/.9 var(--display); letter-spacing: -.03em; }
+.humanizm-job header p { margin: 8px 0 0; font-size: 16px; line-height: 1.4; }
+.humanizm-job__body { display: grid; padding: clamp(24px, 3.4vw, 52px); grid-template-columns: 1fr 1fr; gap: 28px 4vw; }
+.humanizm-job__summary { max-width: 780px; margin: 0; font-size: clamp(18px, 1.55vw, 23px); line-height: 1.55; }
+.humanizm-metrics { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--hz-ink); border-left: 1px solid var(--hz-ink); grid-template-columns: repeat(2, 1fr); }
+.humanizm-metrics li { display: flex; min-height: 108px; padding: 16px; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--hz-ink); border-bottom: 1px solid var(--hz-ink); }
+.humanizm-metrics strong { font: 800 clamp(27px, 3vw, 44px)/.9 var(--display); text-transform: uppercase; }
+.humanizm-metrics span { font: 12px/1.35 var(--mono); text-transform: uppercase; }
+.humanizm-case-notes { grid-column: 1 / 3; background: var(--hz-lime); border: 1px solid var(--hz-ink); }
+.humanizm-case-notes summary { display: flex; padding: 17px 20px; align-items: center; justify-content: space-between; cursor: pointer; font: 700 14px/1.35 var(--mono); text-transform: uppercase; }
+.humanizm-case-notes summary::marker { content: ""; }
+.humanizm-case-notes summary i { font: normal 700 24px/1 var(--mono); transition: transform .2s ease; }
+.humanizm-case-notes[open] summary i { transform: rotate(45deg); }
+.humanizm-case-notes ol { display: grid; margin: 0; padding: 0 20px 22px 52px; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.humanizm-case-notes li { padding-left: 4px; font-size: 16px; line-height: 1.55; }
+.humanizm-tool-line { margin: 0; grid-column: 1 / 3; font: 12px/1.6 var(--mono); }
+.humanizm-job__body--compact { align-items: center; }
+.humanizm-metrics--two { grid-template-columns: repeat(2, 1fr); }
+
+.humanizm-proof { padding-inline: 4vw; }
+.humanizm-proof .fusion-projects { grid-template-columns: repeat(3, 1fr); }
+.humanizm-proof .fusion-project { min-height: 590px; grid-column: auto; grid-template-columns: 1fr; }
+.humanizm-proof .fusion-project h3 { font-size: clamp(62px, 7.3vw, 112px); grid-column: auto; }
+.humanizm-proof .fusion-project > div { display: block; grid-column: auto; }
+.humanizm-proof .fusion-project p { margin-bottom: 20px; font-size: 17px; }
+.humanizm-api-strip { display: grid; margin-top: 22px; border: 2px solid var(--hz-ink); background: var(--hz-cream); grid-template-columns: repeat(4, 1fr); transform: rotate(-.25deg); }
+.humanizm-api-strip span { display: flex; min-height: 116px; padding: 18px; flex-direction: column; justify-content: space-between; border-right: 1px solid var(--hz-ink); font: 700 16px/1.35 var(--mono); }
+.humanizm-api-strip span:last-child { border-right: 0; }
+.humanizm-api-strip small { color: #59604b; font: 11px/1 var(--mono); }
+
+.humanizm-skills { padding: clamp(80px, 9vw, 145px) 4vw; background: var(--hz-blue); }
+.humanizm-skills .humanizm-section-head { border-color: #365c96; }
+.humanizm-skill-grid { display: grid; margin-top: 30px; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.humanizm-skill-panel { min-height: 570px; padding: 26px; color: var(--hz-ink); background: var(--hz-cream); border: 2px solid var(--hz-ink); box-shadow: 8px 8px 0 var(--hz-ink); transition: transform .25s ease, border-radius .25s ease; }
+.humanizm-skill-panel:hover { border-radius: 54px 12px 54px 12px; transform: translateY(-8px) rotate(-.3deg); }
+.humanizm-skill-panel--project { background: var(--hz-lime); transform: translateY(24px); }
+.humanizm-skill-panel--project:hover { transform: translateY(16px) rotate(.3deg); }
+.humanizm-skill-panel--learning { background: var(--hz-pink); }
+.humanizm-skill-panel header { display: grid; padding-bottom: 22px; border-bottom: 2px solid var(--hz-ink); grid-template-columns: 44px 1fr; gap: 10px; }
+.humanizm-skill-panel header > span { font: 13px/1 var(--mono); }
+.humanizm-skill-panel header div { display: grid; gap: 8px; }
+.humanizm-skill-panel header b { font: 800 clamp(24px, 2.4vw, 38px)/.95 var(--display); }
+.humanizm-skill-panel header small { font: 12px/1.35 var(--mono); }
+.humanizm-skill-panel ul { display: flex; margin: 26px 0 0; padding: 0; flex-wrap: wrap; align-content: start; gap: 10px; list-style: none; }
+.humanizm-skill-panel li { padding: 10px 12px; border: 1px solid var(--hz-ink); border-radius: 100px; font-size: 15px; line-height: 1.25; }
+
+.humanizm-about .fusion-story__copy > p:nth-of-type(2) { color: #4e4348; font-size: clamp(17px, 1.45vw, 21px); }
+.humanizm-learning .fusion-section-head h2 { text-align: left; }
+.humanizm-learning .final-certificate p { font-size: 14px; }
+.humanizm-contact .final-contact-facts span { font-size: 12px; }
+.humanizm-contact .fusion-contact__row > p { font-size: 18px; }
+.humanizm-footer a { color: var(--hz-lime); }
+
+.humanizm-privacy-note {
+  display: grid;
+  position: fixed;
+  z-index: 240;
+  left: clamp(14px, 2.4vw, 34px);
+  bottom: clamp(14px, 2.4vw, 34px);
+  width: min(470px, calc(100vw - 28px));
+  padding: 20px;
+  background: var(--hz-cream);
+  border: 2px solid var(--hz-ink);
+  box-shadow: 9px 9px 0 var(--hz-ink);
+  transition: opacity .25s ease, transform .25s ease, visibility .25s;
+}
+.humanizm-privacy-note.is-hidden { visibility: hidden; opacity: 0; pointer-events: none; transform: translateY(24px); }
+.humanizm-privacy-note > button { position: absolute; top: 7px; right: 9px; width: 36px; height: 36px; background: transparent; border: 0; cursor: pointer; font-size: 26px; }
+.humanizm-privacy-note strong { padding-right: 34px; font: 800 20px/1.05 var(--display); text-transform: uppercase; }
+.humanizm-privacy-note p { margin: 12px 0 18px; font-size: 16px; line-height: 1.45; }
+.humanizm-privacy-note div { display: flex; align-items: center; gap: 16px; }
+.humanizm-privacy-note div button, .humanizm-privacy-note div a { padding: 11px 15px; border: 1px solid var(--hz-ink); border-radius: 100px; font: 700 12px/1 var(--mono); text-decoration: none; }
+.humanizm-privacy-note div button { color: var(--hz-ink); background: var(--hz-lime); cursor: pointer; }
+
+@media (max-width: 1180px) {
+  .humanizm-hero__copy { left: 19vw; right: 34vw; }
+  .humanizm-proof .fusion-projects { grid-template-columns: 1fr 1fr; }
+  .humanizm-proof .fusion-project:first-child { grid-column: 1 / 3; }
+  .humanizm-skill-grid { grid-template-columns: 1fr 1fr; }
+  .humanizm-skill-panel--learning { grid-column: 1 / 3; min-height: auto; }
+}
+
+@media (max-width: 1000px) {
+  .humanizm-nav { min-height: 72px; padding: 13px 18px; }
+  .humanizm-nav__identity span { display: none; }
+  .humanizm-menu { top: 72px; }
+  .humanizm-hero { display: grid; min-height: auto; padding: 42px 5vw 56px; grid-template-columns: 1fr; }
+  .humanizm-hero .fusion-hero__note { position: static; order: 1; font-size: 12px; }
+  .humanizm-hero .fusion-hero__headline { width: 100%; margin: 38px 0 28px; order: 2; }
+  .humanizm-hero .fusion-word { font-size: clamp(60px, 14vw, 126px); }
+  .humanizm-hero .fusion-hero__portrait { position: relative; width: min(72vw, 470px); right: auto; bottom: auto; margin: 0 auto 32px; order: 3; }
+  .humanizm-hero__copy { position: static; display: grid; order: 4; gap: 24px; align-items: start; }
+  .humanizm-hero__copy > div { max-width: 760px; }
+  .humanizm-hero__copy a { justify-self: start; }
+  .humanizm-pencil-note { display: none; }
+  .humanizm-section-head { grid-template-columns: 1fr; }
+  .humanizm-section-head h2 { grid-row: auto; text-align: left; }
+  .humanizm-section-head > .humanizm-section-lead { margin-left: 0; grid-column: 1; }
+  .humanizm-job header { grid-template-columns: 125px 1fr; }
+  .humanizm-job header > b { justify-self: start; grid-column: 2; }
+  .humanizm-job__body { grid-template-columns: 1fr; }
+  .humanizm-case-notes, .humanizm-tool-line { grid-column: 1; }
+  .humanizm-case-notes ol { grid-template-columns: 1fr; }
+  .humanizm-api-strip { grid-template-columns: repeat(2, 1fr); }
+  .humanizm-api-strip span:nth-child(2) { border-right: 0; }
+  .humanizm-api-strip span:nth-child(-n+2) { border-bottom: 1px solid var(--hz-ink); }
+}
+
+@media (max-width: 720px) {
+  .humanizm-page section[id] { scroll-margin-top: 72px; }
+  .humanizm-nav__identity { display: none; }
+  .humanizm-nav { grid-template-columns: auto 1fr; }
+  .humanizm-nav .final-nav__actions { gap: 7px; }
+  .humanizm-menu-button { padding-inline: 13px; font-size: 12px; }
+  .humanizm-menu { inset: 72px 0 0; overflow-y: auto; }
+  .humanizm-menu__meta, .humanizm-menu__footer { display: grid; font-size: 11px; }
+  .humanizm-menu nav { grid-template-columns: 1fr; }
+  .humanizm-menu nav a { padding: 14px 0; }
+  .humanizm-menu nav a b { font-size: clamp(32px, 12vw, 58px); }
+  .humanizm-hero { padding-inline: 18px; }
+  .humanizm-hero .fusion-hero__headline { gap: 5px; }
+  .humanizm-hero .fusion-word { max-width: 100%; font-size: clamp(46px, 16vw, 82px); letter-spacing: -.1em; }
+  .humanizm-hero .fusion-hero__portrait { width: min(86vw, 420px); }
+  .humanizm-hero__copy p { font-size: 17px; }
+  .humanizm-experience, .humanizm-proof, .humanizm-skills { padding: 72px 18px; }
+  .humanizm-section-head h2 { font-size: clamp(43px, 14vw, 72px); }
+  .humanizm-job { box-shadow: 6px 6px 0 var(--hz-ink); }
+  .humanizm-job header { padding: 20px; grid-template-columns: 1fr; }
+  .humanizm-job header > b { grid-column: 1; }
+  .humanizm-job__body { padding: 22px; }
+  .humanizm-metrics, .humanizm-metrics--two { grid-template-columns: 1fr; }
+  .humanizm-case-notes ol { padding-left: 43px; }
+  .humanizm-proof .fusion-projects { grid-template-columns: 1fr; }
+  .humanizm-proof .fusion-project, .humanizm-proof .fusion-project:first-child { min-height: 500px; grid-column: 1; }
+  .humanizm-proof .fusion-project h3 { font-size: clamp(58px, 20vw, 100px); }
+  .humanizm-api-strip { grid-template-columns: 1fr; transform: none; }
+  .humanizm-api-strip span, .humanizm-api-strip span:nth-child(2) { min-height: 94px; border-right: 0; border-bottom: 1px solid var(--hz-ink); }
+  .humanizm-api-strip span:last-child { border-bottom: 0; }
+  .humanizm-skill-grid { grid-template-columns: 1fr; }
+  .humanizm-skill-panel, .humanizm-skill-panel--project, .humanizm-skill-panel--learning { min-height: auto; grid-column: 1; transform: none; }
+  .humanizm-skill-panel:hover, .humanizm-skill-panel--project:hover { transform: translateY(-4px); }
+  .humanizm-about { padding-inline: 18px; }
+  .humanizm-about .fusion-story__photos { min-height: 520px; }
+  .humanizm-learning { padding-inline: 18px; }
+  .humanizm-contact { padding-inline: 18px; }
+  .humanizm-contact .final-contact-facts { grid-template-columns: 1fr; }
+  .humanizm-contact .fusion-contact__row { align-items: stretch; }
+  .humanizm-contact .fusion-contact__row > div { display: grid; }
+  .humanizm-footer { display: grid; gap: 12px; font-size: 11px; }
+  .humanizm-privacy-note { padding: 20px; }
+}
+
+@media (max-width: 420px) {
+  .humanizm-nav .fusion-logo { width: 40px; height: 40px; }
+  .humanizm-nav .final-language button { min-width: 34px; min-height: 34px; padding-inline: 6px; }
+  .humanizm-menu-button span { max-width: 90px; overflow: hidden; }
+  .humanizm-hero .fusion-word { font-size: clamp(42px, 15.5vw, 66px); }
+  .humanizm-job h3 { font-size: 34px; }
+  .humanizm-proof .fusion-project { padding: 22px; }
+  .humanizm-proof .fusion-project h3 { font-size: 64px; }
+  .humanizm-privacy-note { bottom: 12px; left: 12px; width: calc(100vw - 24px); box-shadow: 5px 5px 0 var(--hz-ink); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .humanizm-menu, .humanizm-menu-button i, .humanizm-menu-button i::after, .humanizm-privacy-note { transition: none; }
+}
