@@ -1,8 +1,8 @@
 window.profileData = {
   version: 'v5.1.1',
   links: {
-    email: 'mailto:wampirkost@gmail.com',
-    emailText: 'wampirkost@gmail.com',
+    email: 'mailto:aniyurotaxo084@gmail.com',
+    emailText: 'aniyurotaxo084@gmail.com',
     telegram: 'https://t.me/KonstantinV_AI',
     vk: 'https://vk.com/intni',
     github: 'https://github.com/Kezerio',
