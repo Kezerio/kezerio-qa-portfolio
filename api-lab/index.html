@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>API Lab просыпается - Константин Васильев</title>
-  <meta name="description" content="Сервер QA API Lab просыпается на бесплатном Render. Пока ждём, сыграйте в три короткие QA-игры." />
-  <link rel="stylesheet" href="api-lab.css?v=20260804-language-scroll" />
+  <meta name="description" content="Сервер QA API Lab просыпается на бесплатном Render. Пока ждём, сыграйте в три короткие QA-игры и соберите два собственных API-теста." />
+  <link rel="stylesheet" href="api-lab.css?v=20260905-input-tools" />
 </head>
 <body class="wake-page">
   <a class="skip-link" href="#games" data-i18n="skip">К мини-играм</a>
@@ -124,6 +124,85 @@
       </div>
     </section>
 
+    <section class="qa-toolbox" id="qa-tools">
+      <header class="section-head section-head--tools">
+        <p>LIVE INPUT / 03</p>
+        <h2 data-i18n-html="toolsTitle">Ваши данные.<br />Мой подход.</h2>
+      </header>
+      <p class="qa-toolbox__intro" data-i18n="toolsIntro">Введите маршрут или границы поля. Инструменты ничего не отправляют на сервер и собирают QA-чек-листы прямо в браузере.</p>
+
+      <div class="qa-tool-grid">
+        <article class="qa-tool qa-tool--request">
+          <header class="qa-tool__head">
+            <span>01 / REQUEST BLUEPRINT</span>
+            <h3 data-i18n="requestToolTitle">Соберите API-проверку</h3>
+            <p data-i18n="requestToolText">Выберите метод, укажите маршрут и ожидаемый статус. На выходе будет компактный сценарий проверки.</p>
+          </header>
+          <form class="qa-tool__form" data-request-tool novalidate>
+            <label class="qa-tool__field qa-tool__field--short">
+              <span data-i18n="methodLabel">HTTP-метод</span>
+              <select data-request-method>
+                <option>GET</option>
+                <option>POST</option>
+                <option>PUT</option>
+                <option>PATCH</option>
+                <option>DELETE</option>
+              </select>
+            </label>
+            <label class="qa-tool__field qa-tool__field--wide">
+              <span data-i18n="pathLabel">Маршрут</span>
+              <input type="text" value="/api/orders/17" maxlength="120" required spellcheck="false" autocomplete="off" data-request-path data-i18n-placeholder="pathPlaceholder" />
+            </label>
+            <label class="qa-tool__field qa-tool__field--short">
+              <span data-i18n="statusLabel">Ожидаемый статус</span>
+              <select data-request-status>
+                <option>200</option>
+                <option>201</option>
+                <option>204</option>
+                <option>400</option>
+                <option>401</option>
+                <option>403</option>
+                <option>404</option>
+                <option>409</option>
+                <option>422</option>
+                <option>500</option>
+              </select>
+            </label>
+            <button class="qa-tool__submit" type="submit" data-i18n="buildScenario">Собрать сценарий</button>
+          </form>
+          <pre class="qa-tool__output" data-request-output tabindex="0" aria-live="polite"></pre>
+        </article>
+
+        <article class="qa-tool qa-tool--boundary">
+          <header class="qa-tool__head">
+            <span>02 / BOUNDARY MATRIX</span>
+            <h3 data-i18n="matrixToolTitle">Создайте матрицу границ</h3>
+            <p data-i18n="matrixToolText">Задайте имя числового поля и допустимый диапазон. Инструмент предложит позитивные и негативные значения.</p>
+          </header>
+          <form class="qa-tool__form" data-matrix-tool novalidate>
+            <label class="qa-tool__field qa-tool__field--wide">
+              <span data-i18n="fieldLabel">Имя поля</span>
+              <input type="text" value="quantity" maxlength="30" required spellcheck="false" autocomplete="off" data-matrix-field data-i18n-placeholder="fieldPlaceholder" />
+            </label>
+            <label class="qa-tool__field qa-tool__field--short">
+              <span data-i18n="minLabel">Минимум</span>
+              <input type="number" value="1" min="-999999" max="999999" step="1" required inputmode="numeric" data-matrix-min />
+            </label>
+            <label class="qa-tool__field qa-tool__field--short">
+              <span data-i18n="maxLabel">Максимум</span>
+              <input type="number" value="99" min="-999999" max="999999" step="1" required inputmode="numeric" data-matrix-max />
+            </label>
+            <label class="qa-tool__check">
+              <input type="checkbox" checked data-matrix-required />
+              <span data-i18n="requiredLabel">Поле обязательное</span>
+            </label>
+            <button class="qa-tool__submit" type="submit" data-i18n="buildMatrix">Построить матрицу</button>
+          </form>
+          <pre class="qa-tool__output" data-matrix-output tabindex="0" aria-live="polite"></pre>
+        </article>
+      </div>
+    </section>
+
     <section class="wake-facts">
       <article><span>01</span><h3 data-i18n="whyTitle">Почему ждём?</h3><p data-i18n="whyText">Render останавливает бесплатный web service после 15 минут без входящего трафика.</p></article>
       <article><span>02</span><h3 data-i18n="whatTitle">Что происходит?</h3><p data-i18n="whatText">Первый HTTP-запрос запускает новый экземпляр приложения. Обычно это занимает около минуты.</p></article>
@@ -148,6 +227,6 @@
 
   <button class="wake-back-to-top" type="button" data-back-to-top aria-label="Наверх" aria-hidden="true" tabindex="-1"><span aria-hidden="true">↑</span></button>
 
-  <script src="api-lab.js?v=20260804-clean-render-link" defer></script>
+  <script src="api-lab.js?v=20260905-input-tools" defer></script>
 </body>
 </html>

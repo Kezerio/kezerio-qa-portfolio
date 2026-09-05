@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Приватность - Константин Васильев</title>
-  <meta name="description" content="Как сайт-портфолио использует localStorage, технические данные GitHub Pages и внешние ссылки." />
+  <meta name="description" content="Как портфолио использует localStorage, GitHub Pages, QA API Lab и FormSubmit для обратной связи." />
   <link rel="canonical" href="https://kezerio.github.io/kezerio-qa-portfolio/privacy/" />
-  <link rel="stylesheet" href="../concepts/concepts.css?v=20260904-humanizm" />
-  <link rel="stylesheet" href="privacy.css?v=20260904-humanizm" />
+  <link rel="stylesheet" href="../concepts/concepts.css?v=20260905-feedback" />
+  <link rel="stylesheet" href="privacy.css?v=20260905-feedback" />
 </head>
 <body class="privacy-page">
   <a class="skip-link" href="#privacy-main" data-privacy-i18n="skip">К содержанию</a>
@@ -21,17 +21,18 @@
     <section class="privacy-hero">
       <p data-privacy-i18n="eyebrow">ПРИВАТНОСТЬ / ПОНЯТНЫМ ЯЗЫКОМ</p>
       <h1 data-privacy-html="title">Не собираю<br /><i>лишнее.</i></h1>
-      <div><strong data-privacy-i18n="updated">Обновлено: 4 сентября 2026</strong><p data-privacy-i18n="intro">Это личный сайт-портфолио Константина Васильева. Здесь нет регистрации, формы обратной связи, рекламы и подключённой веб-аналитики.</p></div>
+      <div><strong data-privacy-i18n="updated">Обновлено: 5 сентября 2026</strong><p data-privacy-i18n="intro">Это личный сайт-портфолио Константина Васильева. Здесь нет регистрации, рекламы и подключённой веб-аналитики. Добровольная форма обратной связи отправляет данные только после вашего согласия.</p></div>
     </section>
 
     <section class="privacy-grid" aria-label="Разделы уведомления" data-privacy-aria="sectionsLabel">
       <article><span>01</span><h2 data-privacy-i18n="storageTitle">Что хранится в браузере</h2><p data-privacy-i18n="storageText">Код сайта использует localStorage только для выбранного языка и отметки о закрытии информационного уведомления. Эти значения остаются на вашем устройстве и не отправляются владельцу сайта.</p></article>
-      <article><span>02</span><h2 data-privacy-i18n="cookiesTitle">Cookies и трекеры</h2><p data-privacy-i18n="cookiesText">Код сайта не устанавливает рекламные или аналитические cookies и не подключает пиксели слежения. Поэтому кнопки «принять» и «отклонить» необязательные cookies здесь нет.</p></article>
+      <article><span>02</span><h2 data-privacy-i18n="cookiesTitle">Cookies и трекеры</h2><p data-privacy-i18n="cookiesText">Код портфолио не устанавливает рекламные или аналитические cookies и не подключает пиксели слежения. При переходе к отправке формы FormSubmit и CAPTCHA могут обрабатывать технические данные по собственным правилам.</p></article>
       <article><span>03</span><h2 data-privacy-i18n="hostingTitle">Технические данные хостинга</h2><p data-privacy-i18n="hostingText">Сайт размещён на GitHub Pages. По документации GitHub, IP-адреса посетителей регистрируются и хранятся GitHub в целях безопасности независимо от наличия аккаунта.</p><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages" target="_blank" rel="noopener noreferrer" data-privacy-i18n="githubDocs">Документация GitHub ↗</a></article>
       <article><span>04</span><h2 data-privacy-i18n="labTitle">Проверка API Lab</h2><p data-privacy-i18n="labText">При открытии страницы API Lab браузер автоматически отправляет GET-запрос к qa-api-lab.onrender.com, чтобы разбудить демо и показать его статус. Render и хостинг приложения могут получить IP-адрес и технические данные запроса. Ответ используется на странице только для индикатора готовности.</p><a href="https://render.com/privacy" target="_blank" rel="noopener noreferrer" data-privacy-i18n="renderPrivacy">Политика Render ↗</a></article>
       <article><span>05</span><h2 data-privacy-i18n="linksTitle">Внешние ссылки</h2><p data-privacy-i18n="linksText">Telegram, RuStore, Google Drive, Mail.ru и другие внешние сервисы открываются только после нажатия на ссылку. На их страницах действуют собственные правила приватности.</p></article>
-      <article><span>06</span><h2 data-privacy-i18n="contactTitle">Связь и данные</h2><p data-privacy-i18n="contactText">Если вы напишете по email или в Telegram, данные сообщения обрабатываются в выбранном вами сервисе и только для ответа на обращение. Сам сайт содержимое переписки не получает и не хранит.</p></article>
-      <article><span>07</span><h2 data-privacy-i18n="changeTitle">Если сайт изменится</h2><p data-privacy-i18n="changeText">При добавлении формы, аналитики, рекламы или новых способов обработки данных это уведомление и механизм согласия нужно пересмотреть до публикации изменений.</p></article>
+      <article><span>06</span><h2 data-privacy-i18n="formTitle">Форма обратной связи</h2><p data-privacy-i18n="formText">При отправке формы имя, email, сообщение и выбранный файл передаются сервису FormSubmit, а затем в почтовый ящик владельца сайта. Цель обработки - получить обращение и ответить на него. Отправка добровольна и доступна только после отметки согласия.</p><a href="https://formsubmit.co/documentation" target="_blank" rel="noopener noreferrer" data-privacy-i18n="formDocs">Документация FormSubmit ↗</a> <a href="https://formsubmit.co/privacy.pdf" target="_blank" rel="noopener noreferrer" data-privacy-i18n="formPrivacy">Политика FormSubmit ↗</a></article>
+      <article><span>07</span><h2 data-privacy-i18n="retentionTitle">Хранение и удаление</h2><p data-privacy-i18n="retentionText">По документации FormSubmit текст отправления хранится до 30 дней, а загруженные файлы недоступны в архиве API. Доставленная копия может оставаться в почтовом ящике до ручного удаления. Чтобы запросить удаление обращения, напишите на email ниже.</p></article>
+      <article><span>08</span><h2 data-privacy-i18n="changeTitle">Если обработка изменится</h2><p data-privacy-i18n="changeText">При добавлении аналитики, рекламы или новых способов обработки данных это уведомление и механизм согласия будут пересмотрены до публикации изменений.</p></article>
     </section>
 
     <section class="privacy-contact">
@@ -42,6 +43,6 @@
 
   <footer><span>KONSTANTIN VASILIEV®</span><a href="../" data-home-link data-privacy-i18n="back">На главную ↑</a></footer>
   <button class="privacy-top" type="button" data-back-to-top aria-label="Наверх" data-privacy-aria="topLabel">↑</button>
-  <script src="privacy.js?v=20260904-humanizm" defer></script>
+  <script src="privacy.js?v=20260905-feedback" defer></script>
 </body>
 </html>

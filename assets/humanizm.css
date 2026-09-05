@@ -22,12 +22,29 @@ html { scroll-behavior: smooth; }
   z-index: 220;
   min-height: 78px;
   padding-block: 16px;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
 }
+.humanizm-brand { display: inline-flex; width: max-content; align-items: center; color: inherit; text-decoration: none; }
+.humanizm-brand .fusion-logo { flex: 0 0 auto; transition: color .24s ease, background .24s ease, border-radius .24s ease, box-shadow .24s ease; }
+.humanizm-brand:hover .fusion-logo { color: var(--hz-ink); background: var(--hz-lime); border-radius: 50%; box-shadow: 4px 4px 0 var(--hz-ink); }
+.humanizm-brand:hover .humanizm-nav__identity strong { letter-spacing: .1em; }
+.humanizm-brand:active .fusion-logo { background: var(--hz-coral); box-shadow: 1px 1px 0 var(--hz-ink); }
 .humanizm-nav__identity { display: flex; margin-left: 16px; align-items: baseline; gap: 12px; }
-.humanizm-nav__identity strong { font: 800 14px/1 var(--mono); letter-spacing: .06em; }
+.humanizm-nav__identity strong { font: 800 14px/1 var(--mono); letter-spacing: .06em; transition: letter-spacing .24s ease, color .24s ease; }
 .humanizm-nav__identity span { color: #6c6a65; font: 700 12px/1 var(--mono); }
-.humanizm-nav .final-language button { min-width: 38px; min-height: 38px; font-size: 12px; }
+.humanizm-sr-only { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; overflow: hidden !important; clip: rect(0, 0, 0, 0) !important; white-space: nowrap !important; border: 0 !important; }
+.is-brand-pulsing .humanizm-brand .fusion-logo { animation: humanizm-logo-pulse .85s cubic-bezier(.2,.75,.2,1); }
+.is-brand-pulsing .humanizm-brand .humanizm-nav__identity strong { animation: humanizm-type-pulse .85s cubic-bezier(.2,.75,.2,1); }
+.is-brand-pulsing .fusion-word { animation: humanizm-word-signal .72s cubic-bezier(.2,.75,.2,1); }
+.is-brand-pulsing .fusion-word:nth-child(2) { animation-delay: .08s; }
+.is-brand-pulsing .fusion-word:nth-child(3) { animation-delay: .16s; }
+.is-brand-pulsing .fusion-word:nth-child(4) { animation-delay: .24s; }
+.is-brand-pulsing .fusion-photo-shape { animation: humanizm-shape-pulse .95s cubic-bezier(.2,.75,.2,1); }
+@keyframes humanizm-logo-pulse { 0% { color: var(--hz-cream); background: var(--hz-ink); border-radius: 4px; } 45% { color: var(--hz-ink); background: var(--hz-lime); border-radius: 50%; box-shadow: 7px 7px 0 var(--hz-coral); } 100% { color: var(--hz-cream); background: var(--hz-ink); border-radius: 4px; } }
+@keyframes humanizm-type-pulse { 45% { color: var(--hz-coral); letter-spacing: .16em; } }
+@keyframes humanizm-word-signal { 45% { border-radius: 52px 14px 52px 14px; box-shadow: 9px 9px 0 var(--hz-ink); filter: saturate(1.18); } }
+@keyframes humanizm-shape-pulse { 45% { border-radius: 68% 32% 62% 38% / 35% 65% 35% 65%; filter: saturate(1.18); } }
+.humanizm-nav .final-language button { min-width: 40px; min-height: 40px; font-size: 14px; }
 .humanizm-menu-button {
   display: flex;
   min-height: 44px;
@@ -39,7 +56,7 @@ html { scroll-behavior: smooth; }
   border: 1px solid var(--hz-ink);
   border-radius: 100px;
   cursor: pointer;
-  font: 700 13px/1 var(--mono);
+  font: 700 14px/1 var(--mono);
   text-transform: uppercase;
 }
 .humanizm-menu-button i, .humanizm-menu-button i::after {
@@ -87,17 +104,6 @@ html { scroll-behavior: smooth; }
 .humanizm-hero__copy strong { margin-bottom: 10px; font-size: 12px; }
 .humanizm-hero__copy p { font-size: clamp(16px, 1.16vw, 19px); line-height: 1.55; }
 .humanizm-hero__copy a { min-width: 142px; padding: 14px 18px; font-size: 12px; text-align: center; }
-.humanizm-pencil-note {
-  position: absolute;
-  z-index: 7;
-  right: 2.3vw;
-  top: 28%;
-  padding: 6px 9px;
-  color: #655f58;
-  border-bottom: 2px solid var(--hz-coral);
-  font: italic 16px/1.25 Georgia, serif;
-  transform: rotate(5deg);
-}
 
 .humanizm-section-head { display: grid; padding-inline: 0; grid-template-columns: minmax(180px, .55fr) minmax(430px, 1.45fr); gap: 24px 5vw; align-items: end; }
 .humanizm-section-head > p:first-child { align-self: start; font-size: 12px; }
@@ -144,6 +150,27 @@ html { scroll-behavior: smooth; }
 .humanizm-api-strip span:last-child { border-right: 0; }
 .humanizm-api-strip small { color: #59604b; font: 11px/1 var(--mono); }
 
+.humanizm-signal-lab { margin-top: clamp(44px, 6vw, 88px); padding: clamp(24px, 4vw, 58px); color: var(--hz-cream); background: var(--hz-ink); border: 2px solid var(--hz-ink); border-radius: 10px 78px 10px 78px; box-shadow: 11px 11px 0 var(--hz-coral); }
+.humanizm-signal-lab__intro { display: grid; grid-template-columns: minmax(180px, .52fr) minmax(460px, 1.48fr); gap: 18px 5vw; align-items: end; }
+.humanizm-signal-lab__intro > p:first-child { align-self: start; margin: 0; color: var(--hz-lime); font: 700 12px/1.5 var(--mono); letter-spacing: .08em; }
+.humanizm-signal-lab__intro h3 { margin: 0; font: 800 clamp(45px, 6.2vw, 94px)/.84 var(--display); letter-spacing: -.035em; text-transform: uppercase; }
+.humanizm-signal-lab__intro h3 i { color: var(--hz-lime); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
+.humanizm-signal-lab__intro > p:last-child { max-width: 720px; margin: 8px 0 0; grid-column: 2; color: #d5d4cf; font-size: clamp(16px, 1.35vw, 20px); line-height: 1.55; }
+.humanizm-signal-lab__controls { display: flex; margin-top: 34px; flex-wrap: wrap; gap: 10px; }
+.humanizm-signal-lab__controls button { min-height: 48px; padding: 12px 17px; color: var(--hz-cream); background: transparent; border: 1px solid #6c706a; border-radius: 100px; cursor: pointer; font: 700 14px/1.25 var(--mono); transition: color .2s ease, background .2s ease, border-color .2s ease, transform .2s ease; }
+.humanizm-signal-lab__controls button:hover { border-color: var(--hz-lime); transform: translateY(-3px); }
+.humanizm-signal-lab__controls button.is-active { color: var(--hz-ink); background: var(--hz-lime); border-color: var(--hz-lime); transform: rotate(-1deg); }
+.humanizm-signal-lab__route { display: grid; margin-top: 22px; grid-template-columns: repeat(4, 1fr); border: 1px solid #686b66; }
+.humanizm-signal-lab__route article { display: flex; min-height: 220px; padding: 20px; flex-direction: column; justify-content: space-between; border-right: 1px solid #686b66; transition: background .22s ease; }
+.humanizm-signal-lab__route article:last-child { border-right: 0; }
+.humanizm-signal-lab__route article:nth-child(2) { background: #ffffff0a; }
+.humanizm-signal-lab__route article:nth-child(3) { background: #ffffff10; }
+.humanizm-signal-lab__route article:nth-child(4) { color: var(--hz-ink); background: var(--hz-coral); }
+.humanizm-signal-lab__route span { font: 700 12px/1.35 var(--mono); letter-spacing: .04em; }
+.humanizm-signal-lab__route p { margin: 38px 0 0; font-size: 16px; line-height: 1.55; }
+.humanizm-signal-lab__route.is-changing article { background: var(--hz-lilac); color: var(--hz-ink); }
+.humanizm-signal-lab__note { margin: 18px 0 0; color: #aeb1ab; font: 12px/1.5 var(--mono); }
+
 .humanizm-skills { padding: clamp(80px, 9vw, 145px) 4vw; background: var(--hz-blue); }
 .humanizm-skills .humanizm-section-head { border-color: #365c96; }
 .humanizm-skill-grid { display: grid; margin-top: 30px; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -165,7 +192,48 @@ html { scroll-behavior: smooth; }
 .humanizm-learning .final-certificate p { font-size: 14px; }
 .humanizm-contact .final-contact-facts span { font-size: 12px; }
 .humanizm-contact .fusion-contact__row > p { font-size: 18px; }
+.humanizm-contact .fusion-contact__row > div { flex-wrap: wrap; justify-content: flex-end; }
+.humanizm-contact .fusion-contact__row a, .humanizm-contact .fusion-contact__row button { min-height: 46px; padding: 14px 20px; color: var(--hz-ink); background: transparent; border: 1px solid var(--hz-ink); border-radius: 100px; cursor: pointer; font: 700 14px/1 var(--mono); text-decoration: none; text-transform: uppercase; }
+.humanizm-contact .fusion-contact__row .humanizm-feedback-open { color: var(--hz-cream); background: var(--hz-ink); }
+.humanizm-contact .fusion-contact__row button.is-copied { background: var(--hz-lime); }
 .humanizm-footer a { color: var(--hz-lime); }
+
+.humanizm-feedback { width: min(840px, calc(100vw - 30px)); max-width: none; max-height: min(92dvh, 920px); margin: auto; padding: 0; overflow-x: hidden; overflow-y: auto; color: var(--hz-ink); background: var(--hz-cream); border: 2px solid var(--hz-ink); border-radius: 8px 48px 8px 48px; box-shadow: 14px 14px 0 var(--hz-lime); }
+.humanizm-feedback::backdrop { background: #111311c9; backdrop-filter: blur(7px); }
+.humanizm-feedback__form { display: grid; min-width: 0; padding: clamp(22px, 4vw, 48px); gap: 22px; }
+.humanizm-feedback__form > *, .humanizm-feedback__form header > div { min-width: 0; }
+.humanizm-feedback__form header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
+.humanizm-feedback__form header p { margin: 0 0 18px; font: 700 12px/1.45 var(--mono); letter-spacing: .08em; }
+.humanizm-feedback__form h2 { margin: 0; font: 800 clamp(48px, 7vw, 88px)/.8 var(--display); letter-spacing: -.035em; overflow-wrap: anywhere; text-transform: uppercase; }
+.humanizm-feedback__form h2 i { color: var(--hz-coral); font-family: Georgia, serif; font-weight: 400; text-transform: none; }
+.humanizm-feedback__form header > button { display: grid; flex: 0 0 auto; width: 46px; height: 46px; place-items: center; color: var(--hz-cream); background: var(--hz-ink); border: 0; border-radius: 50%; cursor: pointer; font: 400 27px/1 var(--sans); }
+.humanizm-feedback__intro { max-width: 660px; margin: 0; font-size: 17px; line-height: 1.55; }
+.humanizm-feedback__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.humanizm-feedback__form label { display: grid; gap: 9px; }
+.humanizm-feedback__form label > span:first-child { display: flex; justify-content: space-between; gap: 14px; align-items: baseline; }
+.humanizm-feedback__form label b { font: 700 14px/1.35 var(--mono); text-transform: uppercase; }
+.humanizm-feedback__form output, .humanizm-feedback__form small { color: #68645e; font: 12px/1.35 var(--mono); }
+.humanizm-feedback__form input[type="text"], .humanizm-feedback__form input[type="email"], .humanizm-feedback__form textarea, .humanizm-feedback__form input[type="file"] { width: 100%; min-width: 0; color: var(--hz-ink); background: #fffaf5; border: 1px solid var(--hz-ink); border-radius: 4px; font: 16px/1.45 var(--sans); }
+.humanizm-feedback__form input[type="text"], .humanizm-feedback__form input[type="email"] { min-height: 52px; padding: 12px 14px; }
+.humanizm-feedback__form textarea { min-height: 170px; padding: 13px 14px; resize: vertical; }
+.humanizm-feedback__form input[type="file"] { padding: 7px; }
+.humanizm-feedback__form input[type="file"]::file-selector-button { min-height: 38px; margin-right: 12px; padding: 9px 13px; color: var(--hz-ink); background: var(--hz-lilac); border: 1px solid var(--hz-ink); border-radius: 3px; cursor: pointer; font: 700 14px/1 var(--mono); }
+.humanizm-feedback__file > span { display: grid !important; justify-content: initial !important; gap: 4px !important; }
+.humanizm-feedback__file em { color: #68645e; font: normal 13px/1.4 var(--mono); overflow-wrap: anywhere; }
+.humanizm-feedback__file.has-error em { color: #a42a14; font-weight: 700; }
+.humanizm-feedback__warning { margin: -6px 0 0; padding: 12px 14px; background: #ff704d24; border-left: 4px solid var(--hz-coral); font-size: 14px; line-height: 1.45; }
+.humanizm-feedback__consent { display: grid !important; grid-template-columns: 22px 1fr; align-items: start; gap: 11px !important; }
+.humanizm-feedback__consent > input { width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--hz-ink); }
+.humanizm-feedback__consent > span { display: block !important; font-size: 14px; line-height: 1.5; }
+.humanizm-feedback__consent a { font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.humanizm-feedback__actions { display: flex; align-items: center; gap: 18px; }
+.humanizm-feedback__actions button { flex: 0 0 auto; min-height: 50px; padding: 14px 19px; color: var(--hz-cream); background: var(--hz-ink); border: 1px solid var(--hz-ink); border-radius: 100px; cursor: pointer; font: 700 14px/1.15 var(--mono); text-transform: uppercase; }
+.humanizm-feedback__actions button:disabled { cursor: wait; opacity: .65; }
+.humanizm-feedback__actions p { margin: 0; color: #68645e; font-size: 13px; line-height: 1.45; }
+.humanizm-honeypot { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; overflow: hidden !important; clip-path: inset(50%) !important; border: 0 !important; }
+.feedback-open { overflow: hidden; }
+.humanizm-toast { visibility: hidden; position: fixed; z-index: 400; right: clamp(14px, 2.4vw, 34px); bottom: clamp(78px, 7vw, 98px); max-width: min(420px, calc(100vw - 28px)); padding: 14px 18px; color: var(--hz-cream); background: var(--hz-ink); border: 1px solid var(--hz-cream); border-radius: 100px; box-shadow: 7px 7px 0 var(--hz-lime); font: 700 13px/1.35 var(--mono); opacity: 0; transform: translateY(12px); transition: opacity .22s ease, transform .22s ease, visibility .22s; }
+.humanizm-toast.is-visible { visibility: visible; opacity: 1; transform: translateY(0); }
 
 .humanizm-privacy-note {
   display: grid;
@@ -185,7 +253,7 @@ html { scroll-behavior: smooth; }
 .humanizm-privacy-note strong { padding-right: 34px; font: 800 20px/1.05 var(--display); text-transform: uppercase; }
 .humanizm-privacy-note p { margin: 12px 0 18px; font-size: 16px; line-height: 1.45; }
 .humanizm-privacy-note div { display: flex; align-items: center; gap: 16px; }
-.humanizm-privacy-note div button, .humanizm-privacy-note div a { padding: 11px 15px; border: 1px solid var(--hz-ink); border-radius: 100px; font: 700 12px/1 var(--mono); text-decoration: none; }
+.humanizm-privacy-note div button, .humanizm-privacy-note div a { padding: 11px 15px; border: 1px solid var(--hz-ink); border-radius: 100px; font: 700 14px/1 var(--mono); text-decoration: none; }
 .humanizm-privacy-note div button { color: var(--hz-ink); background: var(--hz-lime); cursor: pointer; }
 
 @media (max-width: 1180px) {
@@ -208,7 +276,6 @@ html { scroll-behavior: smooth; }
   .humanizm-hero__copy { position: static; display: grid; order: 4; gap: 24px; align-items: start; }
   .humanizm-hero__copy > div { max-width: 760px; }
   .humanizm-hero__copy a { justify-self: start; }
-  .humanizm-pencil-note { display: none; }
   .humanizm-section-head { grid-template-columns: 1fr; }
   .humanizm-section-head h2 { grid-row: auto; text-align: left; }
   .humanizm-section-head > .humanizm-section-lead { margin-left: 0; grid-column: 1; }
@@ -220,6 +287,13 @@ html { scroll-behavior: smooth; }
   .humanizm-api-strip { grid-template-columns: repeat(2, 1fr); }
   .humanizm-api-strip span:nth-child(2) { border-right: 0; }
   .humanizm-api-strip span:nth-child(-n+2) { border-bottom: 1px solid var(--hz-ink); }
+  .humanizm-signal-lab__intro { grid-template-columns: 1fr; }
+  .humanizm-signal-lab__intro > p:last-child { grid-column: 1; }
+  .humanizm-signal-lab__route { grid-template-columns: 1fr 1fr; }
+  .humanizm-signal-lab__route article { border-bottom: 1px solid #686b66; }
+  .humanizm-signal-lab__route article:nth-child(2) { border-right: 0; }
+  .humanizm-signal-lab__route article:nth-child(n+3) { border-bottom: 0; }
+  .humanizm-feedback__grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
@@ -252,6 +326,13 @@ html { scroll-behavior: smooth; }
   .humanizm-api-strip { grid-template-columns: 1fr; transform: none; }
   .humanizm-api-strip span, .humanizm-api-strip span:nth-child(2) { min-height: 94px; border-right: 0; border-bottom: 1px solid var(--hz-ink); }
   .humanizm-api-strip span:last-child { border-bottom: 0; }
+  .humanizm-signal-lab { padding: 24px 18px; border-radius: 8px 38px 8px 38px; box-shadow: 7px 7px 0 var(--hz-coral); }
+  .humanizm-signal-lab__intro h3 { font-size: clamp(40px, 13vw, 66px); overflow-wrap: anywhere; }
+  .humanizm-signal-lab__controls { display: grid; }
+  .humanizm-signal-lab__controls button { width: 100%; }
+  .humanizm-signal-lab__route { grid-template-columns: 1fr; }
+  .humanizm-signal-lab__route article, .humanizm-signal-lab__route article:nth-child(2), .humanizm-signal-lab__route article:nth-child(n+3) { min-height: 170px; border-right: 0; border-bottom: 1px solid #686b66; }
+  .humanizm-signal-lab__route article:last-child { border-bottom: 0; }
   .humanizm-skill-grid { grid-template-columns: 1fr; }
   .humanizm-skill-panel, .humanizm-skill-panel--project, .humanizm-skill-panel--learning { min-height: auto; grid-column: 1; transform: none; }
   .humanizm-skill-panel:hover, .humanizm-skill-panel--project:hover { transform: translateY(-4px); }
@@ -261,7 +342,16 @@ html { scroll-behavior: smooth; }
   .humanizm-contact { padding-inline: 18px; }
   .humanizm-contact .final-contact-facts { grid-template-columns: 1fr; }
   .humanizm-contact .fusion-contact__row { align-items: stretch; }
-  .humanizm-contact .fusion-contact__row > div { display: grid; }
+  .humanizm-contact .fusion-contact__row > div { display: grid; width: 100%; }
+  .humanizm-contact .fusion-contact__row a, .humanizm-contact .fusion-contact__row button { width: 100%; text-align: center; }
+  .humanizm-feedback { width: calc(100vw - 18px); max-height: calc(100dvh - 18px); border-radius: 6px 26px 6px 26px; box-shadow: 7px 7px 0 var(--hz-lime); }
+  .humanizm-feedback__form { padding: 22px 17px; }
+  .humanizm-feedback__form header { position: relative; display: block; }
+  .humanizm-feedback__form header > div { padding-right: 54px; }
+  .humanizm-feedback__form header > button { position: absolute; top: 0; right: 0; width: 42px; height: 42px; }
+  .humanizm-feedback__form h2 { font-size: clamp(38px, 11vw, 54px); }
+  .humanizm-feedback__actions { align-items: stretch; flex-direction: column; }
+  .humanizm-feedback__actions button { width: 100%; }
   .humanizm-footer { display: grid; gap: 12px; font-size: 11px; }
   .humanizm-privacy-note { padding: 20px; }
 }
@@ -279,5 +369,7 @@ html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .humanizm-menu, .humanizm-menu-button i, .humanizm-menu-button i::after, .humanizm-privacy-note { transition: none; }
+  .humanizm-menu, .humanizm-menu-button i, .humanizm-menu-button i::after, .humanizm-privacy-note, .humanizm-toast { transition: none; }
+  .is-brand-pulsing .humanizm-brand .fusion-logo, .is-brand-pulsing .humanizm-brand .humanizm-nav__identity strong, .is-brand-pulsing .fusion-word, .is-brand-pulsing .fusion-photo-shape { animation: none; }
+  .is-brand-pulsing .humanizm-brand .fusion-logo { color: var(--hz-ink); background: var(--hz-lime); }
 }

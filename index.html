@@ -10,20 +10,23 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="images/og-cover.webp" />
   <link rel="canonical" href="https://kezerio.github.io/kezerio-qa-portfolio/" />
-  <link rel="stylesheet" href="concepts/concepts.css?v=20260904-humanizm" />
-  <link rel="stylesheet" href="assets/desktop-motion.css?v=20260904-humanizm" />
-  <link rel="stylesheet" href="assets/humanizm.css?v=20260904-humanizm" />
+  <link rel="stylesheet" href="concepts/concepts.css?v=20260905-signal" />
+  <link rel="stylesheet" href="assets/desktop-motion.css?v=20260905-signal" />
+  <link rel="stylesheet" href="assets/humanizm.css?v=20260905-signal" />
 </head>
 <body class="fusion-page final-page humanizm-page">
   <a class="skip-link" href="#main" data-i18n="skip">К содержанию</a>
   <div class="fusion-progress" aria-hidden="true"><i></i></div>
 
   <header class="fusion-nav final-nav humanizm-nav" id="top">
-    <a class="fusion-logo" href="#top" aria-label="В начало страницы" data-i18n-aria="homeLabel">K:\</a>
-    <div class="humanizm-nav__identity">
-      <strong>KV / HUMANIZM</strong>
-      <span data-i18n="navRole">AI PRODUCT + QA</span>
-    </div>
+    <a class="humanizm-brand" href="#top" data-brand-pulse aria-label="Запустить импульс Humanizm и вернуться наверх" data-i18n-aria="brandPulseLabel">
+      <span class="fusion-logo" aria-hidden="true">K:\</span>
+      <span class="humanizm-nav__identity">
+        <strong>KV / HUMANIZM</strong>
+        <span data-i18n="navRole" data-brand-role>AI PRODUCT + QA</span>
+      </span>
+      <span class="humanizm-sr-only" data-brand-live aria-live="polite"></span>
+    </a>
     <div class="final-nav__actions">
       <div class="final-language" role="group" aria-label="Выбор языка" data-i18n-aria="languageLabel">
         <button type="button" data-language="ru" class="is-active">RU</button>
@@ -58,7 +61,6 @@
         <span class="fusion-word fusion-word--coral">PULSE.</span>
       </h1>
       <div class="fusion-hero__portrait reveal" data-fusion-portrait>
-        <div class="fusion-photo-orbit" aria-hidden="true">CALM MIND · SHARP EYE · CLEAR RESULT ·</div>
         <div class="fusion-photo-shape" aria-hidden="true"></div>
         <img src="images/konstantin-hero.webp" alt="Константин Васильев" data-i18n-alt="portraitAlt" />
         <span class="fusion-photo-tag">KONSTANTIN<br />VERIFIED</span>
@@ -70,7 +72,6 @@
         </div>
         <a href="#experience"><span data-i18n="heroCta">Смотреть опыт</span> ↓</a>
       </div>
-      <div class="humanizm-pencil-note" aria-hidden="true">made with context,<br />not keywords</div>
     </section>
 
     <div class="fusion-marquee fusion-marquee--dark" aria-hidden="true"><div>INCIDENT → CONTEXT → HYPOTHESIS → EVIDENCE → RETEST → INCIDENT → CONTEXT → HYPOTHESIS → EVIDENCE → RETEST →</div></div>
@@ -111,7 +112,7 @@
 
     <section class="fusion-proof fusion-section humanizm-proof" id="proof" data-fusion-tone="lime">
       <div class="fusion-section-head humanizm-section-head">
-        <p data-i18n="proofLabel">ПРОЕКТЫ И ПРАКТИКА / 02</p><h2 data-i18n-html="proofTitle">Можно открыть.<br /><i>И проверить.</i></h2><p class="humanizm-section-lead" data-i18n="proofLead">Здесь не обещания, а работающие проекты, опубликованные приложения и документы с контекстом.</p>
+        <p data-i18n="proofLabel">ПРОЕКТЫ И ПРАКТИКА / 02</p><h2 data-i18n-html="proofTitle">Можно открыть.<br /><i>И проверить.</i></h2><p class="humanizm-section-lead" data-i18n="proofLead">Работающие проекты, опубликованные приложения и документы с понятным контекстом.</p>
       </div>
       <div class="fusion-projects">
         <a class="fusion-project fusion-project--coral reveal" href="https://www.rustore.ru/catalog/app/com.mellstroy.clicker" target="_blank" rel="noopener noreferrer"><span>01 / SHIPPED</span><h3>ANDROID<br />GAMES</h3><div><p data-i18n="projectGame">Две выпущенные игры в RuStore. Веду идею, требования, постановку задач Codex, ручную проверку, ретест и публикацию.</p><b>UNITY · ANDROID · GAME QA</b></div><i>↗</i></a>
@@ -119,6 +120,25 @@
         <a class="fusion-project fusion-project--pink reveal" href="api-lab/" target="_blank" rel="noopener noreferrer"><span>03 / ALIVE</span><h3>API<br />LAB</h3><div><p data-i18n="projectApi">GET и POST, JSON, headers, коды 200/401/404/422, негативные и граничные проверки, 9 pytest-тестов и GitHub Actions.</p><b>POSTMAN · FASTAPI · PYTEST</b></div><i>↗</i></a>
       </div>
       <div class="humanizm-api-strip reveal" aria-label="Детали API практики" data-i18n-aria="apiDetailsLabel"><span><small>METHODS</small>GET · POST</span><span><small>HEADERS</small>Accept · Content-Type</span><span><small>STATUS</small>200 · 401 · 404 · 422</span><span><small>SCENARIOS</small>positive · negative · boundary</span></div>
+      <div class="humanizm-signal-lab reveal" data-signal-lab>
+        <div class="humanizm-signal-lab__intro">
+          <p data-i18n="signalLabel">QA SIGNAL / ИНТЕРАКТИВНОЕ ДЕМО</p>
+          <h3 data-i18n-html="signalTitle">Как я превращаю<br /><i>«не работает» в проверку.</i></h3>
+          <p data-i18n="signalIntro">Выберите сигнал. Ниже появится короткий маршрут диагностики: от контекста до проверяемого результата.</p>
+        </div>
+        <div class="humanizm-signal-lab__controls" role="group" aria-label="Выберите тестовый сигнал" data-i18n-aria="signalControlsLabel">
+          <button class="is-active" type="button" data-signal-case="calls" aria-pressed="true" data-i18n="signalCalls">Нет входящих звонков</button>
+          <button type="button" data-signal-case="api" aria-pressed="false" data-i18n="signalApi">API вернул 401</button>
+          <button type="button" data-signal-case="integration" aria-pressed="false" data-i18n="signalIntegration">Интеграция молчит</button>
+        </div>
+        <div class="humanizm-signal-lab__route" aria-live="polite" aria-atomic="true">
+          <article><span data-i18n="signalStepContext">01 / КОНТЕКСТ</span><p data-signal-step="context">Фиксирую время, направление звонка, номер, устройство и состояние SIP-регистрации.</p></article>
+          <article><span data-i18n="signalStepHypothesis">02 / ГИПОТЕЗА</span><p data-signal-step="hypothesis">Проверяю настройку маршрута, двойную регистрацию и возможную блокировку оператора.</p></article>
+          <article><span data-i18n="signalStepCheck">03 / ПРОВЕРКА</span><p data-signal-step="check">Отделяю аккаунт, устройство и сеть, затем сверяю журнал звонков и конфигурацию.</p></article>
+          <article><span data-i18n="signalStepResult">04 / РЕЗУЛЬТАТ</span><p data-signal-step="result">Исправляю настройку или передаю инженерам точные метки времени, условия и доказательства.</p></article>
+        </div>
+        <p class="humanizm-signal-lab__note" data-i18n="signalNote">Это демонстрация подхода, а не автоматическая диагностика.</p>
+      </div>
     </section>
 
     <section class="humanizm-skills fusion-section" id="skills" data-fusion-tone="blue">
@@ -147,14 +167,39 @@
     <section class="fusion-contact fusion-section humanizm-contact" id="contact" data-fusion-tone="cream">
       <p data-i18n="contactLabel">МОЖНО ПРОСТО НАПИСАТЬ / 06</p><h2 data-i18n-html="contactTitle">Давайте сделаем<br /><span>понятнее</span><br />вместе.</h2>
       <div class="final-contact-facts"><span data-i18n="factFormat">Удалённо, гибрид или офис</span><span data-i18n="factRelocation">Готов к релокации</span><span data-i18n="factTimezone">Готов работать по часовому поясу компании</span><span data-i18n="factEnglish">Английский A2, расту до B1</span></div>
-      <div class="fusion-contact__row"><p data-i18n="contactText">Рассматриваю техническую поддержку, сопровождение интеграций, Manual QA и AI-assisted product роли, где важны диагностика, ясная документация и проверяемый результат.</p><div><a href="https://t.me/CIOL_K" target="_blank" rel="noopener noreferrer">Telegram ↗</a><a href="mailto:wampirkost@bk.ru">Email ↗</a><a href="cv/Konstantin_Vasiliev_CV_RU.pdf" data-cv-link>CV ↓</a></div></div>
+      <div class="fusion-contact__row"><p data-i18n="contactText">Рассматриваю техническую поддержку, сопровождение интеграций, Manual QA и AI-assisted product роли, где важны диагностика, ясная документация и проверяемый результат.</p><div><button class="humanizm-feedback-open" type="button" data-feedback-open><span data-i18n="feedbackOpen">Обратная связь</span> ↗</button><a href="https://t.me/CIOL_K" target="_blank" rel="noopener noreferrer">Telegram ↗</a><button type="button" data-copy-email title="wampirkost@bk.ru"><span data-email-button-label>Email</span> <span aria-hidden="true">↗</span></button><a href="cv/Konstantin_Vasiliev_CV_RU.pdf" data-cv-link download="Konstantin_Vasiliev_CV_RU.pdf">CV ↓</a><span class="humanizm-sr-only" data-email-status role="status" aria-live="polite"></span></div></div>
     </section>
   </main>
 
-  <footer class="fusion-footer humanizm-footer"><span>KONSTANTIN VASILIEV®</span><span>QUALITY WITH A HUMAN PULSE</span><a href="privacy/" data-i18n="privacyLink">Приватность и localStorage</a><span>© <b data-year></b></span></footer>
-  <aside class="humanizm-privacy-note" data-privacy-note aria-labelledby="privacy-note-title"><button type="button" data-privacy-close aria-label="Закрыть уведомление" data-i18n-aria="privacyClose">×</button><strong id="privacy-note-title" data-i18n="privacyTitle">Здесь нет рекламных cookies</strong><p data-i18n="privacyText">В localStorage сохраняются язык и отметка закрытия. Рекламы и аналитики нет. GitHub Pages фиксирует IP для безопасности.</p><div><button type="button" data-privacy-accept data-i18n="privacyAccept">Понятно</button><a href="privacy/" data-i18n="privacyMore">Подробнее</a></div></aside>
+  <dialog class="humanizm-feedback" data-feedback-dialog aria-labelledby="feedback-title">
+    <form class="humanizm-feedback__form" action="https://formsubmit.co/wampirkost@bk.ru" method="POST" enctype="multipart/form-data" target="_blank" rel="noopener noreferrer" data-feedback-form>
+      <input type="hidden" name="_subject" value="Portfolio feedback / Обратная связь" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_url" value="https://kezerio.github.io/kezerio-qa-portfolio/" />
+      <input type="hidden" name="language" value="ru" data-feedback-language />
+      <input class="humanizm-honeypot" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <header>
+        <div><p data-i18n="feedbackEyebrow">ОБРАТНАЯ СВЯЗЬ / БЕЗ РЕГИСТРАЦИИ</p><h2 id="feedback-title" data-i18n-html="feedbackTitle">Расскажите<br /><i>по делу.</i></h2></div>
+        <button type="button" data-feedback-close aria-label="Закрыть форму" data-i18n-aria="feedbackClose">×</button>
+      </header>
+      <p class="humanizm-feedback__intro" data-i18n="feedbackIntro">Можно предложить улучшение, сообщить об ошибке или обсудить работу. Поля с * обязательны.</p>
+      <div class="humanizm-feedback__grid">
+        <label><span><b data-i18n="feedbackName">Имя *</b><output data-name-count>0 / 30</output></span><input type="text" name="name" maxlength="30" autocomplete="name" required placeholder="До 30 символов" data-i18n-placeholder="feedbackNamePlaceholder" /></label>
+        <label><span><b data-i18n="feedbackEmail">Email для ответа *</b></span><input type="email" name="email" maxlength="254" autocomplete="email" required placeholder="name@example.com" /></label>
+      </div>
+      <label class="humanizm-feedback__message"><span><b data-i18n="feedbackMessage">Сообщение *</b><output data-message-count>0 / 3000</output></span><textarea name="message" maxlength="3000" required placeholder="Что вы заметили или хотите обсудить?" data-i18n-placeholder="feedbackMessagePlaceholder"></textarea></label>
+      <label class="humanizm-feedback__file"><span><b data-i18n="feedbackFile">Файл, если нужен</b><small data-i18n="feedbackFileHint">PDF, PNG, JPG, WEBP, TXT, DOC или DOCX. До 10 МБ.</small></span><input type="file" name="attachment" accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx" data-feedback-file /><em data-feedback-file-status role="status" data-i18n="feedbackFileEmpty">Файл не выбран</em></label>
+      <p class="humanizm-feedback__warning" data-i18n="feedbackWarning">Не прикладывайте пароли, токены, документы с платёжными или другими секретными данными.</p>
+      <label class="humanizm-feedback__consent"><input type="checkbox" name="privacy_consent" value="yes" required /><span><span data-i18n="feedbackConsent">Согласен на обработку имени, email, сообщения и выбранного файла для ответа. Данные передаются через FormSubmit и электронную почту.</span> <a href="privacy/" target="_blank" rel="noopener noreferrer" data-i18n="feedbackPrivacy">Подробнее о приватности ↗</a></span></label>
+      <div class="humanizm-feedback__actions"><button type="submit" data-feedback-submit data-i18n="feedbackSubmit">Продолжить отправку ↗</button><p data-i18n="feedbackSubmitNote">Защищённая отправка откроется в новой вкладке. FormSubmit может попросить пройти CAPTCHA.</p></div>
+    </form>
+  </dialog>
+  <div class="humanizm-toast" data-site-toast role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <footer class="fusion-footer humanizm-footer"><span>KONSTANTIN VASILIEV®</span><span>QUALITY WITH A HUMAN PULSE</span><a href="privacy/" data-i18n="privacyLink">Приватность и данные</a><span>© <b data-year></b></span></footer>
+  <aside class="humanizm-privacy-note" data-privacy-note aria-labelledby="privacy-note-title"><button type="button" data-privacy-close aria-label="Закрыть уведомление" data-i18n-aria="privacyClose">×</button><strong id="privacy-note-title" data-i18n="privacyTitle">Здесь нет рекламных cookies</strong><p data-i18n="privacyText">Язык и отметка закрытия хранятся в localStorage. Данные формы передаются FormSubmit только после вашего согласия и отправки. Рекламы и аналитики нет.</p><div><button type="button" data-privacy-accept data-i18n="privacyAccept">Понятно</button><a href="privacy/" data-i18n="privacyMore">Подробнее</a></div></aside>
   <button class="site-back-to-top" type="button" data-back-to-top aria-label="Наверх" aria-hidden="true" tabindex="-1"><span aria-hidden="true">↑</span></button>
-  <script src="assets/human-in-motion.js?v=20260904-humanizm" defer></script>
-  <script src="assets/desktop-motion.js?v=20260904-humanizm" defer></script>
+  <script src="assets/human-in-motion.js?v=20260905-signal" defer></script>
+  <script src="assets/desktop-motion.js?v=20260905-signal" defer></script>
 </body>
 </html>
