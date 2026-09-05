@@ -1,0 +1,48 @@
+.site-back {
+  position: fixed;
+  z-index: 900;
+  right: 82px;
+  bottom: 20px;
+  display: inline-flex;
+  min-width: 112px;
+  min-height: 46px;
+  padding: 10px 16px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #f8f0e7;
+  background: rgba(17, 19, 17, .9);
+  border: 1px solid #111311;
+  border-radius: 999px;
+  box-shadow: 4px 4px 0 rgba(17, 19, 17, .2);
+  cursor: pointer;
+  font: 800 12px/1 "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  transition: color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.site-back:hover,
+.site-back:focus-visible {
+  color: #111311;
+  background: #ccff52;
+  box-shadow: 5px 5px 0 #111311;
+  transform: translateY(-2px);
+}
+
+.site-back:active { transform: translateY(0); box-shadow: 2px 2px 0 #111311; }
+
+@media (max-width: 700px) {
+  .site-back {
+    right: 68px;
+    bottom: 14px;
+    min-width: 98px;
+    min-height: 44px;
+    padding-inline: 13px;
+    font-size: 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-back { transition: none; }
+}
