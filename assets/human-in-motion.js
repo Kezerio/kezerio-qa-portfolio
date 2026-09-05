@@ -402,6 +402,10 @@
     });
   }
 
+  if (feedbackDialog && new URLSearchParams(window.location.search).get('feedback') === '1') {
+    window.requestAnimationFrame(function () { openFeedback(null); });
+  }
+
   function fallbackCopy(value) {
     return new Promise(function (resolve, reject) {
       var textarea = document.createElement('textarea');

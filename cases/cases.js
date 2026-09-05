@@ -252,6 +252,8 @@
       const value = copy[node.dataset.i18nAria];
       if (value) node.setAttribute('aria-label', value);
     });
+    const feedbackLink = document.querySelector('[data-feedback-link]');
+    if (feedbackLink) feedbackLink.href = `../?lang=${currentLanguage}&feedback=1#contact`;
     languageButtons.forEach((button) => {
       const active = button.dataset.language === currentLanguage;
       button.classList.toggle('is-active', active);

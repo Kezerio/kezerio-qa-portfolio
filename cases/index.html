@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="cases.css?v=20260804-language-scroll" />
   <link rel="stylesheet" href="../assets/desktop-motion.css?v=20260723-desktop-motion" />
 </head>
-<body class="cases-page">
+<body class="cases-page" data-back-enabled>
   <a class="cases-skip" href="#case-files" data-i18n="skip">К кейсам</a>
   <div class="cases-progress" aria-hidden="true"><i></i></div>
 
@@ -47,8 +47,8 @@
       <p class="cases-hero__note" data-i18n="heroNote">Я показываю не список знакомых терминов, а ход проверки: что заметил, как воспроизвёл, что ожидал и какие факты передал дальше.</p>
     </section>
 
-    <div class="cases-marquee" aria-hidden="true">
-      <div>FIND THE SIGNAL ✦ REPRODUCE ✦ COMPARE EXPECTED / ACTUAL ✦ ATTACH EVIDENCE ✦ FIND THE SIGNAL ✦ REPRODUCE ✦ COMPARE EXPECTED / ACTUAL ✦ ATTACH EVIDENCE ✦</div>
+    <div class="cases-marquee" data-marquee aria-hidden="true">
+      <div data-marquee-track><span data-marquee-item>FIND THE SIGNAL ✦ REPRODUCE ✦ COMPARE EXPECTED / ACTUAL ✦ ATTACH EVIDENCE ✦</span></div>
     </div>
 
     <section class="cases-library" id="case-files">
@@ -94,7 +94,7 @@
       <p data-i18n="nextText">Часть практики не публикуется из-за конфиденциальности. Здесь остаются материалы, которые можно открыть и проверить.</p>
       <h2 data-i18n-html="nextTitle">Нужен человек,<br />который <span>докопается?</span></h2>
       <div>
-        <a href="../#contact"><span data-i18n="contactMe">Написать мне</span> <span>↗</span></a>
+        <a href="../?lang=ru&amp;feedback=1#contact" data-feedback-link><span data-i18n="contactMe">Написать мне</span> <span>↗</span></a>
         <a href="../" data-i18n="backPortfolio">Вернуться к портфолио</a>
       </div>
     </section>

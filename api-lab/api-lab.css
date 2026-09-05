@@ -58,7 +58,18 @@ a { color: inherit; }
 .wake-actions a span { color: var(--lime); }
 
 .wake-marquee { overflow: hidden; padding: 13px 0; color: var(--ink); background: var(--coral); white-space: nowrap; font: 10px var(--mono); letter-spacing: .06em; }
-.wake-marquee div { width: max-content; animation: wake-ticker 27s linear infinite; }
+.wake-marquee [data-marquee-track] {
+  display: flex;
+  width: max-content;
+  animation: wake-ticker var(--marquee-duration, 27s) linear infinite;
+  will-change: transform;
+}
+.wake-marquee [data-marquee-item],
+.wake-marquee [data-marquee-clone] {
+  flex: 0 0 auto;
+  padding-right: 38px;
+  white-space: nowrap;
+}
 
 .games { padding: 9vw 4vw; background: var(--lilac); }
 .section-head { display: flex; padding: 0 1vw 36px; align-items: end; justify-content: space-between; border-bottom: 1px solid #8174a0; gap: 35px; }
@@ -142,7 +153,7 @@ a { color: inherit; }
 .wake-back-to-top:hover { background: var(--lime); transform: translateY(-2px) scale(1); }
 .wake-back-to-top.is-visible { opacity: .82; pointer-events: auto; transform: translateY(0) scale(1); }
 
-@keyframes wake-ticker { to { transform: translateX(-50%); } }
+@keyframes wake-ticker { to { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } }
 @keyframes wake-ambient { to { transform: scale(1.15) translate(3vw, 2vh); border-radius: 61% 39% 57% 43%; } }
 @keyframes wake-signal { 50% { box-shadow: 0 0 0 16px #ff704d00; } }
 

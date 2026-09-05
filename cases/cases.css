@@ -195,9 +195,17 @@ a { color: inherit; }
   font: 10px var(--mono);
   letter-spacing: .06em;
 }
-.cases-marquee div {
+.cases-marquee [data-marquee-track] {
+  display: flex;
   width: max-content;
-  animation: cases-ticker 28s linear infinite;
+  animation: cases-ticker var(--marquee-duration, 28s) linear infinite;
+  will-change: transform;
+}
+.cases-marquee [data-marquee-item],
+.cases-marquee [data-marquee-clone] {
+  flex: 0 0 auto;
+  padding-right: 38px;
+  white-space: nowrap;
 }
 
 .cases-library { padding: 9vw 4vw 10vw; background: var(--lilac); }
@@ -430,7 +438,7 @@ a { color: inherit; }
 .case-file.reveal.is-visible { opacity: 1; transform: translateY(0); }
 
 @keyframes cases-spin { to { transform: rotate(360deg); } }
-@keyframes cases-ticker { to { transform: translateX(-50%); } }
+@keyframes cases-ticker { to { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } }
 @keyframes cases-pulse { to { transform: translateY(-10px); opacity: .25; } }
 
 @media (max-width: 1000px) {

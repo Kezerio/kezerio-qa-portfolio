@@ -1379,16 +1379,24 @@ a {
   color: #fff;
 }
 
-.stack-strip div {
+.stack-strip [data-marquee-track] {
+  display: flex;
   width: max-content;
   padding: 0.8rem 0;
   font-size: 0.85rem;
   font-weight: 900;
   letter-spacing: 0.09em;
-  animation: stripMove 22s linear infinite;
+  animation: stripMove var(--marquee-duration, 22s) linear infinite;
+  will-change: transform;
+}
+.stack-strip [data-marquee-item],
+.stack-strip [data-marquee-clone] {
+  flex: 0 0 auto;
+  padding-right: 38px;
+  white-space: nowrap;
 }
 
-@keyframes stripMove { to { transform: translateX(-50%); } }
+@keyframes stripMove { to { transform: translate3d(calc(-1 * var(--marquee-distance, 50%)), 0, 0); } }
 
 .stack-section {
   padding: clamp(5rem, 10vw, 11rem) clamp(1rem, 5vw, 6rem);
